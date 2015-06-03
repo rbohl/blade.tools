@@ -1,0 +1,43 @@
+Bundle-Version:	0.1.0.${tstamp}
+
+Private-Package:  \
+	blade.migrate.provider
+	
+-buildpath:  \
+	osgi.core,\
+	osgi.cmpn,\
+	biz.aQute.junit,\
+	blade.migrate.api;version=project,\
+	org.eclipse.core.resources,\
+	org.eclipse.core.runtime,\
+	org.eclipse.equinox.common,\
+	org.apache.felix.gogo.runtime
+
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=blade.migrate.provider)',\
+	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.shell)',\
+	osgi.identity;filter:='(osgi.identity=org.apache.felix.eventadmin)'
+
+Export-Package: blade.migrate.api
+
+-runbundles: \
+	blade.migrate.provider;version=latest,\
+	org.apache.felix.gogo.runtime;version='[0.12.1,0.12.2)',\
+	org.apache.felix.gogo.shell;version='[0.10.0,0.10.1)',\
+	org.apache.felix.gogo.command,\
+	org.apache.felix.scr;version='[1.8.2,1.8.3)',\
+	org.eclipse.equinox.app,\
+	org.eclipse.equinox.common,\
+	org.eclipse.equinox.preferences,\
+	org.eclipse.equinox.registry,\
+	org.eclipse.core.contenttype,\
+	org.eclipse.core.expressions,\
+	org.eclipse.core.filesystem,\
+	org.eclipse.core.jobs,\
+	org.eclipse.core.resources,\
+	org.eclipse.core.runtime
+	
+-runee: JavaSE-1.7
+
+-runproperties: \
+	osgi.instance.area.default=${java.io.tmpdir}/workspace

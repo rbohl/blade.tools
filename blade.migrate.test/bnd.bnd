@@ -1,0 +1,27 @@
+Bundle-Version:1.0.0.${tstamp}
+
+Private-Package:  \
+	blade.migrate.test
+
+Test-Cases: ${test-cases}
+
+-buildpath:  \
+	osgi.core,\
+	osgi.cmpn,\
+	blade.migrate.api;version=project,\
+	biz.aQute.junit
+	
+-testpath: \
+	biz.aQute.junit
+
+-runbundles: \
+	blade.migrate.provider;version=latest,\
+	org.apache.felix.configadmin;version='[1.8.0,1.8.1)',\
+	org.apache.felix.metatype;version='[1.0.10,1.0.11)',\
+	org.apache.felix.scr;version='[1.8.2,1.8.3)'
+	
+-runrequires: osgi.identity;filter:='(osgi.identity=blade.migrate.provider)'
+
+Import-Package: \
+	org.osgi.framework;version=1.5,\
+	*

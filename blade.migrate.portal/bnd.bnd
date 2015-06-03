@@ -1,0 +1,9 @@
+Bundle-Version:	0.1.0.${tstamp}
+
+Private-Package:  \
+	blade.migrate.portal
+	
+-buildpath:  \
+	osgi.core,\
+	osgi.cmpn,\
+	blade.migrate.api
