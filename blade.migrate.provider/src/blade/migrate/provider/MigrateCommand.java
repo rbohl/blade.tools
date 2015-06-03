@@ -15,7 +15,7 @@ import blade.migrate.api.ProjectMigrator;
 
 @Component(
 	property =	{
-		CommandProcessor.COMMAND_SCOPE + "=blade.migrate",
+		CommandProcessor.COMMAND_SCOPE + "=blade",
 		CommandProcessor.COMMAND_FUNCTION + "=migrate"
 	},
 	service = Object.class
@@ -30,7 +30,7 @@ public class MigrateCommand {
         policyOption = ReferencePolicyOption.GREEDY,
         unbind = "removeProjectMigrator"
     )
-	public void setProjectMigrator(ProjectMigrator projectMigrator) {
+	public void addProjectMigrator(ProjectMigrator projectMigrator) {
 		projectMigrators.add(projectMigrator);
 	}
 	

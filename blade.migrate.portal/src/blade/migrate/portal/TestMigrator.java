@@ -9,7 +9,7 @@ public class TestMigrator implements ProjectMigrator {
 
 	@Override
 	public Object report() {
-		return "test";
+		return "test1";
 	}
 
 }
