@@ -6,4 +6,5 @@ Private-Package:  \
 -buildpath:  \
 	osgi.core,\
 	osgi.cmpn,\
-	blade.migrate.api
+	blade.migrate.api,\
+	biz.aQute.junit
