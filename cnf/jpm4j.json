@@ -1,0 +1,5 @@
+{
+ "revisionRefs":[{
+  "artifactId":"org.apache.commons.lang3","baseline":"3.3.2","bsn":"org.apache.commons.lang3","created":1396786738516,"description":"Apache Commons Lang, a package of Java utility classes for the  classes that are in java.lang's hierarchy, or are considered to be so  standard as to justify existence in java.lang.","groupId":"osgi","md5":"3128BF75A2549EBE38663401191BACAB","name":"Apache Commons Lang","phase":"MASTER","revision":"90A3822C38EC8C996E84C16A3477EF632CBC87A3","size":412739,"urls":["http://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar"],"version":"3.3.2"
+ }]
+}
