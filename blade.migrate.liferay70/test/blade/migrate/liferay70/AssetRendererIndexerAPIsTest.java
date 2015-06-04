@@ -1,6 +1,5 @@
 package blade.migrate.liferay70;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -16,12 +15,18 @@ public class AssetRendererIndexerAPIsTest {
 	@Test
 	public void analyzeTest() throws Exception {
 		File testDir = new File("files/" + AssetRendererIndexerAPIs.class.getSimpleName());
-		
+
 		assertTrue(testDir.exists());
-		
+
 		List<Problem> problems = new AssetRendererIndexerAPIs().analyze( testDir );
-		
+
 		assertNotNull(problems);
 		assertTrue(problems.size() > 0);
+	}
+
+	@Test
+	public void astTest() throws Exception {
+		AssetRendererIndexerAPIs test = new AssetRendererIndexerAPIs();
+		test.visitString("public class Foo { void bar(String s){} }");
 	}
 }

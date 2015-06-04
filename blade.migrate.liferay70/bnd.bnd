@@ -7,4 +7,12 @@ Private-Package:  \
 	osgi.core,\
 	osgi.cmpn,\
 	blade.migrate.api,\
-	biz.aQute.junit
+	biz.aQute.junit,\
+	org.eclipse.jdt.core,\
+	org.eclipse.core.runtime,\
+	org.eclipse.equinox.common,\
+	org.eclipse.core.jobs,\
+	org.eclipse.core.contenttype,\
+	org.eclipse.equinox.preferences,\
+	org.eclipse.core.resources,\
+	org.eclipse.osgi
