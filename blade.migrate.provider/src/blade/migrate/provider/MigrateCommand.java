@@ -4,7 +4,7 @@ import java.io.File;
 import org.apache.felix.service.command.CommandProcessor;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import blade.migrate.api.ProjectMigration;
+import blade.migrate.api.Migration;
 
 @Component(
 	property =	{
@@ -15,10 +15,10 @@ import blade.migrate.api.ProjectMigration;
 )
 public class MigrateCommand {
 
-	private volatile ProjectMigration projectMigrationService;
+	private volatile Migration projectMigrationService;
 	
 	@Reference
-	public void setProjectMigration(ProjectMigration projectMigration) {
+	public void setProjectMigration(Migration projectMigration) {
 		this.projectMigrationService = projectMigration;
 	}
 	

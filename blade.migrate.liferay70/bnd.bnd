@@ -1,7 +1,7 @@
 Bundle-Version:	0.1.0.${tstamp}
 
 Private-Package:  \
-	blade.migrate.portal
+	blade.migrate.liferay70
 	
 -buildpath:  \
 	osgi.core,\
