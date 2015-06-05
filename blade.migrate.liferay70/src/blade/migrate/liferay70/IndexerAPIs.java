@@ -17,14 +17,11 @@ public class IndexerAPIs implements ProjectMigrator
 
     private static JavaChecker jc = new JavaChecker();
 
-    public static final String VERSION_1_6 = "1.6";
-    public static final String name = "doGetSummary";
-    public static List<String> oldParameters = new ArrayList<String>();
-    public static List<String> newParameters = new ArrayList<String>();
+    private static final String name = "doGetSummary";
+    private List<String> oldParameters = new ArrayList<String>();
+    private List<String> newParameters = new ArrayList<String>();
 
-    @Override
-    public List<Problem> analyze( File projectDir )
-    {
+    public IndexerAPIs() {
     	oldParameters.add( "Document" );
     	oldParameters.add( "Locale" );
     	oldParameters.add( "String" );
@@ -35,7 +32,10 @@ public class IndexerAPIs implements ProjectMigrator
     	newParameters.add( "String" );
     	newParameters.add( "PortletRequest" );
     	newParameters.add( "PortletResponse" );
-
+	}
+    @Override
+    public List<Problem> analyze( File projectDir )
+    {
         List<Problem> problems = new ArrayList<Problem>();
 
         checkFile( projectDir, problems );
@@ -43,7 +43,7 @@ public class IndexerAPIs implements ProjectMigrator
         return problems;
     }
 
-    public static void checkFile( File file, List<Problem> problems )
+    public void checkFile( File file, List<Problem> problems )
     {
         if( file.isDirectory() )
         {

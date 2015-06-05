@@ -17,19 +17,19 @@ public class AssetRendererAPIs implements ProjectMigrator
 
     private static JavaChecker jc = new JavaChecker();
 
-    public static final String VERSION_1_6 = "1.6";
-    public static final String name = "getSummary";
-    public static List<String> previousParameters = new ArrayList<String>();
-    public static List<String> newParameters = new ArrayList<String>();
+    private static final String methodName = "getSummary";
+    private List<String> previousParameters = new ArrayList<String>();
+    private List<String> newParameters = new ArrayList<String>();
+
+    public AssetRendererAPIs() {
+    	previousParameters.add("Locale");
+    	newParameters.add( "PortletRequest" );
+    	newParameters.add( "PortletResponse" );
+	}
 
     @Override
     public List<Problem> analyze( File projectDir )
     {
-    	previousParameters.add("Locale");
-
-    	newParameters.add( "PortletRequest" );
-    	newParameters.add( "PortletResponse" );
-
         List<Problem> problems = new ArrayList<Problem>();
 
         checkFile( projectDir, problems );
@@ -37,7 +37,7 @@ public class AssetRendererAPIs implements ProjectMigrator
         return problems;
     }
 
-    public static void checkFile( File file, List<Problem> problems )
+    public void checkFile( File file, List<Problem> problems )
     {
         if( file.isDirectory() )
         {
@@ -58,10 +58,10 @@ public class AssetRendererAPIs implements ProjectMigrator
                     sb.append( currentFile.getAbsolutePath() );
                     sb.append( "," );
                     sb.append( "methond:" );
-                    sb.append( name );
+                    sb.append( methodName );
                     sb.append( "." );
 
-                    Problem problem = jc.checkMethod( name, previousParameters, sb.toString() );
+                    Problem problem = jc.checkMethod( methodName, previousParameters, sb.toString() );
 
                     if( problem != null )
                     {
