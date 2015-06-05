@@ -2,6 +2,13 @@
 package blade.migrate.liferay70;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,57 +24,77 @@ public class PortalProperties implements ProjectMigrator
 
     private static PropertyChecker pc = new PropertyChecker();
 
-    public static List<String> properties = new ArrayList<String>();
+    private List<String> properties = new ArrayList<String>();
+
+    public PortalProperties() {
+    	properties.add( "servlet.service.events.pre" );
+        properties.add( "release.info.previous.build.number" );
+	}
 
     @Override
     public List<Problem> analyze( File projectDir )
     {
-        properties.add( "servlet.service.events.pre" );
-        properties.add( "release.info.previous.build.number" );
+		final List<Problem> problems = new ArrayList<>();
 
-        List<Problem> problems = new ArrayList<Problem>();
+		final List<File> files = findPropertiesFiles(projectDir);
 
-        checkFile( projectDir, problems );
+		for (File file : files) {
+			checkPropertiesFile(file, problems);
+		}
 
-        return problems;
+		return problems;
     }
 
-    public static void checkFile( File file, List<Problem> problems )
-    {
-        if( file.isDirectory() )
-        {
-            File[] files = file.listFiles();
+    private List<File> findPropertiesFiles(File projectDir) {
+		final List<File> files = new ArrayList<>();
 
-            for( File currentFile : files )
-            {
-                if( currentFile.isDirectory() )
-                {
-                    checkFile( currentFile, problems );
-                }
-                else if( currentFile.getName().endsWith( "properties" ) )
-                {
-                    pc.setFile( currentFile );
+		final FileVisitor<Path> visitor = new SimpleFileVisitor<Path>(){
+        	@Override
+        	public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+        		File file = path.toFile();
 
-                    for( String property : properties )
-                    {
-                        StringBuffer sb = new StringBuffer();
-                        sb.append( "Properties File Location:" );
-                        sb.append( currentFile.getAbsolutePath() );
-                        sb.append( "," );
-                        sb.append( "propertie:" );
-                        sb.append( property );
-                        sb.append( "." );
+        		if(file.isFile())
+        		{
+        			if(file.getName().endsWith(".properties"))
+        			{
+        				files.add(file);
+        			}
+        		}
 
-                        Problem problem = pc.checkProperty( property, sb.toString() );
+        		return super.visitFile(path, attrs);
+        	}
+        };
 
-                        if( problem != null )
-                        {
-                            problems.add( problem );
-                        }
-                    }
-                }
-            }
-        }
-    }
+		try {
+			Files.walkFileTree(projectDir.toPath(), visitor);
+		} catch (IOException e) {
+			// TODO properly log exception
+			e.printStackTrace();
+		}
+
+		return files;
+
+	}
+
+	public void checkPropertiesFile(File file, List<Problem> problems)
+	{
+		pc.setFile(file);
+
+		for (String property : properties) {
+			StringBuffer sb = new StringBuffer();
+			sb.append("Properties File Location:");
+			sb.append(file.getAbsolutePath());
+			sb.append(",");
+			sb.append("propertie:");
+			sb.append(property);
+			sb.append(".");
+
+			Problem problem = pc.checkProperty(property, sb.toString());
+
+			if (problem != null) {
+				problems.add(problem);
+			}
+		}
+	}
 
 }

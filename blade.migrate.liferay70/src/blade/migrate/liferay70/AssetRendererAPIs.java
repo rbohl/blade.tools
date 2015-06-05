@@ -2,6 +2,13 @@
 package blade.migrate.liferay70;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +25,11 @@ public class AssetRendererAPIs implements ProjectMigrator
     private static JavaChecker jc = new JavaChecker();
 
     private static final String methodName = "getSummary";
-    private List<String> previousParameters = new ArrayList<String>();
+    private List<String> oldParameters = new ArrayList<String>();
     private List<String> newParameters = new ArrayList<String>();
 
     public AssetRendererAPIs() {
-    	previousParameters.add("Locale");
+    	oldParameters.add("Locale");
     	newParameters.add( "PortletRequest" );
     	newParameters.add( "PortletResponse" );
 	}
@@ -30,46 +37,65 @@ public class AssetRendererAPIs implements ProjectMigrator
     @Override
     public List<Problem> analyze( File projectDir )
     {
-        List<Problem> problems = new ArrayList<Problem>();
+        final List<Problem> problems = new ArrayList<>();
 
-        checkFile( projectDir, problems );
+        final List<File> files = findJavaFiles(projectDir);
+
+		for (File file : files) {
+			checkJavaFile(file, problems);
+		}
 
         return problems;
     }
 
-    public void checkFile( File file, List<Problem> problems )
-    {
-        if( file.isDirectory() )
-        {
-            File[] files = file.listFiles();
+	private List<File> findJavaFiles(File projectDir) {
+		final List<File> files = new ArrayList<>();
 
-            for( File currentFile : files )
-            {
-                if( currentFile.isDirectory() )
-                {
-                    checkFile( currentFile, problems );
-                }
-                else if( currentFile.getName().endsWith( "java" ) )
-                {
-                    jc.setFile( currentFile );
+		final FileVisitor<Path> visitor = new SimpleFileVisitor<Path>(){
+        	@Override
+        	public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+        		File file = path.toFile();
 
-                    StringBuffer sb = new StringBuffer();
-                    sb.append( "Class Location:" );
-                    sb.append( currentFile.getAbsolutePath() );
-                    sb.append( "," );
-                    sb.append( "methond:" );
-                    sb.append( methodName );
-                    sb.append( "." );
+        		if(file.isFile())
+        		{
+        			if(file.getName().endsWith(".java"))
+        			{
+        				files.add(file);
+        			}
+        		}
 
-                    Problem problem = jc.checkMethod( methodName, previousParameters, sb.toString() );
+        		return super.visitFile(path, attrs);
+        	}
+        };
 
-                    if( problem != null )
-                    {
-                        problems.add( problem );
-                    }
-                }
-            }
-        }
-    }
+		try {
+			Files.walkFileTree(projectDir.toPath(), visitor);
+		} catch (IOException e) {
+			// TODO properly log exception
+			e.printStackTrace();
+		}
+
+		return files;
+
+	}
+
+	public void checkJavaFile(File file, List<Problem> problems) {
+		jc.setFile(file);
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("Class Location:");
+		sb.append(file.getAbsolutePath());
+		sb.append(",");
+		sb.append("methond:");
+		sb.append(methodName);
+		sb.append(".");
+
+		Problem problem = jc.checkMethod(methodName, oldParameters, sb.toString());
+
+		if (problem != null) {
+			problems.add(problem);
+		}
+
+	}
 
 }
