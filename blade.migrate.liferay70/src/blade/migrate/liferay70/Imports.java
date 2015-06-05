@@ -12,7 +12,7 @@ import blade.migrate.api.ProjectMigrator;
 import blade.migrate.checker.JavaChecker;
 
 @Component
-public class ImportClazz implements ProjectMigrator
+public class Imports implements ProjectMigrator
 {
 
     private static JavaChecker jc = new JavaChecker();
