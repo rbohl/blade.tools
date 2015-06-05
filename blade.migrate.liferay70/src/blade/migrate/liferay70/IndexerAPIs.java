@@ -19,16 +19,22 @@ public class IndexerAPIs implements ProjectMigrator
 
     public static final String VERSION_1_6 = "1.6";
     public static final String name = "doGetSummary";
-    public static List<String> paraments = new ArrayList<String>();
+    public static List<String> oldParameters = new ArrayList<String>();
+    public static List<String> newParameters = new ArrayList<String>();
 
     @Override
     public List<Problem> analyze( File projectDir )
     {
-        paraments.add( "Document" );
-        paraments.add( "Locale" );
-        paraments.add( "String" );
-        paraments.add( "PortletRequest" );
-        paraments.add( "PortletResponse" );
+    	oldParameters.add( "Document" );
+    	oldParameters.add( "Locale" );
+    	oldParameters.add( "String" );
+    	oldParameters.add( "PortletURL" );
+
+    	newParameters.add( "Document" );
+    	newParameters.add( "Locale" );
+    	newParameters.add( "String" );
+    	newParameters.add( "PortletRequest" );
+    	newParameters.add( "PortletResponse" );
 
         List<Problem> problems = new ArrayList<Problem>();
 
@@ -61,7 +67,7 @@ public class IndexerAPIs implements ProjectMigrator
                     sb.append( name );
                     sb.append( "." );
 
-                    Problem problem = jc.checkMethod( name, paraments, sb.toString() );
+                    Problem problem = jc.checkMethod( name, oldParameters, sb.toString() );
 
                     if( problem != null )
                     {

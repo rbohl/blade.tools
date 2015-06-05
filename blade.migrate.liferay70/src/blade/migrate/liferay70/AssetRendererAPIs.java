@@ -19,13 +19,16 @@ public class AssetRendererAPIs implements ProjectMigrator
 
     public static final String VERSION_1_6 = "1.6";
     public static final String name = "getSummary";
-    public static List<String> paraments = new ArrayList<String>();
+    public static List<String> previousParameters = new ArrayList<String>();
+    public static List<String> newParameters = new ArrayList<String>();
 
     @Override
     public List<Problem> analyze( File projectDir )
     {
-        paraments.add( "PortletRequest" );
-        paraments.add( "PortletResponse" );
+    	previousParameters.add("Locale");
+
+    	newParameters.add( "PortletRequest" );
+    	newParameters.add( "PortletResponse" );
 
         List<Problem> problems = new ArrayList<Problem>();
 
@@ -58,7 +61,7 @@ public class AssetRendererAPIs implements ProjectMigrator
                     sb.append( name );
                     sb.append( "." );
 
-                    Problem problem = jc.checkMethod( name, paraments, sb.toString() );
+                    Problem problem = jc.checkMethod( name, previousParameters, sb.toString() );
 
                     if( problem != null )
                     {
