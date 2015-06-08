@@ -2,13 +2,6 @@
 package blade.migrate.liferay70;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +10,7 @@ import org.osgi.service.component.annotations.Component;
 import blade.migrate.api.Problem;
 import blade.migrate.api.ProjectMigrator;
 import blade.migrate.checker.PropertyChecker;
+import blade.migrate.lib.FileHelper;
 
 @Component
 public class PortalProperties implements ProjectMigrator
@@ -36,7 +30,7 @@ public class PortalProperties implements ProjectMigrator
     {
 		final List<Problem> problems = new ArrayList<>();
 
-		final List<File> files = findPropertiesFiles(projectDir);
+		final List<File> files = new FileHelper().findFiles(projectDir, ".properties" );
 
 		for (File file : files) {
 			checkPropertiesFile(file, problems);
@@ -44,37 +38,6 @@ public class PortalProperties implements ProjectMigrator
 
 		return problems;
     }
-
-    private List<File> findPropertiesFiles(File projectDir) {
-		final List<File> files = new ArrayList<>();
-
-		final FileVisitor<Path> visitor = new SimpleFileVisitor<Path>(){
-        	@Override
-        	public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
-        		File file = path.toFile();
-
-        		if(file.isFile())
-        		{
-        			if(file.getName().endsWith(".properties"))
-        			{
-        				files.add(file);
-        			}
-        		}
-
-        		return super.visitFile(path, attrs);
-        	}
-        };
-
-		try {
-			Files.walkFileTree(projectDir.toPath(), visitor);
-		} catch (IOException e) {
-			// TODO properly log exception
-			e.printStackTrace();
-		}
-
-		return files;
-
-	}
 
 	public void checkPropertiesFile(File file, List<Problem> problems)
 	{

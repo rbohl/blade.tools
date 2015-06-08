@@ -1,12 +1,15 @@
 Bundle-Version:	0.1.0.${tstamp}
 
 Private-Package:  \
-	blade.migrate.*
+	blade.migrate.checker,\
+	blade.migrate.core,\
+	blade.migrate.liferay70,\
+	blade.migrate.lib
 
 -buildpath:  \
 	osgi.core,\
 	osgi.cmpn,\
-	blade.migrate.api,\
+	blade.migrate.provider,\
 	biz.aQute.junit,\
 	org.eclipse.jdt.core,\
 	org.eclipse.core.runtime,\

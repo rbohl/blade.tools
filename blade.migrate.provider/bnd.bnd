@@ -2,7 +2,7 @@ Bundle-Version:	0.1.0.${tstamp}
 
 Private-Package:  \
 	blade.migrate.provider
-	
+
 -buildpath:  \
 	osgi.core,\
 	osgi.cmpn,\
@@ -18,7 +18,9 @@ Private-Package:  \
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.shell)',\
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.eventadmin)'
 
-Export-Package: blade.migrate.api
+Export-Package: \
+	blade.migrate.api,\
+	blade.migrate.lib
 
 -runbundles: \
 	blade.migrate.provider;version=latest,\
@@ -36,7 +38,7 @@ Export-Package: blade.migrate.api
 	org.eclipse.core.jobs,\
 	org.eclipse.core.resources,\
 	org.eclipse.core.runtime
-	
+
 -runee: JavaSE-1.7
 
 -runproperties: \
