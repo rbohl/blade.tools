@@ -19,8 +19,7 @@ Private-Package:  \
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.eventadmin)'
 
 Export-Package: \
-	blade.migrate.api,\
-	blade.migrate.lib
+	blade.migrate.api
 
 -runbundles: \
 	blade.migrate.provider;version=latest,\

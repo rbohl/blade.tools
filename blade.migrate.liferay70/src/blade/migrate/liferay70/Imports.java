@@ -10,7 +10,7 @@ import org.osgi.service.component.annotations.Component;
 import blade.migrate.api.Problem;
 import blade.migrate.api.ProjectMigrator;
 import blade.migrate.checker.JavaChecker;
-import blade.migrate.lib.FileHelper;
+import blade.migrate.core.FileHelper;
 
 @Component
 public class Imports implements ProjectMigrator
@@ -20,7 +20,8 @@ public class Imports implements ProjectMigrator
 
     public static final String VERSION_1_6 = "1.6";
 
-    private List<String> imports = new ArrayList<String>();
+    private final List<String> imports = new ArrayList<String>();
+    private final FileHelper fileHelper = new FileHelper();
 
     public Imports() {
     	 imports.add( "com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet" );
@@ -32,7 +33,7 @@ public class Imports implements ProjectMigrator
     {
         final List<Problem> problems = new ArrayList<>();
 
-        final List<File> files = new FileHelper().findFiles(projectDir, ".java" );
+        final List<File> files = fileHelper.findFiles(projectDir, ".java" );
 
 		for (File file : files) {
 			checkJavaFile(file, problems);

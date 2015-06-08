@@ -10,7 +10,7 @@ import org.osgi.service.component.annotations.Component;
 import blade.migrate.api.Problem;
 import blade.migrate.api.ProjectMigrator;
 import blade.migrate.checker.PropertyChecker;
-import blade.migrate.lib.FileHelper;
+import blade.migrate.core.FileHelper;
 
 @Component
 public class PortalProperties implements ProjectMigrator
@@ -18,7 +18,8 @@ public class PortalProperties implements ProjectMigrator
 
     private static PropertyChecker pc = new PropertyChecker();
 
-    private List<String> properties = new ArrayList<String>();
+    private final List<String> properties = new ArrayList<String>();
+    private final FileHelper fileHelper = new FileHelper();
 
     public PortalProperties() {
     	properties.add( "servlet.service.events.pre" );
@@ -30,7 +31,7 @@ public class PortalProperties implements ProjectMigrator
     {
 		final List<Problem> problems = new ArrayList<>();
 
-		final List<File> files = new FileHelper().findFiles(projectDir, ".properties" );
+		final List<File> files = fileHelper.findFiles(projectDir, ".properties" );
 
 		for (File file : files) {
 			checkPropertiesFile(file, problems);

@@ -1,4 +1,4 @@
-package blade.migrate.lib;
+package blade.migrate.core;
 
 import java.io.File;
 import java.io.IOException;
