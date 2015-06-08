@@ -42,3 +42,6 @@ Export-Package: \
 
 -runproperties: \
 	osgi.instance.area.default=${java.io.tmpdir}/workspace
+Import-Package: \
+	org.osgi.framework;version=1.5.0,\
+	*

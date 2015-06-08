@@ -10,16 +10,31 @@ Test-Cases: ${test-cases}
 	osgi.cmpn,\
 	blade.migrate.api;version=project,\
 	biz.aQute.junit
-	
+
 -testpath: \
 	biz.aQute.junit
 
 -runbundles: \
 	blade.migrate.provider;version=latest,\
+	blade.migrate.liferay70;version=latest,\
 	org.apache.felix.configadmin;version='[1.8.0,1.8.1)',\
 	org.apache.felix.metatype;version='[1.0.10,1.0.11)',\
-	org.apache.felix.scr;version='[1.8.2,1.8.3)'
-	
+	org.apache.felix.scr;version='[1.8.2,1.8.3)',\
+	org.eclipse.equinox.app,\
+	org.eclipse.equinox.common,\
+	org.eclipse.equinox.preferences,\
+	org.eclipse.equinox.registry,\
+	org.eclipse.core.contenttype,\
+	org.eclipse.core.commands,\
+	org.eclipse.core.expressions,\
+	org.eclipse.core.filesystem,\
+	org.eclipse.core.jobs,\
+	org.eclipse.core.resources,\
+	org.eclipse.core.runtime,\
+	org.eclipse.jdt.core,\
+	org.eclipse.text,\
+	com.ibm.icu
+
 -runrequires: osgi.identity;filter:='(osgi.identity=blade.migrate.provider)'
 
 Import-Package: \

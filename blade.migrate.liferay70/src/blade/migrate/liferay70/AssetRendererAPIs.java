@@ -7,13 +7,14 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 
+import blade.migrate.api.FileMigrator;
 import blade.migrate.api.Problem;
-import blade.migrate.api.ProjectMigrator;
 import blade.migrate.checker.JavaChecker;
-import blade.migrate.core.FileHelper;
 
-@Component
-public class AssetRendererAPIs implements ProjectMigrator
+@Component(
+	property = { "file.extension=java" }
+)
+public class AssetRendererAPIs implements FileMigrator
 {
 
     private static JavaChecker jc = new JavaChecker();
@@ -21,7 +22,6 @@ public class AssetRendererAPIs implements ProjectMigrator
     private static final String methodName = "getSummary";
     private final List<String> oldParameters = new ArrayList<String>();
     private final List<String> newParameters = new ArrayList<String>();
-    private final FileHelper fileHelper = new FileHelper();
 
     public AssetRendererAPIs() {
     	oldParameters.add("Locale");
@@ -30,15 +30,11 @@ public class AssetRendererAPIs implements ProjectMigrator
 	}
 
     @Override
-    public List<Problem> analyze( File projectDir )
+    public List<Problem> analyzeFile( File file )
     {
         final List<Problem> problems = new ArrayList<>();
 
-        final List<File> files = fileHelper.findFiles(projectDir, ".java" );
-
-		for (File file : files) {
-			checkJavaFile(file, problems);
-		}
+        checkJavaFile(file, problems);
 
         return problems;
     }
