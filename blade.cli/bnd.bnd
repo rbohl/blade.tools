@@ -8,8 +8,8 @@
 -includeresource: templates.zip
 
 -sources: true
-	
-Bundle-Version: 0.2.1.${tstamp}
+
+Bundle-Version: 0.3.0.${tstamp}
 
 Export-Package: \
 	blade.cli
@@ -43,4 +43,3 @@ Private-Package: \
 	org.osgi.dto,\
 	org.osgi.framework,\
 	org.osgi.framework.dto
-	
