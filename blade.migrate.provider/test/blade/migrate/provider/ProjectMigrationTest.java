@@ -17,7 +17,7 @@ public class ProjectMigrationTest {
 		ProjectMigrationService pms = new ProjectMigrationService();
 		pms.addProjectMigrator(new TestMigrator());
 
-		List<Problem> problems = pms.reportProblems(new File("generated"));
+		List<Problem> problems = pms.findProblems(new File("generated"));
 
 		assertNotNull(problems);
 		assertTrue(problems.size() > 0);

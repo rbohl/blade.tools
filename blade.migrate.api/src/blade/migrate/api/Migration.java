@@ -7,7 +7,8 @@ import org.osgi.annotation.versioning.ProviderType;
 
 @ProviderType
 public interface Migration {
-	
-	public List<Problem> reportProblems(File projectDir);
-	
+
+	public List<Problem> findProblems(File projectDir);
+
+	public void reportProblems(File projectDir);
 }

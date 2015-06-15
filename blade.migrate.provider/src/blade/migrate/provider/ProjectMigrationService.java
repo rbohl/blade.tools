@@ -26,12 +26,14 @@ import blade.migrate.api.FileMigrator;
 import blade.migrate.api.Migration;
 import blade.migrate.api.Problem;
 import blade.migrate.api.ProjectMigrator;
+import blade.migrate.api.Reporter;
 
 @Component(immediate = true)
 public class ProjectMigrationService implements Migration {
 
 	private Set<ProjectMigrator> projectMigrators = new HashSet<>();
 	private Set<ServiceReference<FileMigrator>> fileMigrators = new HashSet<>();
+	private Reporter reporter;
 	private BundleContext context;
 
 	@Activate
@@ -40,7 +42,7 @@ public class ProjectMigrationService implements Migration {
 	}
 
 	@Override
-	public List<Problem> reportProblems(File projectDir) {
+	public List<Problem> findProblems(File projectDir) {
 
 		final List<Problem> problems = new ArrayList<>();
 
@@ -53,12 +55,25 @@ public class ProjectMigrationService implements Migration {
 			}
 		}
 
-		walkFiles( projectDir );
+		walkFiles( projectDir, problems );
 
 		return problems;
 	}
 
-	private void walkFiles(File dir) {
+	@Override
+	public void reportProblems(File projectDir) {
+		this.reporter.beginReporting();
+
+		List<Problem> problems = findProblems(projectDir);
+
+		for (Problem problem : problems) {
+			reporter.report(problem);
+		}
+
+		this.reporter.endReporting();
+	}
+
+	private void walkFiles(final File dir, final List<Problem> problems) {
 		final FileVisitor<Path> visitor = new SimpleFileVisitor<Path>(){
         	@Override
         	public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
@@ -75,7 +90,11 @@ public class ProjectMigrationService implements Migration {
 						if( extension.equals(fileExt) ) {
 							FileMigrator fmigrator = context.getService(fm);
 
-							fmigrator.analyzeFile(file);
+							List<Problem> fileProblems = fmigrator.analyzeFile(file);
+
+							if( fileProblems != null && fileProblems.size() > 0) {
+								problems.addAll(fileProblems);
+							}
 
 							context.ungetService(fm);
 						}
@@ -114,11 +133,16 @@ public class ProjectMigrationService implements Migration {
         policyOption = ReferencePolicyOption.GREEDY,
         unbind = "removeProjectMigrator"
     )
-	public void addFiletMigrator(ServiceReference<FileMigrator> fileMigrator) {
+	public void addFileMigrator(ServiceReference<FileMigrator> fileMigrator) {
 		fileMigrators.add(fileMigrator);
 	}
 
 	public void removeFileMigrator(ServiceReference<FileMigrator> fileMigrator) {
 		fileMigrators.remove(fileMigrator);
+	}
+
+	@Reference
+	public void setReporter(Reporter reporter) {
+		this.reporter = reporter;
 	}
 }

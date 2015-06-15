@@ -24,7 +24,7 @@ public class MigrateCommand {
 	
 	
 	public void migrate(File projectDir) {
-		projectMigrationService.reportProblems(projectDir);
+		projectMigrationService.findProblems(projectDir);
 	}
 	
 }
