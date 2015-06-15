@@ -32,11 +32,6 @@ public class AssetRendererAPIsTest
         assertNotNull( problems );
         assertTrue( problems.size() > 0 );
 
-        for( Problem problem : problems )
-        {
-            System.out.println( problem.description );
-        }
-
     }
 
     @Test
@@ -49,11 +44,5 @@ public class AssetRendererAPIsTest
         assertNotNull( problems );
         assertTrue( problems.size() > 0 );
 
-        for( Problem problem : problems )
-        {
-            System.out.println( problem.description );
-        }
-
     }
-
 }

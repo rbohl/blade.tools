@@ -9,15 +9,14 @@ import org.osgi.service.component.annotations.Component;
 
 import blade.migrate.api.FileMigrator;
 import blade.migrate.api.Problem;
-import blade.migrate.checker.JavaChecker;
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.SearchResult;
 
 @Component(
 	property = { "file.extension=java" }
 )
 public class AssetRendererAPIs implements FileMigrator
 {
-
-    private static JavaChecker jc = new JavaChecker();
 
     private static final String methodName = "getSummary";
     private final List<String> oldParameters = new ArrayList<String>();
@@ -32,30 +31,18 @@ public class AssetRendererAPIs implements FileMigrator
     @Override
     public List<Problem> analyzeFile( File file )
     {
-        final List<Problem> problems = new ArrayList<>();
+		JavaFileChecker javaFileChecker = new JavaFileChecker(file);
+		final List<Problem> problems = new ArrayList<>();
 
-        checkJavaFile(file, problems);
-
-        return problems;
-    }
-
-	public void checkJavaFile(File file, List<Problem> problems) {
-		jc.setFile(file);
-
-		StringBuffer sb = new StringBuffer();
-		sb.append("Class Location:");
-		sb.append(file.getAbsolutePath());
-		sb.append(",");
-		sb.append("methond:");
-		sb.append(methodName);
-		sb.append(".");
-
-		Problem problem = jc.checkMethod(methodName, oldParameters, sb.toString());
-
-		if (problem != null) {
-			problems.add(problem);
+		SearchResult methodResult = javaFileChecker.findMethod(methodName,
+				oldParameters.toArray(new String[0]));
+		if (methodResult != null) {
+        	problems.add(new Problem("AssetRenderer API Changes","https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-the-assetrenderer-and-indexer-apis-to-include-the-portletrequest-and-portletresponse-parameters",
+        			"Changed the AssetRenderer API to Include the PortletRequest and PortletResponse Parameters",
+        			"java","LPS-44639,LPS-44894",file,methodResult.startLine));
 		}
 
-	}
+		return problems;
+    }
 
 }

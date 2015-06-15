@@ -7,21 +7,19 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 
+import blade.migrate.api.FileMigrator;
 import blade.migrate.api.Problem;
-import blade.migrate.api.ProjectMigrator;
-import blade.migrate.checker.JavaChecker;
-import blade.migrate.core.FileHelper;
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.SearchResult;
 
-@Component
-public class IndexerAPIs implements ProjectMigrator
+@Component(
+		property = { "file.extension=java" }
+	)
+public class IndexerAPIs implements FileMigrator
 {
-
-    private static JavaChecker jc = new JavaChecker();
-
     private static final String methodName = "doGetSummary";
     private final List<String> oldParameters = new ArrayList<String>();
     private final List<String> newParameters = new ArrayList<String>();
-    private final FileHelper fileHelper = new FileHelper();
 
     public IndexerAPIs() {
     	oldParameters.add( "Document" );
@@ -37,34 +35,18 @@ public class IndexerAPIs implements ProjectMigrator
 	}
 
 	@Override
-	public List<Problem> analyze(File projectDir) {
-		final List<Problem> problems = new ArrayList<>();
+	public List<Problem> analyzeFile(File file) {
+		JavaFileChecker javaFileChecker = new JavaFileChecker(file);
+        final List<Problem> problems = new ArrayList<>();
 
-		final List<File> files = fileHelper.findFiles(projectDir, ".java" );
+        SearchResult methodResult = javaFileChecker.findMethod(methodName, oldParameters.toArray(new String[0]));
+        if(methodResult != null){
+        	problems.add(new Problem("Indexer API Changes","https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-the-assetrenderer-and-indexer-apis-to-include-the-portletrequest-and-portletresponse-parameters",
+        			"Changed the Indexer API to Include the PortletRequest and PortletResponse Parameters",
+        			"java","LPS-44639,LPS-44894",file,methodResult.startLine));
+        }
 
-		for (File file : files) {
-			checkJavaFile(file, problems);
-		}
-
-		return problems;
-	}
-
-	public void checkJavaFile(File file, List<Problem> problems) {
-		jc.setFile(file);
-
-		StringBuffer sb = new StringBuffer();
-		sb.append("Class Location:");
-		sb.append(file.getAbsolutePath());
-		sb.append(",");
-		sb.append("methond:");
-		sb.append(methodName);
-		sb.append(".");
-
-		Problem problem = jc.checkMethod(methodName, oldParameters, sb.toString());
-
-		if (problem != null) {
-			problems.add(problem);
-		}
+        return problems;
 	}
 
 }

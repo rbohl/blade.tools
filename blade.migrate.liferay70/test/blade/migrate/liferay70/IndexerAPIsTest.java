@@ -14,26 +14,22 @@ import blade.migrate.api.Problem;
 
 public class IndexerAPIsTest
 {
-	final File testDir = new File( "projects/knowledge-base-portlet-6.2.x/" );
+	final File testFile = new File( "projects/knowledge-base-portlet-6.2.x/docroot/WEB-INF/src/com/liferay/knowledgebase/admin/util/AdminIndexer.java" );
 
 	@Before
 	public void beforeTest()
 	{
-		assertTrue( testDir.exists() );
+		assertTrue( testFile.exists() );
 	}
 
     @Test
     public void indexerAPIsAnalyzeTest() throws Exception
     {
-        List<Problem> problems = new IndexerAPIs().analyze( testDir );
+        List<Problem> problems = new IndexerAPIs().analyzeFile( testFile );
 
         assertNotNull( problems );
         assertTrue( problems.size() > 0 );
 
-        for( Problem problem : problems )
-        {
-            System.out.println( problem.description );
-        }
     }
 
     @Test
@@ -41,16 +37,12 @@ public class IndexerAPIsTest
     {
     	IndexerAPIs apis = new IndexerAPIs();
 
-    	List<Problem> problems = apis.analyze( testDir );
-    	problems = apis.analyze( testDir );
+    	List<Problem> problems = new IndexerAPIs().analyzeFile( testFile );
+    	problems = apis.analyzeFile( testFile );
 
         assertNotNull( problems );
         assertTrue( problems.size() > 0 );
 
-        for( Problem problem : problems )
-        {
-            System.out.println( problem.description );
-        }
     }
 
 }
