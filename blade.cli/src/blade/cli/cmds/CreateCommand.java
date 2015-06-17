@@ -1,3 +1,4 @@
+
 package blade.cli.cmds;
 
 import java.io.File;
@@ -24,7 +25,10 @@ public class CreateCommand {
 
 	final private blade blade;
 	final private CreateOptions options;
-	final static private List<String> textExtensions = Arrays.asList(".bnd", ".java", ".project", ".xml");
+	final static private List<String> textExtensions =
+		Arrays.asList(
+			".bnd", ".java", ".project", ".xml", ".jsp", ".css", ".jspf",
+			".js", ".properties");
 
 	public CreateCommand(blade blade, CreateOptions options) throws Exception {
 		this.blade = blade;
@@ -50,7 +54,7 @@ public class CreateCommand {
 
 		File workDir = null;
 
-		if( dir != null ) {
+		if (dir != null) {
 			workDir = Processor.getFile(dir, name);
 			name = workDir.getName();
 			base = workDir.getParentFile();
@@ -66,7 +70,8 @@ public class CreateCommand {
 		InputStream in = getClass().getResourceAsStream("/templates.zip");
 
 		if (in == null) {
-			blade.error("Cannot find templates in this jar %s", "/templates.zip");
+			blade.error(
+				"Cannot find templates in this jar %s", "/templates.zip");
 			return;
 		}
 
@@ -76,9 +81,14 @@ public class CreateCommand {
 			build = Build.maven;
 		}
 
-		Type type = Type.valueOf(Type.class, options._().get(1));
-
-		Pattern glob = Pattern.compile("[^/]+|templates/" + build + "/" + type +"/.*|\\...+/.*");
+		Type type = options.projectType();
+		
+		if(type==null){
+			type = Type.portlet;
+		}
+		
+		Pattern glob = Pattern.compile("^" +
+			build.toString() + "/" + type + "/.*|\\...+/.*");
 
 		Map<String, String> subs = new HashMap<>();
 		subs.put("templates/" + build + "/" + type + "/", "");
@@ -88,6 +98,13 @@ public class CreateCommand {
 		subs.put("_package_", name.toLowerCase().replaceAll("-", "."));
 
 		String classname = options.classname();
+
+		String unNormalizedPortletFqn =
+			name.toLowerCase().replaceAll("-", ".") + "_" + classname;
+
+		subs.put(
+			"_portlet_fqn_",
+			unNormalizedPortletFqn.toLowerCase().replaceAll(".", "_"));
 
 		if (classname == null) {
 			classname = WordUtils.capitalize(name);
@@ -99,25 +116,45 @@ public class CreateCommand {
 			String service = options._().get(2);
 
 			if (service.isEmpty()) {
-				blade.error("if type is service, the fully qualified name of service must be specified after the service argument.");
+				blade.error(
+					"if type is service, the fully qualified name of service " +
+						"must be specified after the service argument.");
 				printHelp();
 				return;
 			}
 
 			subs.put("_SERVICE_FULL_", service);
-			subs.put("_SERVICE_SHORT_", service.substring(service.lastIndexOf('.') + 1));
+			subs.put(
+				"_SERVICE_SHORT_",
+				service.substring(service.lastIndexOf('.') + 1));
+		}
+		else if (Type.portlet.equals(type) || Type.jspportlet.equals(type)) {
+
+			if (!classname.matches(".*Portlet$") ||
+				!classname.matches("^Portlet.*")) {
+
+				subs.put("_CLASSNAME_", classname + "Portlet");
+			}
 		}
 
-		copy(workDir, in, glob, true, subs);
+		copy(build, type, workDir, in, glob, true, subs);
 	}
 
-	private void copy(File workspaceDir, InputStream in, Pattern glob, boolean overwrite, Map<String, String> subs) throws Exception {
+	private void copy(Build build, Type type,
+		File workspaceDir, InputStream in, Pattern glob, boolean overwrite,
+		Map<String, String> subs) throws Exception {
+
+		blade.trace("Glob:" + glob);
+
 		Jar jar = new Jar("dot", in);
 
 		try {
-			for (Entry<String,Resource> e : jar.getResources().entrySet()) {
+			for (Entry<String, Resource> e : jar.getResources().entrySet()) {
 				String path = e.getKey();
-				blade.trace("path %s", path);
+
+				blade.trace(
+					"path %s matches ? %s : \n", path,
+					!((glob != null && !glob.matcher(path).matches())));
 
 				if (glob != null && !glob.matcher(path).matches())
 					continue;
@@ -128,22 +165,31 @@ public class CreateCommand {
 					path = path.replaceAll(key, subs.get(key));
 				}
 
+				path =
+					path.replaceAll(build.name() + "/" + type.name() + "/", "");
+
 				File dest = Processor.getFile(workspaceDir, path);
 
-				if (overwrite || !dest.isFile() || dest.lastModified() < r.lastModified() || r.lastModified() <= 0) {
+				blade.trace("Dest Dir:" + path);
 
-					blade.trace("copy %s to %s", path, dest);
+				if (overwrite ||
+					dest.lastModified() < r.lastModified() ||
+					r.lastModified() <= 0) {
+
+					blade.trace("copy %s to %s \n", path, dest);
 
 					File dp = dest.getParentFile();
 					if (!dp.exists() && !dp.mkdirs()) {
-						throw new IOException("Could not create directory " + dp);
+						throw new IOException(
+							"Could not create directory " + dp);
 					}
 
 					IO.copy(r.openInputStream(), dest);
 
-					if(isTextFile(dest)) {
-						process(dest,subs);
+					if (isTextFile(dest)) {
+						process(dest, subs);
 					}
+
 				}
 			}
 		}
@@ -168,7 +214,8 @@ public class CreateCommand {
 	private boolean isTextFile(File dest) {
 		String name = dest.getName();
 
-		return textExtensions.contains(name.substring(name.lastIndexOf("."),name.length()));
+		return textExtensions.contains(
+			name.substring(name.lastIndexOf("."), name.length()));
 	}
 
 	private void printHelp() throws Exception {
@@ -177,4 +224,5 @@ public class CreateCommand {
 		blade.out().println(f);
 		f.close();
 	}
+
 }
