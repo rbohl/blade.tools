@@ -1,3 +1,4 @@
+
 package blade.cli.test;
 
 import static org.junit.Assert.assertFalse;
@@ -6,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.regex.Pattern;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +20,7 @@ public class TestBladeCLI {
 	@Before
 	public void setup() {
 		File testdir = IO.getFile("generated/test");
-		if(testdir.exists()) {
+		if (testdir.exists()) {
 			IO.delete(testdir);
 			assertFalse(testdir.exists());
 		}
@@ -41,7 +43,8 @@ public class TestBladeCLI {
 
 		assertTrue(IO.getFile("generated/test/foo/pom.xml").exists());
 
-		File portletFile = IO.getFile("generated/test/foo/src/main/java/foo/Foo.java");
+		File portletFile =
+			IO.getFile("generated/test/foo/src/main/java/foo/FooPortlet.java");
 
 		assertTrue(portletFile.exists());
 
@@ -77,7 +80,117 @@ public class TestBladeCLI {
 
 		contains(projectFileContent, ".*<name>foo</name>.*");
 
-		contains(projectFileContent, ".*<nature>org.eclipse.m2e.core.maven2Nature</nature>.*");
+		contains(projectFileContent,
+			".*<nature>org.eclipse.m2e.core.maven2Nature</nature>.*");
+	}
+
+	@Test
+	public void createMavenJSPPortletProject() throws Exception {
+		String[] args = new String[] {
+			"-t",
+			"create",
+			"-d",
+			"generated/test",
+			"foo",
+			"jspportlet"
+		};
+
+		new blade().run(args);
+
+		assertTrue(IO.getFile("generated/test/foo").exists());
+
+		assertTrue(IO.getFile("generated/test/foo/bnd.bnd").exists());
+
+		assertTrue(IO.getFile("generated/test/foo/pom.xml").exists());
+
+		File portletFile =
+			IO.getFile("generated/test/foo/src/main/java/foo/FooPortlet.java");
+
+		assertTrue(portletFile.exists());
+
+		String portletFileContent = new String(IO.read(portletFile));
+
+		contains(
+			portletFileContent,
+			".*^public class FooPortlet extends MVCPortlet.*$");
+
+		File pomFile = IO.getFile("generated/test/foo/pom.xml");
+
+		assertTrue(pomFile.exists());
+
+		String pomFileContent = new String(IO.read(pomFile));
+
+		contains(pomFileContent, ".*<groupId>foo</groupId>.*");
+
+		contains(pomFileContent, ".*<artifactId>foo</artifactId>.*");
+
+		contains(pomFileContent, ".*<name>Foo</name>.*");
+
+		File viewJSPFile = IO.getFile(
+			"generated/test/foo/src/main/resources/META-INF/resources/view.jsp");
+
+		assertTrue(viewJSPFile.exists());
+
+		File initJSPFile = IO.getFile(
+			"generated/test/foo/src/main/resources/META-INF/resources/init.jsp");
+
+		assertTrue(initJSPFile.exists());
+
+	}
+
+	@Test
+	public void createGradleJSPPortletProject() throws Exception {
+		String[] args = new String[] {
+			"-t",
+			"create",
+			"-b",
+			"gradle",
+			"-d",
+			"generated/test",
+			"foo",
+			"jspportlet"
+		};
+
+		new blade().run(args);
+
+		assertTrue(IO.getFile("generated/test/foo").exists());
+
+		assertTrue(IO.getFile("generated/test/foo/bnd.bnd").exists());
+
+		File portletFile =
+			IO.getFile("generated/test/foo/src/main/java/foo/FooPortlet.java");
+
+		assertTrue(portletFile.exists());
+
+		String portletFileContent = new String(IO.read(portletFile));
+
+		contains(
+			portletFileContent,
+			".*^public class FooPortlet extends MVCPortlet.*$");
+
+		File gradleBuildFile = IO.getFile("generated/test/foo/build.gradle");
+
+		assertTrue(gradleBuildFile.exists());
+
+		String gradleBuildFileContent = new String(IO.read(gradleBuildFile));
+
+		contains(
+			gradleBuildFileContent,
+			".*classpath 'com.liferay:com.liferay.ant.bnd:1.0.9'.*");
+
+		contains(gradleBuildFileContent,
+			".*apply plugin: 'biz.aQute.bnd.builder'.*");
+
+		File viewJSPFile = IO.getFile(
+			"generated/test/foo/src/main/resources/META-INF/resources/view.jsp");
+
+		assertTrue(viewJSPFile.exists());
+
+		File initJSPFile = IO.getFile(
+			"generated/test/foo/src/main/resources/META-INF/resources/init.jsp");
+
+		assertTrue(initJSPFile.exists());
+
 	}
 
 	@Test
@@ -96,9 +209,11 @@ public class TestBladeCLI {
 
 		assertTrue(IO.getFile("generated/test/servicepreaction").exists());
 
-		assertTrue(IO.getFile("generated/test/servicepreaction/pom.xml").exists());
+		assertTrue(
+			IO.getFile("generated/test/servicepreaction/pom.xml").exists());
 
-		File serviceFile = IO.getFile("generated/test/servicepreaction/src/main/java/servicepreaction/Servicepreaction.java");
+		File serviceFile = IO.getFile(
+			"generated/test/servicepreaction/src/main/java/servicepreaction/Servicepreaction.java");
 
 		assertTrue(serviceFile.exists());
 
@@ -106,11 +221,13 @@ public class TestBladeCLI {
 
 		contains(serviceFileContent, "^package servicepreaction;.*");
 
-		contains(serviceFileContent, ".*^import com.liferay.portal.kernel.events.LifecycleAction;$.*");
+		contains(serviceFileContent,
+			".*^import com.liferay.portal.kernel.events.LifecycleAction;$.*");
 
 		contains(serviceFileContent, ".*service = LifecycleAction.class.*");
 
-		contains(serviceFileContent, ".*^public class Servicepreaction implements LifecycleAction \\{.*");
+		contains(serviceFileContent,
+			".*^public class Servicepreaction implements LifecycleAction \\{.*");
 	}
 
 	@Test
@@ -129,13 +246,16 @@ public class TestBladeCLI {
 
 		new blade().run(args);
 
-		File serviceFile = IO.getFile("generated/test/loginpre/src/main/java/loginpre/LoginPreAction.java");
+		File serviceFile = IO.getFile(
+			"generated/test/loginpre/src/main/java/loginpre/LoginPreAction.java");
 
 		assertTrue(serviceFile.exists());
 
 		String serviceFileContent = new String(IO.read(serviceFile));
 
-		contains(serviceFileContent, ".*^public class LoginPreAction implements LifecycleAction \\{.*");
+		contains(
+			serviceFileContent,
+			".*^public class LoginPreAction implements LifecycleAction \\{.*");
 	}
 
 	@Test
@@ -154,7 +274,8 @@ public class TestBladeCLI {
 
 		new blade().run(args);
 
-		File serviceFile = IO.getFile("generated/test/blade.package.path.test/src/main/java/blade/package/path/test/PackagePathTest.java");
+		File serviceFile = IO.getFile(
+			"generated/test/blade.package.path.test/src/main/java/blade/package/path/test/PackagePathTest.java");
 
 		assertTrue(serviceFile.exists());
 
@@ -162,13 +283,17 @@ public class TestBladeCLI {
 
 		contains(serviceFileContent, "^package blade.package.path.test;.*");
 
-		contains(serviceFileContent, ".*^public class PackagePathTest implements LifecycleAction \\{.*");
+		contains(serviceFileContent,
+			".*^public class PackagePathTest implements LifecycleAction \\{.*");
 
-		File pomFile = IO.getFile("generated/test/blade.package.path.test/pom.xml");
+		File pomFile =
+			IO.getFile("generated/test/blade.package.path.test/pom.xml");
 
 		String pomFileContent = new String(IO.read(pomFile));
 
-		contains(pomFileContent, ".*<Private-Package>blade.package.path.test</Private-Package>.*");
+		contains(
+			pomFileContent,
+			".*<Private-Package>blade.package.path.test</Private-Package>.*");
 	}
 
 	@Test
@@ -188,9 +313,11 @@ public class TestBladeCLI {
 
 		new blade().run(args);
 
-		assertTrue(IO.getFile("generated/test/gradle.test/build.gradle").exists());
+		assertTrue(
+			IO.getFile("generated/test/gradle.test/build.gradle").exists());
 
-		File portletFile = IO.getFile("generated/test/gradle.test/src/main/java/gradle/test/Foo.java");
+		File portletFile = IO.getFile(
+			"generated/test/gradle.test/src/main/java/gradle/test/FooPortlet.java");
 
 		assertTrue(portletFile.exists());
 
@@ -198,11 +325,13 @@ public class TestBladeCLI {
 
 		contains(portletFileContent, "^package gradle.test;.*");
 
-		contains(portletFileContent, ".*javax.portlet.display-name=Gradle.test.*");
+		contains(portletFileContent,
+			".*javax.portlet.display-name=Gradle.test.*");
 
-		contains(portletFileContent, ".*^public class Foo .*");
+		contains(portletFileContent, ".*^public class FooPortlet .*");
 
-		contains(portletFileContent, ".*printWriter.print\\(\\\"Gradle.test Portlet.*");
+		contains(portletFileContent,
+			".*printWriter.print\\(\\\"Gradle.test Portlet.*");
 
 		File bndFile = IO.getFile("generated/test/gradle.test/bnd.bnd");
 
@@ -220,7 +349,8 @@ public class TestBladeCLI {
 
 		contains(projectFileContent, ".*<name>gradle.test</name>.*");
 
-		contains(projectFileContent, ".*<nature>org.springsource.ide.eclipse.gradle.core.nature</nature>.*");
+		contains(projectFileContent,
+			".*<nature>org.springsource.ide.eclipse.gradle.core.nature</nature>.*");
 	}
 
 	@Test
@@ -239,15 +369,19 @@ public class TestBladeCLI {
 
 		new blade().run(args);
 
-		File buildFile = IO.getFile("generated/test/servicepreaction/build.gradle");
+		File buildFile =
+			IO.getFile("generated/test/servicepreaction/build.gradle");
 
 		assertTrue(buildFile.exists());
 
 		String buildFileContent = new String(IO.read(buildFile));
 
-		contains(buildFileContent, ".*compile 'com.liferay.portal:portal-service:7.0.0-SNAPSHOT'.*");
+		contains(
+			buildFileContent,
+			".*compile 'com.liferay.portal:portal-service:7.0.0-SNAPSHOT'.*");
 
-		File serviceFile = IO.getFile("generated/test/servicepreaction/src/main/java/servicepreaction/Servicepreaction.java");
+		File serviceFile = IO.getFile(
+			"generated/test/servicepreaction/src/main/java/servicepreaction/Servicepreaction.java");
 
 		assertTrue(serviceFile.exists());
 
@@ -255,11 +389,13 @@ public class TestBladeCLI {
 
 		contains(serviceFileContent, "^package servicepreaction;.*");
 
-		contains(serviceFileContent, ".*^import com.liferay.portal.kernel.events.LifecycleAction;$.*");
+		contains(serviceFileContent,
+			".*^import com.liferay.portal.kernel.events.LifecycleAction;$.*");
 
 		contains(serviceFileContent, ".*service = LifecycleAction.class.*");
 
-		contains(serviceFileContent, ".*^public class Servicepreaction implements LifecycleAction \\{.*");
+		contains(serviceFileContent,
+			".*^public class Servicepreaction implements LifecycleAction \\{.*");
 
 		File bndFile = IO.getFile("generated/test/servicepreaction/bnd.bnd");
 
@@ -267,10 +403,14 @@ public class TestBladeCLI {
 
 		String bndFileContent = new String(IO.read(bndFile));
 
-		contains(bndFileContent, ".*com.liferay.portal.service;version=\"7.0.0\".*");
+		contains(
+			bndFileContent, ".*com.liferay.portal.service;version=\"7.0.0\".*");
 	}
 
 	private void contains(String content, String pattern) {
-		assertTrue(Pattern.compile(pattern, Pattern.MULTILINE | Pattern.DOTALL).matcher(content).matches());
+		assertTrue(
+			Pattern.compile(
+				pattern, Pattern.MULTILINE | Pattern.DOTALL).matcher(
+					content).matches());
 	}
 }

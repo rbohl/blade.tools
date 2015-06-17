@@ -5,11 +5,12 @@
 	org.apache.commons.lang3,\
 	org.eclipse.osgi
 
--includeresource: templates.zip
+-includeresource: \
+	{templates.zip}
 
 -sources: true
 
-Bundle-Version: 0.3.0.${tstamp}
+Bundle-Version: 0.4.0.${tstamp}
 
 Export-Package: \
 	blade.cli
