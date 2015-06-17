@@ -1,9 +1,11 @@
-Bundle-Version:	0.1.0.${tstamp}
+Bundle-Version: 0.1.0.${tstamp}
 
-Private-Package:  \
-	blade.migrate.provider
+Private-Package: \
+	blade.migrate.provider,\
+	dnl.utils.text.table,\
+	org.apache.commons.lang
 
--buildpath:  \
+-buildpath: \
 	osgi.core,\
 	osgi.cmpn,\
 	biz.aQute.junit,\
@@ -11,7 +13,9 @@ Private-Package:  \
 	org.eclipse.core.resources,\
 	org.eclipse.core.runtime,\
 	org.eclipse.equinox.common,\
-	org.apache.felix.gogo.runtime
+	org.apache.felix.gogo.runtime,\
+	dnl.utils.jtext,\
+	org.apache.commons.lang
 
 -runrequires: \
 	osgi.identity;filter:='(osgi.identity=blade.migrate.provider)',\
@@ -44,4 +48,5 @@ Export-Package: \
 	osgi.instance.area.default=${java.io.tmpdir}/workspace
 Import-Package: \
 	org.osgi.framework;version=1.5.0,\
-	*
+	javax.swing,\
+	javax.swing.table

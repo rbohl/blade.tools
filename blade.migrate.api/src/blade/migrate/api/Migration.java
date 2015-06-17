@@ -10,5 +10,5 @@ public interface Migration {
 
 	public List<Problem> findProblems(File projectDir);
 
-	public void reportProblems(File projectDir);
+	public void reportProblems(File projectDir, int format);
 }
