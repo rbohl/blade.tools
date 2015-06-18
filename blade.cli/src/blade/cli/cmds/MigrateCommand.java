@@ -47,7 +47,12 @@ public class MigrateCommand {
 		ServiceReference<Migration> sr = context.getServiceReference(Migration.class);
 		Migration migrationService = context.getService(sr);
 
-		migrationService.reportProblems(projectDir, Reporter.FORMAT_LONG);
+		if (options.detailed()) {
+			migrationService.reportProblems(projectDir, Reporter.FORMAT_LONG);
+		}
+		else {
+			migrationService.reportProblems(projectDir, Reporter.FORMAT_SHORT);
+		}
 	}
 
 	private void printHelp() throws Exception {

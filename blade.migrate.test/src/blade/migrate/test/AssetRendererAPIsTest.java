@@ -1,6 +1,6 @@
 package blade.migrate.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.util.List;
@@ -26,7 +26,7 @@ public class AssetRendererAPIsTest {
 				.findProblems(new File(
 						"../blade.migrate.liferay70/projects/knowledge-base-portlet-6.2.x"));
 
-		assertTrue(problems.size() > 0);
+		assertEquals(3, problems.size());
 	}
 
 }

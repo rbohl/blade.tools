@@ -58,5 +58,8 @@ public class ConsoleReporter implements Reporter {
 		TextTable tt = new TextTable(columnNames.toArray(new String[0]) , data);
 		tt.setAddRowNumbering(true);
 		tt.printTable();
+
+		this.columnNames.clear();
+		this.rowData.clear();
 	}
 }

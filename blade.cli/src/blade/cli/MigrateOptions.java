@@ -8,7 +8,7 @@ import aQute.lib.getopt.Options;
 @Description("Migrates a plugin project to Liferay 7")
 public interface MigrateOptions extends Options {
 
-	@Description("Watches the deployed file for changes and will automatically redeploy")
-	boolean report();
+	@Description("Determines if the report format will be short or long")
+	boolean detailed();
 
 }

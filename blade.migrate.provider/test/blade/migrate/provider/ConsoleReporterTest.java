@@ -53,6 +53,18 @@ public class ConsoleReporterTest {
 
 		reporter.endReporting();
 
+		baos = new ByteArrayOutputStream();
+		printStream = new PrintStream(baos);
+		System.setOut(printStream);
+
+		reporter.beginReporting(Reporter.FORMAT_SHORT);
+
+		for (Problem p : problems) {
+			reporter.report(p);
+		}
+
+		reporter.endReporting();
+
 		String realString = baos.toString().replace("\r", "");
 
 		assertEquals(expectString, realString);
