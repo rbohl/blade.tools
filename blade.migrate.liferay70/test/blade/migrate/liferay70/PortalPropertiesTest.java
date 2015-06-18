@@ -28,8 +28,7 @@ public class PortalPropertiesTest
         List<Problem> problems = new PortalProperties().analyzeFile( file );
 
         assertNotNull( problems );
-        assertTrue( problems.size() > 0 );
-
+        assertTrue( problems.size() == 0 );
     }
 
     @Test
@@ -40,7 +39,7 @@ public class PortalPropertiesTest
 		problems = portalProperties.analyzeFile( file );
 
         assertNotNull( problems );
-        assertTrue( problems.size() > 0 );
+        assertTrue( problems.size() == 0 );
 
     }
 }

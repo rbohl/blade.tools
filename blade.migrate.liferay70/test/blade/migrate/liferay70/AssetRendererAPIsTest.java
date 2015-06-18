@@ -30,7 +30,7 @@ public class AssetRendererAPIsTest
         List<Problem> problems = new AssetRendererAPIs().analyzeFile( testFile );
 
         assertNotNull( problems );
-        assertTrue( problems.size() > 0 );
+        assertTrue( problems.size() == 1 );
 
     }
 
@@ -42,7 +42,7 @@ public class AssetRendererAPIsTest
     	problems = apis.analyzeFile(testFile);
 
         assertNotNull( problems );
-        assertTrue( problems.size() > 0 );
+        assertTrue( problems.size() == 1 );
 
     }
 }

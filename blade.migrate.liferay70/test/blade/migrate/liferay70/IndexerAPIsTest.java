@@ -28,7 +28,7 @@ public class IndexerAPIsTest
         List<Problem> problems = new IndexerAPIs().analyzeFile( testFile );
 
         assertNotNull( problems );
-        assertTrue( problems.size() > 0 );
+        assertTrue( problems.size() == 1 );
 
     }
 
@@ -41,7 +41,7 @@ public class IndexerAPIsTest
     	problems = apis.analyzeFile( testFile );
 
         assertNotNull( problems );
-        assertTrue( problems.size() > 0 );
+        assertTrue( problems.size() == 1 );
 
     }
 

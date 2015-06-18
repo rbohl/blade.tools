@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.Test;
 
 import blade.migrate.api.Problem;
+import blade.migrate.api.Reporter;
 
 public class ConsoleReporterTest {
 
@@ -44,7 +45,7 @@ public class ConsoleReporterTest {
 		System.setOut(printStream);
 
 		ConsoleReporter reporter = new ConsoleReporter();
-		reporter.beginReporting(0);
+		reporter.beginReporting(Reporter.FORMAT_SHORT);
 
 		for (Problem p : problems) {
 			reporter.report(p);
@@ -93,7 +94,7 @@ public class ConsoleReporterTest {
 		System.setOut(printStream);
 
 		ConsoleReporter reporter = new ConsoleReporter();
-		reporter.beginReporting(1);
+		reporter.beginReporting(Reporter.FORMAT_LONG);
 
 		for (Problem p : problems) {
 			reporter.report(p);
