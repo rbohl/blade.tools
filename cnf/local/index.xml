@@ -1,3 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<repository increment="1433306355573" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
+<repository increment="1434357641765" name="Local" xmlns="http://www.osgi.org/xmlns/repository/v1.0.0">
+  <resource>
+    <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="dnl.utils.jtext"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" type="Version" value="0.3.3"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="osgi.content" value="9040d5c56c8286d9763d6693310538abc56be6effc3685ed05098e0f235e36d6"/>
+      <attribute name="url" value="dnl.utils.jtext/dnl.utils.jtext-0.3.3.jar"/>
+      <attribute name="size" type="Long" value="18751"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="osgi.wiring.bundle" value="dnl.utils.jtext"/>
+      <attribute name="bundle-version" type="Version" value="0.3.3"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="osgi.wiring.host" value="dnl.utils.jtext"/>
+      <attribute name="bundle-version" type="Version" value="0.3.3"/>
+    </capability>
+  </resource>
 </repository>

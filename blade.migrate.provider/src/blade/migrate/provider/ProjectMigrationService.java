@@ -43,34 +43,34 @@ public class ProjectMigrationService implements Migration {
 
 	@Override
 	public List<Problem> findProblems(File projectDir) {
-
 		final List<Problem> problems = new ArrayList<>();
 
-		for(ProjectMigrator pm : projectMigrators) {
+		for (ProjectMigrator pm : projectMigrators) {
 			try {
 				problems.addAll(pm.analyze(projectDir));
-			}
-			catch ( Exception e ) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
-		walkFiles( projectDir, problems );
+		walkFiles(projectDir, problems);
 
 		return problems;
 	}
 
 	@Override
-	public void reportProblems(File projectDir) {
-		this.reporter.beginReporting();
-
+	public void reportProblems(File projectDir, int format) {
 		List<Problem> problems = findProblems(projectDir);
 
-		for (Problem problem : problems) {
-			reporter.report(problem);
-		}
+		if (problems.size() != 0) {
+			this.reporter.beginReporting(format);
 
-		this.reporter.endReporting();
+			for (Problem problem : problems) {
+				reporter.report(problem);
+			}
+
+			this.reporter.endReporting();
+		}
 	}
 
 	private void walkFiles(final File dir, final List<Problem> problems) {
