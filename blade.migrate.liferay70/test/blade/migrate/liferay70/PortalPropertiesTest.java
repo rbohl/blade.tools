@@ -1,6 +1,7 @@
 
 package blade.migrate.liferay70;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -28,7 +29,7 @@ public class PortalPropertiesTest
         List<Problem> problems = new PortalProperties().analyzeFile( file );
 
         assertNotNull( problems );
-        assertTrue( problems.size() == 0 );
+        assertEquals( 1, problems.size() );
     }
 
     @Test
@@ -39,7 +40,7 @@ public class PortalPropertiesTest
 		problems = portalProperties.analyzeFile( file );
 
         assertNotNull( problems );
-        assertTrue( problems.size() == 0 );
+        assertEquals( 1, problems.size() );
 
     }
 }
