@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+
 public class ConsoleReporterCLITest {
 
 	@Test

@@ -19,6 +19,7 @@ public class JavaMethodMigrator implements FileMigrator {
 	ComponentContext context;
 	String methodType;
 	String methodName;
+	String methodExpression;
 	String[] methodParamTypes;
 	String problemTitle;
 	String problemUrl;
@@ -32,8 +33,10 @@ public class JavaMethodMigrator implements FileMigrator {
 
 		final Dictionary<String, Object> properties =
 			this.context.getProperties();
+
 		this.methodType = (String)properties.get("method.type");
 		this.methodName = (String)properties.get("method.name");
+		this.methodExpression = (String)properties.get("method.expression");
 		this.methodParamTypes =
 			( (String)properties.get("method.param.types") ).split(",");
 		this.problemTitle = (String)properties.get("problem.title");
@@ -56,12 +59,12 @@ public class JavaMethodMigrator implements FileMigrator {
 		}
 		else {
 			methodResult = javaFileChecker.findMethodInvocation(this.methodName,
-				this.methodParamTypes);
+				this.methodExpression);
 		}
 
 		if (methodResult != null) {
-			problems.add(new Problem(this.problemTitle, this.problemUrl, this.problemSummary, this.problemType,
-				this.problemTickets, file, methodResult.startLine));
+			problems.add(new Problem(this.problemTitle, this.problemUrl, this.problemSummary,
+				this.problemType, this.problemTickets, file, methodResult.startLine));
 		}
 
 		return problems;

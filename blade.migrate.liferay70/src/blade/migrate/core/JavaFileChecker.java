@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
@@ -129,7 +130,7 @@ public class JavaFileChecker {
 	}
 
 	public SearchResult findMethodInvocation(
-		final String name, final String[] args) {
+		final String expressionValue, final String methodName) {
 
 		SearchResult retval = null;
 		final List<SearchResult> methodResults = new ArrayList<>();
@@ -138,50 +139,21 @@ public class JavaFileChecker {
 
 			@Override
 			public boolean visit(MethodInvocation node) {
-				boolean sameArgSize = true;
-				String methodName = node.getName().toString();
-				List<?> argsList = node.arguments();
+				String methodNameValue = node.getName().toString();
+				Expression expression = node.getExpression();
 
-				if (name.equals(methodName) && args.length == argsList.size()) {
-					for (int i = 0; i < args.length; i++) {
-						if (!(args[i].trim().equals(argsList.get(i)
-								.toString()
-								.substring(0, args[i].trim().length())))) {
-							sameArgSize = false;
-							break;
-						}
-					}
-				} else {
-					sameArgSize = false;
+				if ( methodName.equals(methodNameValue) && expression != null
+						&& expression.toString().equals(expressionValue)) {
+					final int startOffset = expression.getStartPosition();
+					final int startLine = ast.getLineNumber(startOffset);
+					final int endOffset = node.getStartPosition() + node.getLength();
+					final int endLine = ast.getLineNumber(endOffset);
+
+					methodResults.add(new SearchResult(file, startOffset,
+						endOffset, startLine, endLine));
 				}
 
-				if (sameArgSize) {
-					final int startLine = ast.getLineNumber(node.getName()
-						.getStartPosition());
-					final int startOffset = node.getName().getStartPosition();
-					node.accept(new ASTVisitor() {
-
-						@Override
-						public boolean visit(Block node) {
-
-							// SimpleName parent can not be MarkerAnnotation and
-							// SimpleType
-							// SingleVariableDeclaration node contains the
-							// parms's type
-
-							int endLine = ast.getLineNumber(node
-								.getStartPosition());
-							int endOffset = node.getStartPosition();
-							methodResults
-									.add(new SearchResult(file, startOffset,
-										endOffset, startLine, endLine));
-
-							return false;
-						};
-					});
-				}
-
-				return false;
+				return true;
 			}
 		});
 

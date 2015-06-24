@@ -14,7 +14,9 @@ import org.junit.Test;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+
 public class AssetRendererGetSummaryDeclTest {
+
 	@Test
 	public void testFileMigratorFilter() throws Exception {
 		ServiceReference<Migration> sr = context
