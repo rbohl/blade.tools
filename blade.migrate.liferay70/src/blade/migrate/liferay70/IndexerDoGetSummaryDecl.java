@@ -8,15 +8,16 @@ import blade.migrate.api.FileMigrator;
 @Component(
 	property = {
 		"file.extension=java",
-		"method.name=getSummary",
-		"method.param.types=Locale",
-		"problem.title=AssetRenderer API Changes",
+		"method.type=declaration",
+		"method.name=doGetSummary",
+		"method.param.types=Document,Locale,String,PortletURL",
+		"problem.title=Indexer API Changes",
 		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-the-assetrenderer-and-indexer-apis-to-include-the-portletrequest-and-portletresponse-parameters",
-		"problem.summary=Changed the AssetRenderer API to Include the PortletRequest and PortletResponse Parameters",
+		"problem.summary=Changed the Indexer API to Include the PortletRequest and PortletResponse Parameters",
 		"problem.type=java",
 		"problem.tickets=LPS-44639,LPS-44894",
 	},
 	service = FileMigrator.class
 )
-public class AssetRendererAPIs extends JavaAPIMigrator {
+public class IndexerDoGetSummaryDecl extends JavaMethodMigrator {
 }

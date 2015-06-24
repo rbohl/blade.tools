@@ -13,16 +13,17 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class AssetRendererAPIsTest
+public class AssetRendererGetSummaryDeclTest
 {
 	final File testFile = new File( "projects/knowledge-base-portlet-6.2.x/docroot/WEB-INF/src/com/liferay/knowledgebase/admin/asset/KBArticleAssetRenderer.java" );
-	AssetRendererAPIs apis;
+	AssetRendererGetSummaryDecl apis;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		apis = new AssetRendererAPIs();
+		apis = new AssetRendererGetSummaryDecl();
+		apis.methodType = "declaration";
 		apis.methodName = "getSummary";
 		apis.methodParamTypes = "Locale".split(",");
 	}

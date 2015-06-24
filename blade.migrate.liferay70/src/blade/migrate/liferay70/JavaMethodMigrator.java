@@ -13,9 +13,10 @@ import blade.migrate.api.Problem;
 import blade.migrate.core.JavaFileChecker;
 import blade.migrate.core.SearchResult;
 
-public class JavaAPIMigrator implements FileMigrator {
+public class JavaMethodMigrator implements FileMigrator {
 
 	ComponentContext context;
+	String methodType;
 	String methodName;
 	String[] methodParamTypes;
 	String problemTitle;
@@ -30,6 +31,7 @@ public class JavaAPIMigrator implements FileMigrator {
 		 this.context = ctx;
 
 		 final Dictionary<String, Object> properties = this.context.getProperties();
+		 this.methodType = (String) properties.get("method.type");
 		 this.methodName = (String) properties.get("method.name");
 		 this.methodParamTypes = ( (String) properties.get("method.param.types") ).split(",");
 		 this.problemTitle = (String) properties.get("problem.title");
@@ -45,8 +47,16 @@ public class JavaAPIMigrator implements FileMigrator {
 		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 		final List<Problem> problems = new ArrayList<>();
 
-		final SearchResult methodResult = javaFileChecker.findMethod(this.methodName,
-				this.methodParamTypes);
+		SearchResult methodResult = null;
+
+		if ("declaration".equals(methodType)) {
+			methodResult = javaFileChecker.findMethodDeclartion(this.methodName,
+					this.methodParamTypes);
+		}
+		else {
+			methodResult = javaFileChecker.findMethodInvocation(this.methodName,
+					this.methodParamTypes);
+		}
 
 		if (methodResult != null) {
 			problems.add(new Problem(this.problemTitle, this.problemUrl, this.problemSummary, this.problemType,

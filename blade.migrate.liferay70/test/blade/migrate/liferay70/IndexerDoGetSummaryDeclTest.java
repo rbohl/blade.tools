@@ -13,14 +13,15 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class IndexerAPIsTest {
+public class IndexerDoGetSummaryDeclTest {
 	final File testFile = new File( "projects/knowledge-base-portlet-6.2.x/docroot/WEB-INF/src/com/liferay/knowledgebase/admin/util/AdminIndexer.java" );
-	IndexerAPIs apis;
+	IndexerDoGetSummaryDecl apis;
 
 	@Before
 	public void beforeTest() {
 		assertTrue(testFile.exists());
-		apis = new IndexerAPIs();
+		apis = new IndexerDoGetSummaryDecl();
+		apis.methodType = "declaration";
 		apis.methodName = "doGetSummary";
 		apis.methodParamTypes = "Document,Locale,String,PortletURL".split(",");
 	}

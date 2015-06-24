@@ -13,7 +13,7 @@ import org.osgi.framework.ServiceReference;
 import blade.migrate.api.Migration;
 import blade.migrate.api.Problem;
 
-public class AssetRendererAPIsTest {
+public class AssetRendererGetSummaryDeclTest {
 	private final BundleContext context = FrameworkUtil.getBundle(
 			this.getClass()).getBundleContext();
 
