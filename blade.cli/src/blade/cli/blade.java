@@ -1,28 +1,30 @@
 package blade.cli;
 
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
-
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;
+
 import aQute.lib.consoleapp.AbstractConsoleApp;
 import aQute.lib.getopt.Description;
+
 import blade.cli.cmds.CreateCommand;
 import blade.cli.cmds.DeployCommand;
 import blade.cli.cmds.MigrateCommand;
 import blade.cli.cmds.OpenCommand;
 
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+
+import java.util.Map;
+
 /**
  * @author Gregory Amerson
  */
-@Component(provide = Runnable.class,properties = { "main.thread=true"})
+@Component(provide = Runnable.class, properties = { "main.thread=true"})
 public class blade extends AbstractConsoleApp implements Runnable {
 
 	private String[] args;
 
 	public blade() throws UnsupportedEncodingException {
-		super();
 	}
 
 	public blade(Object target) throws UnsupportedEncodingException {
@@ -65,10 +67,9 @@ public class blade extends AbstractConsoleApp implements Runnable {
 		}
 	}
 
-   @Reference(target="(launcher.arguments=*)")
-   void args( Object object, Map<String,Object> map) {
-       args = (String[]) map.get("launcher.arguments");
-   }
+	@Reference(target ="(launcher.arguments=*)")
+	void args( Object object, Map<String, Object> map) {
+		args = (String[])map.get("launcher.arguments");
+	}
 
 }
-

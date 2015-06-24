@@ -9,9 +9,10 @@ import aQute.lib.getopt.Options;
 public interface DeployOptions extends Options {
 
 	@Description("The jmx port to use to connect to Liferay 7")
-	int port();
+	public int port();
 
-	@Description("Watches the deployed file for changes and will automatically redeploy")
-	boolean watch();
+	@Description("Watches the deployed file for changes and will "
+			+ "automatically redeploy")
+	public boolean watch();
 
 }

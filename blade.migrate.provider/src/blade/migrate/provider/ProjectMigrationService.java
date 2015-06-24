@@ -1,13 +1,21 @@
 package blade.migrate.provider;
 
+import blade.migrate.api.FileMigrator;
+import blade.migrate.api.Migration;
+import blade.migrate.api.Problem;
+import blade.migrate.api.ProjectMigrator;
+import blade.migrate.api.Reporter;
+
 import java.io.File;
 import java.io.IOException;
+
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,23 +30,34 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
-import blade.migrate.api.FileMigrator;
-import blade.migrate.api.Migration;
-import blade.migrate.api.Problem;
-import blade.migrate.api.ProjectMigrator;
-import blade.migrate.api.Reporter;
-
 @Component(immediate = true)
 public class ProjectMigrationService implements Migration {
-
-	private Set<ProjectMigrator> projectMigrators = new HashSet<>();
-	private Set<ServiceReference<FileMigrator>> fileMigrators = new HashSet<>();
-	private Reporter reporter;
-	private BundleContext context;
 
 	@Activate
 	public void activate(BundleContext context) {
 		this.context = context;
+	}
+
+	@Reference(
+		cardinality = ReferenceCardinality.MULTIPLE,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		unbind = "removeProjectMigrator"
+
+	)
+	public void addFileMigrator(ServiceReference<FileMigrator> fileMigrator) {
+		fileMigrators.add(fileMigrator);
+	}
+
+	@Reference(
+		cardinality = ReferenceCardinality.MULTIPLE,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		unbind = "removeProjectMigrator"
+
+	)
+	public void addProjectMigrator(ProjectMigrator projectMigrator) {
+		projectMigrators.add(projectMigrator);
 	}
 
 	@Override
@@ -58,6 +77,16 @@ public class ProjectMigrationService implements Migration {
 		return problems;
 	}
 
+	public void removeFileMigrator(
+		ServiceReference<FileMigrator> fileMigrator) {
+
+		fileMigrators.remove(fileMigrator);
+	}
+
+	public void removeProjectMigrator(ProjectMigrator projectMigrator) {
+		projectMigrators.remove(projectMigrator);
+	}
+
 	@Override
 	public void reportProblems(File projectDir, int format) {
 		List<Problem> problems = findProblems(projectDir);
@@ -73,76 +102,62 @@ public class ProjectMigrationService implements Migration {
 		}
 	}
 
+	@Reference
+	public void setReporter(Reporter reporter) {
+		this.reporter = reporter;
+	}
+
 	private void walkFiles(final File dir, final List<Problem> problems) {
-		final FileVisitor<Path> visitor = new SimpleFileVisitor<Path>(){
-        	@Override
-        	public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
-        		File file = path.toFile();
+		final FileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
+			@Override
+			public FileVisitResult visitFile(
+					Path path, BasicFileAttributes attrs)
+				throws IOException {
+				File file = path.toFile();
 
-        		if(file.isFile())
-        		{
-        			String fileName = file.toPath().getFileName().toString();
-					String extension = fileName.substring(fileName.lastIndexOf('.')+1);
+				if (file.isFile())
+				{
+					String fileName = file.toPath().getFileName().toString();
+					String extension = fileName.substring(
+						fileName.lastIndexOf('.')+1);
 
-					for( ServiceReference<FileMigrator> fm : fileMigrators ) {
+					for ( ServiceReference<FileMigrator> fm : fileMigrators ) {
 						Object fileExt = fm.getProperty("file.extension");
 
-						if( extension.equals(fileExt) ) {
+						if ( extension.equals(fileExt) ) {
 							FileMigrator fmigrator = context.getService(fm);
 
-							List<Problem> fileProblems = fmigrator.analyzeFile(file);
+							List<Problem> fileProblems = fmigrator.analyzeFile(
+								file);
 
-							if( fileProblems != null && fileProblems.size() > 0) {
+							if ( fileProblems != null &&
+								fileProblems.size() > 0) {
+
 								problems.addAll(fileProblems);
 							}
 
 							context.ungetService(fm);
 						}
 					}
-        		}
+				}
 
-        		return super.visitFile(path, attrs);
-        	}
-        };
+				return super.visitFile(path, attrs);
+			}
+		};
 
 		try {
 			Files.walkFileTree(dir.toPath(), visitor);
 		} catch (IOException e) {
+
 			// TODO properly log exception
+
 			e.printStackTrace();
 		}
 	}
 
-	@Reference(
-        cardinality = ReferenceCardinality.MULTIPLE,
-        policy = ReferencePolicy.DYNAMIC,
-        policyOption = ReferencePolicyOption.GREEDY,
-        unbind = "removeProjectMigrator"
-    )
-	public void addProjectMigrator(ProjectMigrator projectMigrator) {
-		projectMigrators.add(projectMigrator);
-	}
+	private BundleContext context;
+	private Set<ServiceReference<FileMigrator>> fileMigrators = new HashSet<>();
+	private Set<ProjectMigrator> projectMigrators = new HashSet<>();
+	private Reporter reporter;
 
-	public void removeProjectMigrator(ProjectMigrator projectMigrator) {
-		projectMigrators.remove(projectMigrator);
-	}
-
-	@Reference(
-        cardinality = ReferenceCardinality.MULTIPLE,
-        policy = ReferencePolicy.DYNAMIC,
-        policyOption = ReferencePolicyOption.GREEDY,
-        unbind = "removeProjectMigrator"
-    )
-	public void addFileMigrator(ServiceReference<FileMigrator> fileMigrator) {
-		fileMigrators.add(fileMigrator);
-	}
-
-	public void removeFileMigrator(ServiceReference<FileMigrator> fileMigrator) {
-		fileMigrators.remove(fileMigrator);
-	}
-
-	@Reference
-	public void setReporter(Reporter reporter) {
-		this.reporter = reporter;
-	}
 }

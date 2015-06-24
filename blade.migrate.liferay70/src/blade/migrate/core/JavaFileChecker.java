@@ -3,6 +3,7 @@ package blade.migrate.core;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +20,6 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 
 public class JavaFileChecker {
 
-	private final File file;
-	private final FileHelper fileHelper;
-	private final CompilationUnit ast;
-
 	public JavaFileChecker(File file) {
 		this.file = file;
 		this.fileHelper = new FileHelper();
@@ -34,28 +31,42 @@ public class JavaFileChecker {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private CompilationUnit createJavaClassVisitor() throws FileNotFoundException, IOException {
-		ASTParser parser = ASTParser.newParser(AST.JLS4);
+	public SearchResult findImport(final String importName) {
+		final List<SearchResult> methodResults = new ArrayList<>();
 
-		Map<String, String> options = JavaCore.getOptions();
+		ast.accept(new ASTVisitor() {
 
-		JavaCore.setComplianceOptions(JavaCore.VERSION_1_6, options);
+			@Override
+			public boolean visit(ImportDeclaration node) {
+				if (importName.equals(node.getName().toString())) {
+					int startLine = ast.getLineNumber(node.getName()
+						.getStartPosition());
+					int startOffset = node.getName().getStartPosition();
+					int endLine = ast.getLineNumber(node.getName()
+						.getStartPosition() + node.getName().getLength());
+					int endOffset = node.getName().getStartPosition() +
+						node.getName().getLength();
 
-		parser.setCompilerOptions(options);
+					methodResults.add(new SearchResult(file, startOffset,
+						endOffset, startLine, endLine));
+				}
 
-		parser.setResolveBindings(false);
-		parser.setStatementsRecovery(false);
-		parser.setBindingsRecovery(false);
-		parser.setSource(fileHelper.readFile(file).toCharArray());
-		parser.setIgnoreMethodBodies(false);
+				return false;
+			};
+		});
 
-		return (CompilationUnit) parser.createAST(null);
+		if (0 != methodResults.size()) {
+			return methodResults.get(0);
+		}
+
+		return null;
 	}
 
-	public SearchResult findMethodDeclartion(final String name, final String[] params) {
+	public SearchResult findMethodDeclartion(
+		final String name, final String[] params) {
+
 		SearchResult retval = null;
-		final List<SearchResult> methodResults = new ArrayList<SearchResult>();
+		final List<SearchResult> methodResults = new ArrayList<>();
 
 		ast.accept(new ASTVisitor() {
 
@@ -65,7 +76,9 @@ public class JavaFileChecker {
 				String methodName = node.getName().toString();
 				List<?> parmsList = node.parameters();
 
-				if (name.equals(methodName) && params.length == parmsList.size()) {
+				if (name.equals(methodName) &&
+					params.length == parmsList.size()) {
+
 					for (int i = 0; i < params.length; i++) {
 						if (!(params[i].trim().equals(parmsList.get(i)
 								.toString()
@@ -80,22 +93,24 @@ public class JavaFileChecker {
 
 				if (sameParmSize) {
 					final int startLine = ast.getLineNumber(node.getName()
-							.getStartPosition());
+						.getStartPosition());
 					final int startOffset = node.getName().getStartPosition();
 					node.accept(new ASTVisitor() {
 
 						@Override
 						public boolean visit(Block node) {
+
 							// SimpleName parent can not be MarkerAnnotation and
 							// SimpleType
 							// SingleVariableDeclaration node contains the
 							// parms's type
+
 							int endLine = ast.getLineNumber(node
-									.getStartPosition());
+								.getStartPosition());
 							int endOffset = node.getStartPosition();
 							methodResults
 									.add(new SearchResult(file, startOffset,
-											endOffset, startLine, endLine));
+										endOffset, startLine, endLine));
 
 							return false;
 						};
@@ -113,38 +128,11 @@ public class JavaFileChecker {
 		return retval;
 	}
 
-	public SearchResult findImport(final String importName) {
-		final List<SearchResult> methodResults = new ArrayList<SearchResult>();
+	public SearchResult findMethodInvocation(
+		final String name, final String[] args) {
 
-		ast.accept(new ASTVisitor() {
-
-			@Override
-			public boolean visit(ImportDeclaration node) {
-				if (importName.equals(node.getName().toString())) {
-					int startLine = ast.getLineNumber(node.getName()
-							.getStartPosition());
-					int startOffset = node.getName().getStartPosition();
-					int endLine = ast.getLineNumber(node.getName()
-							.getStartPosition() + node.getName().getLength());
-					int endOffset = node.getName().getStartPosition()
-							+ node.getName().getLength();
-
-					methodResults.add(new SearchResult(file, startOffset,
-							endOffset, startLine, endLine));
-				}
-				return false;
-			};
-		});
-
-		if (0 != methodResults.size()) {
-			return methodResults.get(0);
-		}
-		return null;
-	}
-
-	public SearchResult findMethodInvocation(final String name, final String[] args) {
 		SearchResult retval = null;
-		final List<SearchResult> methodResults = new ArrayList<SearchResult>();
+		final List<SearchResult> methodResults = new ArrayList<>();
 
 		ast.accept(new ASTVisitor() {
 
@@ -169,22 +157,24 @@ public class JavaFileChecker {
 
 				if (sameArgSize) {
 					final int startLine = ast.getLineNumber(node.getName()
-							.getStartPosition());
+						.getStartPosition());
 					final int startOffset = node.getName().getStartPosition();
 					node.accept(new ASTVisitor() {
 
 						@Override
 						public boolean visit(Block node) {
+
 							// SimpleName parent can not be MarkerAnnotation and
 							// SimpleType
 							// SingleVariableDeclaration node contains the
 							// parms's type
+
 							int endLine = ast.getLineNumber(node
-									.getStartPosition());
+								.getStartPosition());
 							int endOffset = node.getStartPosition();
 							methodResults
 									.add(new SearchResult(file, startOffset,
-											endOffset, startLine, endLine));
+										endOffset, startLine, endLine));
 
 							return false;
 						};
@@ -201,4 +191,30 @@ public class JavaFileChecker {
 
 		return retval;
 	}
+
+	@SuppressWarnings("unchecked")
+	private CompilationUnit createJavaClassVisitor()
+		throws FileNotFoundException, IOException {
+
+		ASTParser parser = ASTParser.newParser(AST.JLS4);
+
+		Map<String, String> options = JavaCore.getOptions();
+
+		JavaCore.setComplianceOptions(JavaCore.VERSION_1_6, options);
+
+		parser.setCompilerOptions(options);
+
+		parser.setResolveBindings(false);
+		parser.setStatementsRecovery(false);
+		parser.setBindingsRecovery(false);
+		parser.setSource(fileHelper.readFile(file).toCharArray());
+		parser.setIgnoreMethodBodies(false);
+
+		return (CompilationUnit)parser.createAST(null);
+	}
+
+	private final CompilationUnit ast;
+	private final File file;
+	private final FileHelper fileHelper;
+
 }

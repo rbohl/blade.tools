@@ -9,6 +9,6 @@ import aQute.lib.getopt.Options;
 public interface OpenOptions extends Options {
 
 	@Description("The workspace to open or import this file or project")
-	String workspace();
+	public String workspace();
 
 }

@@ -1,13 +1,14 @@
 package blade.cli.cmds;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.Formatter;
-import java.util.List;
-
 import blade.cli.OpenOptions;
 import blade.cli.blade;
 import blade.cli.jmx.IDEConnector;
+
+import java.io.File;
+
+import java.util.Collections;
+import java.util.Formatter;
+import java.util.List;
 
 public class OpenCommand {
 
@@ -21,12 +22,18 @@ public class OpenCommand {
 		List<String> args = options._();
 
 		if (args.size() == 0) {
+
 			// Default command
+
 			printHelp();
 		}
 		else {
 			execute();
 		}
+	}
+
+	private void addError(String prefix, String msg) {
+		blade.addErrors(prefix, Collections.singleton(msg));
 	}
 
 	private void execute() throws Exception {
@@ -44,11 +51,14 @@ public class OpenCommand {
 			connector = new IDEConnector();
 		}
 		catch (Exception e) {
+
 			// ignore
+
 		}
 
 		if (connector == null) {
-			addError("open", "Unable to connect to Eclipse/Liferay IDE instance.");
+			addError(
+				"open", "Unable to connect to Eclipse/Liferay IDE instance.");
 			return;
 		}
 
@@ -69,7 +79,4 @@ public class OpenCommand {
 		f.close();
 	}
 
-	private void addError(String prefix, String msg) {
-		blade.addErrors(prefix, Collections.singleton(msg));
-	}
 }

@@ -1,8 +1,5 @@
-
 package blade.cli.cmds;
 
 public enum Type {
-		portlet,
-		jspportlet,
-		service,
+		portlet, jspportlet, service,
 }

@@ -9,6 +9,6 @@ import aQute.lib.getopt.Options;
 public interface MigrateOptions extends Options {
 
 	@Description("Determines if the report format will be short or long")
-	boolean detailed();
+	public boolean detailed();
 
 }

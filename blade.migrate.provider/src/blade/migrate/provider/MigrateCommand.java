@@ -1,13 +1,16 @@
 package blade.migrate.provider;
 
-import java.io.File;
-import org.apache.felix.service.command.CommandProcessor;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 import blade.migrate.api.Migration;
 
+import java.io.File;
+
+import org.apache.felix.service.command.CommandProcessor;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 @Component(
-	property =	{
+	property = {
 		CommandProcessor.COMMAND_SCOPE + "=blade",
 		CommandProcessor.COMMAND_FUNCTION + "=migrate"
 	},
@@ -15,16 +18,15 @@ import blade.migrate.api.Migration;
 )
 public class MigrateCommand {
 
-	private volatile Migration projectMigrationService;
-	
+	public void migrate(File projectDir) {
+		projectMigrationService.findProblems(projectDir);
+	}
+
 	@Reference
 	public void setProjectMigration(Migration projectMigration) {
 		this.projectMigrationService = projectMigration;
 	}
-	
-	
-	public void migrate(File projectDir) {
-		projectMigrationService.findProblems(projectDir);
-	}
-	
+
+	private volatile Migration projectMigrationService;
+
 }

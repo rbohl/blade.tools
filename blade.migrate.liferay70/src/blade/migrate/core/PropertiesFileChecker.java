@@ -11,130 +11,129 @@ import java.util.Map;
 
 public class PropertiesFileChecker {
 
-	public static class KeyInfo
-	    {
-	        public final int offset;
-	        public final int length;
-	        public String value;
+	public static class KeyInfo {
+        public final int offset;
+        public final int length;
+        public String value;
 
-	        public KeyInfo( int offset, int length )
-	        {
-	            this.offset = offset;
-	            this.length = length;
-	        }
-	    }
+        public KeyInfo( int offset, int length )
+        {
+            this.offset = offset;
+            this.length = length;
+        }
+    }
 
 	class LineReader {
-	        public LineReader(Reader reader) {
-	            this.reader = reader;
-	            inCharBuf = new char[8192];
-	        }
+        LineReader(Reader reader) {
+            this.reader = reader;
+            inCharBuf = new char[8192];
+        }
 
-	        char[] inCharBuf;
-	        char[] lineBuf = new char[1024];
-	        int inLimit = 0;
-	        int inOff = 0;
-	        int total = 0;
-	        Reader reader;
+        char[] inCharBuf;
+        char[] lineBuf = new char[1024];
+        int inLimit = 0;
+        int inOff = 0;
+        int total = 0;
+        Reader reader;
 
-	        int[] readLine() throws IOException {
-	            int len = 0;
-	            char c = 0;
+        int[] readLine() throws IOException {
+            int len = 0;
+            char c = 0;
 
-	            boolean skipWhiteSpace = true;
-	            boolean isCommentLine = false;
-	            boolean isNewLine = true;
-	            boolean appendedLineBegin = false;
-	            boolean precedingBackslash = false;
-	            boolean skipLF = false;
+            boolean skipWhiteSpace = true;
+            boolean isCommentLine = false;
+            boolean isNewLine = true;
+            boolean appendedLineBegin = false;
+            boolean precedingBackslash = false;
+            boolean skipLF = false;
 
-	            while (true) {
-	                if (inOff >= inLimit) {
-	                    inLimit = reader.read(inCharBuf);
-	                    inOff = 0;
-	                    if (inLimit <= 0) {
-	                        if (len == 0 || isCommentLine) {
-	                            return new int[] { -1, total };
-	                        }
-	                        return new int[] { len, total };
-	                    }
-	                }
-	                c = inCharBuf[inOff++];
-	                total++;
-	                if (skipLF) {
-	                    skipLF = false;
-	                    if (c == '\n') {
-	                        continue;
-	                    }
-	                }
-	                if (skipWhiteSpace) {
-	                    if (c == ' ' || c == '\t' || c == '\f') {
-	                        continue;
-	                    }
-	                    if (!appendedLineBegin && (c == '\r' || c == '\n')) {
-	                        continue;
-	                    }
-	                    skipWhiteSpace = false;
-	                    appendedLineBegin = false;
-	                }
-	                if (isNewLine) {
-	                    isNewLine = false;
-	                    if (c == '#' || c == '!') {
-	                        isCommentLine = true;
-	                        continue;
-	                    }
-	                }
+            while (true) {
+                if (inOff >= inLimit) {
+                    inLimit = reader.read(inCharBuf);
+                    inOff = 0;
+                    if (inLimit <= 0) {
+                        if (len == 0 || isCommentLine) {
+                            return new int[] { -1, total };
+                        }
+                        return new int[] { len, total };
+                    }
+                }
+                c = inCharBuf[inOff++];
+                total++;
+                if (skipLF) {
+                    skipLF = false;
+                    if (c == '\n') {
+                        continue;
+                    }
+                }
+                if (skipWhiteSpace) {
+                    if (c == ' ' || c == '\t' || c == '\f') {
+                        continue;
+                    }
+                    if (!appendedLineBegin && (c == '\r' || c == '\n')) {
+                        continue;
+                    }
+                    skipWhiteSpace = false;
+                    appendedLineBegin = false;
+                }
+                if (isNewLine) {
+                    isNewLine = false;
+                    if (c == '#' || c == '!') {
+                        isCommentLine = true;
+                        continue;
+                    }
+                }
 
-	                if (c != '\n' && c != '\r') {
-	                    lineBuf[len++] = c;
-	                    if (len == lineBuf.length) {
-	                        int newLength = lineBuf.length * 2;
-	                        if (newLength < 0) {
-	                            newLength = Integer.MAX_VALUE;
-	                        }
-	                        char[] buf = new char[newLength];
-	                        System.arraycopy(lineBuf, 0, buf, 0, lineBuf.length);
-	                        lineBuf = buf;
-	                    }
-	                    //flip the preceding backslash flag
-	                    if (c == '\\') {
-	                        precedingBackslash = !precedingBackslash;
-	                    } else {
-	                        precedingBackslash = false;
-	                    }
-	                }
-	                else {
-	                    // reached EOL
-	                    if (isCommentLine || len == 0) {
-	                        isCommentLine = false;
-	                        isNewLine = true;
-	                        skipWhiteSpace = true;
-	                        len = 0;
-	                        continue;
-	                    }
-	                    if (inOff >= inLimit) {
-	                        inLimit = reader.read(inCharBuf);
-	                        inOff = 0;
-	                        if (inLimit <= 0) {
-	                            return new int[] { len, total };
-	                        }
-	                    }
-	                    if (precedingBackslash) {
-	                        len -= 1;
-	                        //skip the leading whitespace characters in following line
-	                        skipWhiteSpace = true;
-	                        appendedLineBegin = true;
-	                        precedingBackslash = false;
-	                        if (c == '\r') {
-	                            skipLF = true;
-	                        }
-	                    } else {
-	                        return new int[] { len, total };
-	                    }
-	                }
-	            }
-	        }
-	    }
+                if (c != '\n' && c != '\r') {
+                    lineBuf[len++] = c;
+                    if (len == lineBuf.length) {
+                        int newLength = lineBuf.length * 2;
+                        if (newLength < 0) {
+                            newLength = Integer.MAX_VALUE;
+                        }
+                        char[] buf = new char[newLength];
+                        System.arraycopy(lineBuf, 0, buf, 0, lineBuf.length);
+                        lineBuf = buf;
+                    }
+                    //flip the preceding backslash flag
+                    if (c == '\\') {
+                        precedingBackslash = !precedingBackslash;
+                    } else {
+                        precedingBackslash = false;
+                    }
+                }
+                else {
+                    // reached EOL
+                    if (isCommentLine || len == 0) {
+                        isCommentLine = false;
+                        isNewLine = true;
+                        skipWhiteSpace = true;
+                        len = 0;
+                        continue;
+                    }
+                    if (inOff >= inLimit) {
+                        inLimit = reader.read(inCharBuf);
+                        inOff = 0;
+                        if (inLimit <= 0) {
+                            return new int[] { len, total };
+                        }
+                    }
+                    if (precedingBackslash) {
+                        len -= 1;
+                        //skip the leading whitespace characters in following line
+                        skipWhiteSpace = true;
+                        appendedLineBegin = true;
+                        precedingBackslash = false;
+                        if (c == '\r') {
+                            skipLF = true;
+                        }
+                    } else {
+                        return new int[] { len, total };
+                    }
+                }
+            }
+        }
+    }
 
 	private final File file;
 	private Map<String, KeyInfo> keyInfos = new HashMap<>();

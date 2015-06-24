@@ -1,15 +1,18 @@
 package blade.cli.cmds;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.Formatter;
-import java.util.List;
-
 import aQute.bnd.osgi.Jar;
+
 import aQute.remote.util.JMXBundleDeployer;
+
 import blade.cli.DeployOptions;
 import blade.cli.blade;
 import blade.cli.util.FileWatcher;
+
+import java.io.File;
+
+import java.util.Collections;
+import java.util.Formatter;
+import java.util.List;
 
 public class DeployCommand {
 
@@ -23,11 +26,29 @@ public class DeployCommand {
 		List<String> args = options._();
 
 		if (args.size() == 0) {
+
 			// Default command
+
 			printHelp();
 		}
 		else {
 			execute();
+		}
+	}
+
+	private void addError(String prefix, String msg) {
+		blade.addErrors(prefix, Collections.singleton(msg));
+	}
+
+	private void deploy(JMXBundleDeployer bundleDeployer, String bsn,
+			File bundleFile) throws Exception {
+
+		final long bundleId = bundleDeployer.deploy(bsn, bundleFile);
+		blade.out().println("Installed or updated bundle " + bundleId);
+
+		if (bundleId <= 0) {
+			addError(
+				"Deploy", "Unable to deploy bundle to framework " + bundleId);
 		}
 	}
 
@@ -45,7 +66,6 @@ public class DeployCommand {
 				bundleFile.getAbsolutePath());
 			return;
 		}
-
 
 		String bsn = null;
 
@@ -68,61 +88,6 @@ public class DeployCommand {
 				watch(bundleDeployer, bsn, bundleFile);
 			}
 		}
-	}
-
-	private void deploy(JMXBundleDeployer bundleDeployer, String bsn,
-			File bundleFile) throws Exception {
-		final long bundleId = bundleDeployer.deploy(bsn, bundleFile);
-		blade.out().println("Installed or updated bundle " + bundleId);
-
-		if (bundleId <= 0) {
-			addError("Deploy", "Unable to deploy bundle to framework " + bundleId);
-		}
-	}
-
-
-	private void watch(final JMXBundleDeployer bundleDeployer, final String bsn,
-			final File bundleFile) throws Exception {
-		final boolean[] deploy = new boolean[1];
-
-		new Thread() {
-			@Override
-			public void run() {
-				synchronized (blade) {
-					for (;;) {
-						try {
-							blade.wait();
-						} catch (InterruptedException e) {
-						}
-
-						while (deploy[0]) {
-							deploy[0] = false;
-							try {
-								blade.wait(300);
-							} catch (InterruptedException e) {
-							}
-						}
-						deploy[0] = false;
-						try {
-							long bundleId = bundleDeployer.deploy(bsn, bundleFile);
-							blade.out().println("Installed or updated bundle " + bundleId);
-						} catch (Exception e) {
-						}
-					}
-				}
-			}
-		}.start();
-
-		new FileWatcher(blade.getBase().toPath(), bundleFile.getAbsoluteFile()
-				.toPath(), true, new Runnable() {
-			@Override
-			public void run() {
-				synchronized (blade) {
-					deploy[0] = true;
-					blade.notify();
-				}
-			}
-		});
 	}
 
 	private JMXBundleDeployer getBundleDeployer() {
@@ -152,7 +117,53 @@ public class DeployCommand {
 		f.close();
 	}
 
-	private void addError(String prefix, String msg) {
-		blade.addErrors(prefix, Collections.singleton(msg));
+	private void watch(final JMXBundleDeployer bundleDeployer, final String bsn,
+			final File bundleFile) throws Exception {
+
+		final boolean[] deploy = new boolean[1];
+
+		new Thread() {
+			@Override
+			public void run() {
+				synchronized (blade) {
+					while (true) {
+						try {
+							blade.wait();
+						} catch (InterruptedException e) {
+						}
+
+						while (deploy[0]) {
+							deploy[0] = false;
+
+							try {
+								blade.wait(300);
+							} catch (InterruptedException e) {
+							}
+						}
+
+						deploy[0] = false;
+
+						try {
+							long bundleId = bundleDeployer.deploy(
+								bsn, bundleFile);
+							blade.out().println("Installed or updated bundle " + bundleId);
+						} catch (Exception e) {
+						}
+					}
+				}
+			}
+		}.start();
+
+		new FileWatcher(blade.getBase().toPath(), bundleFile.getAbsoluteFile()
+				.toPath(), true, new Runnable() {
+			@Override
+			public void run() {
+				synchronized (blade) {
+					deploy[0] = true;
+					blade.notify();
+				}
+			}
+		});
 	}
+
 }
