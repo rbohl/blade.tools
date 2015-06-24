@@ -58,8 +58,8 @@ public class JavaMethodMigrator implements FileMigrator {
 				this.methodParamTypes);
 		}
 		else {
-			methodResult = javaFileChecker.findMethodInvocation(this.methodName,
-				this.methodExpression);
+			methodResult = javaFileChecker.findMethodInvocation(this.methodExpression,
+				this.methodName);
 		}
 
 		if (methodResult != null) {
