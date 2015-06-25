@@ -19,8 +19,17 @@ import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
+/**
+ * check inside the java file to see if there is  imports , methods and so on.
+ * @author 
+ *
+ */
 public class JavaFileChecker {
 
+	/**
+	 * initialize the Checker 
+	 * @param file
+	 */
 	public JavaFileChecker(File file) {
 		this.file = file;
 		this.fileHelper = new FileHelper();
@@ -63,10 +72,9 @@ public class JavaFileChecker {
 		return null;
 	}
 
-	public SearchResult findMethodDeclartion(
+	public List<SearchResult> findMethodDeclartion(
 		final String name, final String[] params) {
 
-		SearchResult retval = null;
 		final List<SearchResult> methodResults = new ArrayList<>();
 
 		ast.accept(new ASTVisitor() {
@@ -123,16 +131,23 @@ public class JavaFileChecker {
 		});
 
 		if (0 != methodResults.size()) {
-			retval = methodResults.get(0);
+			return methodResults;
+		}else{
+			return null;
 		}
 
-		return retval;
 	}
 
-	public SearchResult findMethodInvocation(
+	/**
+	 * find the direct static call from some Type(class or interface) 
+	 * @param expressionValue    the type name
+	 * @param methodName     the method name
+	 * @return
+	 */
+	public List<SearchResult> findMethodInvocation(
 		final String expressionValue, final String methodName) {
 
-		SearchResult retval = null;
+		//SearchResult retval = null;
 		final List<SearchResult> methodResults = new ArrayList<>();
 
 		ast.accept(new ASTVisitor() {
@@ -141,7 +156,9 @@ public class JavaFileChecker {
 			public boolean visit(MethodInvocation node) {
 				String methodNameValue = node.getName().toString();
 				Expression expression = node.getExpression();
-
+				
+				System.out.println(expression+"."+methodNameValue);
+				
 				if ( methodName.equals(methodNameValue) && expression != null
 						&& expression.toString().equals(expressionValue)) {
 					final int startOffset = expression.getStartPosition();
@@ -158,10 +175,11 @@ public class JavaFileChecker {
 		});
 
 		if (0 != methodResults.size()) {
-			retval = methodResults.get(0);
+			return methodResults;
+		}else{
+			return null;
 		}
-
-		return retval;
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -176,9 +194,9 @@ public class JavaFileChecker {
 
 		parser.setCompilerOptions(options);
 
-		parser.setResolveBindings(false);
-		parser.setStatementsRecovery(false);
-		parser.setBindingsRecovery(false);
+		parser.setResolveBindings(true);
+		parser.setStatementsRecovery(true);
+		parser.setBindingsRecovery(true);
 		parser.setSource(fileHelper.readFile(file).toCharArray());
 		parser.setIgnoreMethodBodies(false);
 

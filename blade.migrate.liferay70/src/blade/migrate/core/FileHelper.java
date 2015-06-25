@@ -18,8 +18,19 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This helper includes some functions dealing with files
+ * @author 
+ *
+ */
 public class FileHelper {
 
+	/**
+	 *  find files with  the specific suffix
+	 * @param dir
+	 * @param ext
+	 * @return
+	 */
 	public List<File> findFiles(final File dir, final String ext) {
 		final List<File> files = new ArrayList<>();
 
@@ -53,7 +64,14 @@ public class FileHelper {
 
 		return files;
 	}
-
+	
+	/**
+	 * read the file content as a string
+	 * @param file
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	public String readFile(File file)
 		throws FileNotFoundException, IOException {
 
