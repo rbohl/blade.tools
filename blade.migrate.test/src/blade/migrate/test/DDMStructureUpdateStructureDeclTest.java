@@ -22,7 +22,7 @@ public class DDMStructureUpdateStructureDeclTest {
 		Migration m = context.getService(sr);
 		List<Problem> problems = m
 				.findProblems(new File(
-						"../blade.migrate.liferay70/projects/filetests"));
+						"../blade.migrate.liferay70/projects/filetests/DDMStructureLocalServiceUtilTest.java"));
 
 		assertEquals(1, problems.size());
 	}

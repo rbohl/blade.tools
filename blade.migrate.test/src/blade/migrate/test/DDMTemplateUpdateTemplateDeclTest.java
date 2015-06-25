@@ -22,7 +22,7 @@ public class DDMTemplateUpdateTemplateDeclTest {
 		Migration m = context.getService(sr);
 		List<Problem> problems = m
 				.findProblems(new File(
-						"../blade.migrate.liferay70/projects/filetests"));
+						"../blade.migrate.liferay70/projects/filetests/DDMTemplateLocalServiceUtilTest.java"));
 
 		assertEquals(1, problems.size());
 	}

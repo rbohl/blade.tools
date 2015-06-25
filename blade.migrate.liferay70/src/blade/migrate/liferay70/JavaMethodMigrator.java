@@ -37,8 +37,14 @@ public class JavaMethodMigrator implements FileMigrator {
 		this.methodType = (String)properties.get("method.type");
 		this.methodName = (String)properties.get("method.name");
 		this.methodExpression = (String)properties.get("method.expression");
-		this.methodParamTypes =
-			( (String)properties.get("method.param.types") ).split(",");
+
+		String methodParamTypesPropVal = (String)properties.get("method.param.types");
+
+		if(methodParamTypesPropVal != null) {
+			this.methodParamTypes =
+				methodParamTypesPropVal.split(",");
+		}
+
 		this.problemTitle = (String)properties.get("problem.title");
 		this.problemUrl = (String)properties.get("problem.url");
 		this.problemSummary = (String)properties.get("problem.summary");

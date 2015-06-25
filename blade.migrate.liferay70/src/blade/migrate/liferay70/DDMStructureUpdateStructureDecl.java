@@ -10,7 +10,7 @@ import blade.migrate.api.FileMigrator;
 			"method.type=invocation",
 			"method.name=updateStructure",
 			"method.expression=DDMStructureLocalServiceUtil",
-			"problem.title=DDMStructureLocalService add new parm userId",
+			"problem.title=DDMStructureLocalService add new param userId",
 			"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#added-userid-parameter-to-update-operations-of-ddmstructurelocalservice-and-ddmtemplatelocalservice",
 			"problem.summary=Added userId Parameter to Update Operations of DDMStructureLocalService and DDMTemplateLocalService",
 			"problem.type=java",
