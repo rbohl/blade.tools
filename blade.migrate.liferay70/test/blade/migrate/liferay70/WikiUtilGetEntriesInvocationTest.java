@@ -13,16 +13,16 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class WikiUtilGetEntriesGetSummaryDeclTest
+public class WikiUtilGetEntriesInvocationTest
 {
 	final File testFile = new File( "projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/TestUtil.java" );
-	WikiUtilGetEntriesGetSummaryDecl apis;
+	WikiUtilGetEntriesInvocation apis;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		apis = new WikiUtilGetEntriesGetSummaryDecl();
+		apis = new WikiUtilGetEntriesInvocation();
 		apis.methodExpression = "WikiUtil";
 		apis.methodName = "getEntries";
 	}

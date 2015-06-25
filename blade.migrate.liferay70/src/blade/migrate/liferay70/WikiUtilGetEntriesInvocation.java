@@ -9,6 +9,7 @@ import blade.migrate.api.FileMigrator;
 	property = {
 		"file.extension=java",
 		"method.expression=WikiUtil",
+		"method.type=invocation",
 		"method.name=getEntries",
 		"method.param.types=Hits",
 		"problem.title=Removed WikiUtil.getEntries Method",
@@ -19,5 +20,5 @@ import blade.migrate.api.FileMigrator;
 	},
 	service = FileMigrator.class
 )
-public class WikiUtilGetEntriesGetSummaryDecl extends JavaMethodMigrator {
+public class WikiUtilGetEntriesInvocation extends JavaMethodMigrator {
 }
