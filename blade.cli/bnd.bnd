@@ -3,8 +3,8 @@
 	biz.aQute.bndlib,\
 	biz.aQute.remote.launcher,\
 	org.apache.commons.lang3,\
-	org.eclipse.osgi,\
-	blade.migrate.api;version=latest
+	blade.migrate.api;version=latest,\
+	osgi.core
 
 -includeresource: \
 	{templates.zip}
