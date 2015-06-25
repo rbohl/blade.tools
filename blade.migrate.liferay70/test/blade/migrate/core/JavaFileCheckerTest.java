@@ -14,25 +14,33 @@ public class JavaFileCheckerTest {
 	public void checkStaticMethodInvocation() throws Exception {
 		File file = new File( "projects/filetests/JavaFileCheckerTest.java" );
 		JavaFileChecker javaFileChecker = new JavaFileChecker(file);
-		List<SearchResult> result = javaFileChecker.findMethodInvocation("String", "valueOf");
-
-		assertNotNull(result.get(0));
-		assertEquals( 14, result.get(0).startLine );
-		assertEquals( 15, result.get(0).endLine );
-		assertEquals( 218, result.get(0).startOffset );
-		assertEquals( 240, result.get(0).endOffset );
+		List<SearchResult> searchResults = javaFileChecker.findMethodInvocation("String", "valueOf");
+		
+		assertNotNull(searchResults);
+		
+		SearchResult searchResult = searchResults.get(0);		
+		
+		assertNotNull(searchResult);
+		assertEquals( 14, searchResult.startLine );
+		assertEquals( 15, searchResult.endLine );
+		assertEquals( 218, searchResult.startOffset );
+		assertEquals( 240, searchResult.endOffset );
 	}
 
 	@Test
 	public void checkMethodInvocation() throws Exception {
 		File file = new File( "projects/filetests/JavaFileCheckerTest.java" );
 		JavaFileChecker javaFileChecker = new JavaFileChecker(file);
-		List<SearchResult> result = javaFileChecker.findMethodInvocation("foo", "bar");
-
-		assertNotNull(result.get(0));
-		assertEquals( 10, result.get(0).startLine );
-		assertEquals( 11, result.get(0).endLine );
-		assertEquals( 170, result.get(0).startOffset );
-		assertEquals( 189, result.get(0).endOffset );
+		List<SearchResult> searchResults = javaFileChecker.findMethodInvocation("foo", "bar");
+		
+		assertNotNull(searchResults);
+		
+		SearchResult searchResult = searchResults.get(0);
+		
+		assertNotNull(searchResult);
+		assertEquals( 10, searchResult.startLine );
+		assertEquals( 11, searchResult.endLine );
+		assertEquals( 170, searchResult.startOffset );
+		assertEquals( 189, searchResult.endOffset );
 	}
 }

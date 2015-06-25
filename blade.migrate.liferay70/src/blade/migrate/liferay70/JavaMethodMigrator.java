@@ -51,19 +51,19 @@ public class JavaMethodMigrator implements FileMigrator {
 		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 		final List<Problem> problems = new ArrayList<>();
 
-		List<SearchResult> methodResult = null;
+		List<SearchResult> searchResults = null;
 
 		if ("declaration".equals(methodType)) {
-			methodResult = javaFileChecker.findMethodDeclartion(this.methodName,
+			searchResults = javaFileChecker.findMethodDeclartion(this.methodName,
 				this.methodParamTypes);
 		}
 		else {
-			methodResult = javaFileChecker.findMethodInvocation(this.methodExpression,
+			searchResults = javaFileChecker.findMethodInvocation(this.methodExpression,
 				this.methodName);
 		}
 
-		if (methodResult != null) {
-			for(SearchResult result : methodResult){
+		if (searchResults != null) {
+			for(SearchResult result : searchResults){
 				problems.add(new Problem(this.problemTitle, this.problemUrl, this.problemSummary,
 						this.problemType, this.problemTickets, file, result.startLine));
 			}			
