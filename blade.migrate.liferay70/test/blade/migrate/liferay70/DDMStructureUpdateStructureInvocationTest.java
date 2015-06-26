@@ -13,19 +13,19 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class DDMTemplateUpdateTemplateDeclTest
+public class DDMStructureUpdateStructureInvocationTest
 {
-	final File testFile = new File( "projects/filetests/DDMTemplateLocalServiceUtilTest.java" );
-	DDMStructureUpdateStructureDecl ddm;
+	final File testFile = new File( "projects/filetests/DDMStructureLocalServiceUtilTest.java" );
+	DDMStructureUpdateStructureInvocation ddm;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		ddm = new DDMStructureUpdateStructureDecl();
+		ddm = new DDMStructureUpdateStructureInvocation();
 		ddm.methodType = "invocation";
-		ddm.methodName = "updateTemplate";
-		ddm.methodExpression = "DDMTemplateLocalServiceUtil";
+		ddm.methodName = "updateStructure";
+		ddm.methodExpression = "DDMStructureLocalServiceUtil";
 	}
 
     @Test
