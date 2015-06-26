@@ -18,6 +18,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class FileHelper {
 
 	public List<File> findFiles(final File dir, final String ext) {
@@ -53,7 +54,7 @@ public class FileHelper {
 
 		return files;
 	}
-
+	
 	public String readFile(File file)
 		throws FileNotFoundException, IOException {
 

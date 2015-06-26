@@ -3,7 +3,6 @@ package blade.migrate.core;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,12 +14,20 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
+/**
+ * Parses a java file and provides some  methods for finding search results
+ */
 public class JavaFileChecker {
 
+	/**
+	 * initialize the Checker 
+	 * @param file java file
+	 */
 	public JavaFileChecker(File file) {
 		this.file = file;
 		this.fileHelper = new FileHelper();
@@ -33,7 +40,7 @@ public class JavaFileChecker {
 	}
 
 	public SearchResult findImport(final String importName) {
-		final List<SearchResult> methodResults = new ArrayList<>();
+		final List<SearchResult> searchResults = new ArrayList<>();
 
 		ast.accept(new ASTVisitor() {
 
@@ -48,7 +55,7 @@ public class JavaFileChecker {
 					int endOffset = node.getName().getStartPosition() +
 						node.getName().getLength();
 
-					methodResults.add(new SearchResult(file, startOffset,
+					searchResults.add(new SearchResult(file, startOffset,
 						endOffset, startLine, endLine));
 				}
 
@@ -56,18 +63,17 @@ public class JavaFileChecker {
 			};
 		});
 
-		if (0 != methodResults.size()) {
-			return methodResults.get(0);
+		if (0 != searchResults.size()) {
+			return searchResults.get(0);
 		}
 
 		return null;
 	}
 
-	public SearchResult findMethodDeclartion(
+	public List<SearchResult> findMethodDeclartion(
 		final String name, final String[] params) {
 
-		SearchResult retval = null;
-		final List<SearchResult> methodResults = new ArrayList<>();
+		final List<SearchResult> searchResults = new ArrayList<>();
 
 		ast.accept(new ASTVisitor() {
 
@@ -109,7 +115,7 @@ public class JavaFileChecker {
 							int endLine = ast.getLineNumber(node
 								.getStartPosition());
 							int endOffset = node.getStartPosition();
-							methodResults
+							searchResults
 									.add(new SearchResult(file, startOffset,
 										endOffset, startLine, endLine));
 
@@ -122,18 +128,23 @@ public class JavaFileChecker {
 			}
 		});
 
-		if (0 != methodResults.size()) {
-			retval = methodResults.get(0);
+		if (0 != searchResults.size()) {
+			return searchResults;
+		}else{
+			return null;
 		}
 
-		return retval;
 	}
 
-	public SearchResult findMethodInvocation(
+	/**
+	 * find the method invocations for a particular method on a given expression 
+	 * @param expressionValue    the expression value
+	 * @param methodName     the method name
+	 * @return    search results
+	 */
+	public List<SearchResult> findMethodInvocation(
 		final String expressionValue, final String methodName) {
-
-		SearchResult retval = null;
-		final List<SearchResult> methodResults = new ArrayList<>();
+		final List<SearchResult> searchResults = new ArrayList<>();
 
 		ast.accept(new ASTVisitor() {
 
@@ -141,7 +152,11 @@ public class JavaFileChecker {
 			public boolean visit(MethodInvocation node) {
 				String methodNameValue = node.getName().toString();
 				Expression expression = node.getExpression();
-
+				ITypeBinding type = node.getExpression().resolveTypeBinding();
+				
+				
+				System.out.println(expression+"."+methodNameValue+" Type:"+type);
+				
 				if ( methodName.equals(methodNameValue) && expression != null
 						&& expression.toString().equals(expressionValue)) {
 					final int startOffset = expression.getStartPosition();
@@ -149,7 +164,7 @@ public class JavaFileChecker {
 					final int endOffset = node.getStartPosition() + node.getLength();
 					final int endLine = ast.getLineNumber(endOffset);
 
-					methodResults.add(new SearchResult(file, startOffset,
+					searchResults.add(new SearchResult(file, startOffset,
 						endOffset, startLine, endLine));
 				}
 
@@ -157,11 +172,12 @@ public class JavaFileChecker {
 			}
 		});
 
-		if (0 != methodResults.size()) {
-			retval = methodResults.get(0);
+		if (0 != searchResults.size()) {
+			return searchResults;
+		}else{
+			return null;
 		}
-
-		return retval;
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -176,9 +192,10 @@ public class JavaFileChecker {
 
 		parser.setCompilerOptions(options);
 
-		parser.setResolveBindings(false);
-		parser.setStatementsRecovery(false);
-		parser.setBindingsRecovery(false);
+		parser.setResolveBindings(true);
+		parser.setStatementsRecovery(true);
+		parser.setBindingsRecovery(true);
+		//parser.set
 		parser.setSource(fileHelper.readFile(file).toCharArray());
 		parser.setIgnoreMethodBodies(false);
 
