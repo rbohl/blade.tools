@@ -167,7 +167,7 @@ public class JavaFileChecker {
 
 		return searchResults;
 	}
-
+	
 	/**
 	 * find the method invocations for a particular method on a given type or expression
 	 *
@@ -193,7 +193,7 @@ public class JavaFileChecker {
 					type = expression.resolveTypeBinding();
 				}
 
-				if (methodName.equals(methodNameValue) &&
+				if (((methodName.equals(methodNameValue)) || ("*".equals(methodName))) &&
 						// if typeHint is not null it must match the type hint and ignore the expression
 						((typeHint != null && type != null && type.getName().equals(typeHint))  ||
 						// with no typeHint then expressions can be used to match Static invocation
