@@ -173,13 +173,15 @@ public class JavaFileChecker {
 	}
 
 	/**
-	 * find the method invocations for a particular method on a given expression
-	 * @param expressionValue    the expression value
+	 * find the method invocations for a particular method on a given type or expression
+	 *
+	 * @param typeHint the type hint to use when matching expressions
+	 * @param expressionValue    the expression only value (no type hint)
 	 * @param methodName     the method name
 	 * @return    search results
 	 */
 	public List<SearchResult> findMethodInvocations(
-		final String expressionValue, final String methodName) {
+		final String typeHint, final String expressionValue, final String methodName) {
 		final List<SearchResult> searchResults = new ArrayList<>();
 
 		ast.accept(new ASTVisitor() {
@@ -191,12 +193,15 @@ public class JavaFileChecker {
 				ITypeBinding type = null;
 
 				if (expression != null) {
-					type= expression.resolveTypeBinding();
+					type = expression.resolveTypeBinding();
 				}
 
-				if ( methodName.equals(methodNameValue) &&
-						(type != null	&& type.getName().equals(expressionValue)  ||
-						expression != null && expression.toString().equals(expressionValue) )  ) {
+				if (methodName.equals(methodNameValue) &&
+						// if typeHint is not null it must match the type hint and ignore the expression
+						((typeHint != null && type != null && type.getName().equals(typeHint))  ||
+						// with no typeHint then expressions can be used to match Static invocation
+						 (typeHint == null && expression != null && expression.toString().equals(expressionValue)))) {
+
 					final int startOffset = expression.getStartPosition();
 					final int startLine = ast.getLineNumber(startOffset);
 					final int endOffset = node.getStartPosition() + node.getLength();

@@ -23,4 +23,8 @@ public class Test {
 		foo.bar("2");
 	}
 
+	public void typeTest() {
+		NotFoo foo = new NotFoo();
+		foo.bar(false);
+	}
 }

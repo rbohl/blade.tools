@@ -28,7 +28,7 @@ public class PortalUtilGetClassNamePortletIdInvocation extends JavaFileMigrator 
 	protected List<SearchResult> searchJavaFile(File file) {
 		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 
-		return javaFileChecker.findMethodInvocations("PortalUtil", "getClassNamePortletId");
+		return javaFileChecker.findMethodInvocations(null, "PortalUtil", "getClassNamePortletId");
 	}
 
 }

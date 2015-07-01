@@ -28,7 +28,7 @@ public class WikiUtilGetEntriesInvocation extends JavaFileMigrator {
 	protected List<SearchResult> searchJavaFile(File file) {
 		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 
-		return javaFileChecker.findMethodInvocations("WikiUtil", "getEntries");
+		return javaFileChecker.findMethodInvocations(null, "WikiUtil", "getEntries");
 	}
 
 }
