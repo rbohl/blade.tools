@@ -57,12 +57,14 @@ public class PortalProperties implements FileMigrator {
 		final List<Problem> problems = new ArrayList<>();
 
 		for (String key : properties) {
-			SearchResult searchResult = propertiesFileChecker.findProperty(key);
+			List<SearchResult> searchResults = propertiesFileChecker.findProperties(key);
 
-			if (searchResult != null) {
-				problems.add(new Problem("", "https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-portal-properties-used-to-display-sections-in-form-navigators",
+			if (searchResults != null) {
+				for (SearchResult searchResult : searchResults) {
+					problems.add(new Problem("Portal Property Changes", "https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-portal-properties-used-to-display-sections-in-form-navigators",
 						"Removed Portal Properties Used to Display Sections in Form Navigators",
-						"java,properties", "LPS-54903", file, -1, -1, -1));
+						"java,properties", "LPS-54903", file, searchResult.startLine, searchResult.startOffset, searchResult.endOffset));
+				}
 			}
 		}
 

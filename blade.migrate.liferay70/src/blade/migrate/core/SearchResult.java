@@ -1,10 +1,8 @@
 package blade.migrate.core;
 
 import java.io.File;
+
 public class SearchResult {
-	public SearchResult(File file2, int startOffset, int endOffset) {
-		this(file2, startOffset, endOffset, -1, -1);
-	}
 
 	public SearchResult(File file, int startOffset, int endOffset,
 			int startLine, int endLine) {

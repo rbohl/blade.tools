@@ -29,12 +29,15 @@ public class EmailSignatureProperties implements FileMigrator {
 		final List<Problem> problems = new ArrayList<>();
 
 		for (String key : properties) {
-			SearchResult searchResult = propertiesFileChecker.findProperty(key);
-			if (searchResult != null) {
-				problems.add(new Problem("Email Sigurature Properties",
-						"https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#merged-configured-email-signature-field-into-the-body-of-email-messages-from-message-boards-and-wiki",
-						"Merged Configured Email Signature Field into the Body of Email Messages from Message Boards and Wiki",
-						"properties", "LPS-44599", file, -1, -1, -1));
+			List<SearchResult> searchResults = propertiesFileChecker.findProperties(key);
+
+			if (searchResults != null) {
+				for (SearchResult searchResult : searchResults) {
+					problems.add(new Problem("Email Sigurature Properties",
+							"https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#merged-configured-email-signature-field-into-the-body-of-email-messages-from-message-boards-and-wiki",
+							"Merged Configured Email Signature Field into the Body of Email Messages from Message Boards and Wiki",
+							"properties", "LPS-44599", file, searchResult.startLine, searchResult.startOffset, searchResult.endOffset));
+				}
 			}
 		}
 

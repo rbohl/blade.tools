@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PropertiesFileChecker {
@@ -14,12 +16,14 @@ public class PropertiesFileChecker {
 	public static class KeyInfo {
         public final int offset;
         public final int length;
+        public final int lineNumber;
         public String value;
 
-        public KeyInfo( int offset, int length )
+        public KeyInfo( int offset, int length, int lineNumber )
         {
             this.offset = offset;
             this.length = length;
+            this.lineNumber = lineNumber;
         }
     }
 
@@ -39,6 +43,7 @@ public class PropertiesFileChecker {
         int[] readLine() throws IOException {
             int len = 0;
             char c = 0;
+            int emptylines = 0;
 
             boolean skipWhiteSpace = true;
             boolean isCommentLine = false;
@@ -53,9 +58,9 @@ public class PropertiesFileChecker {
                     inOff = 0;
                     if (inLimit <= 0) {
                         if (len == 0 || isCommentLine) {
-                            return new int[] { -1, total };
+                            return new int[] { -1, total, emptylines };
                         }
-                        return new int[] { len, total };
+                        return new int[] { len, total, emptylines };
                     }
                 }
                 c = inCharBuf[inOff++];
@@ -63,6 +68,7 @@ public class PropertiesFileChecker {
                 if (skipLF) {
                     skipLF = false;
                     if (c == '\n') {
+                    	emptylines++;
                         continue;
                     }
                 }
@@ -71,6 +77,7 @@ public class PropertiesFileChecker {
                         continue;
                     }
                     if (!appendedLineBegin && (c == '\r' || c == '\n')) {
+                    	emptylines++;
                         continue;
                     }
                     skipWhiteSpace = false;
@@ -80,6 +87,7 @@ public class PropertiesFileChecker {
                     isNewLine = false;
                     if (c == '#' || c == '!') {
                         isCommentLine = true;
+                        emptylines++;
                         continue;
                     }
                 }
@@ -98,6 +106,7 @@ public class PropertiesFileChecker {
                     //flip the preceding backslash flag
                     if (c == '\\') {
                         precedingBackslash = !precedingBackslash;
+                        emptylines++;
                     } else {
                         precedingBackslash = false;
                     }
@@ -115,7 +124,7 @@ public class PropertiesFileChecker {
                         inLimit = reader.read(inCharBuf);
                         inOff = 0;
                         if (inLimit <= 0) {
-                            return new int[] { len, total };
+                            return new int[] { len, total, emptylines };
                         }
                     }
                     if (precedingBackslash) {
@@ -128,7 +137,7 @@ public class PropertiesFileChecker {
                             skipLF = true;
                         }
                     } else {
-                        return new int[] { len, total };
+                        return new int[] { len, total, emptylines };
                     }
                 }
             }
@@ -136,7 +145,7 @@ public class PropertiesFileChecker {
     }
 
 	private final File file;
-	private Map<String, KeyInfo> keyInfos = new HashMap<>();
+	private Map<String, List<KeyInfo>> keyInfos = new HashMap<>();
 
 	public PropertiesFileChecker(File file){
 		this.file = file;
@@ -203,10 +212,10 @@ public class PropertiesFileChecker {
 	        return new String (out, 0, outLen);
 	 }
 
-	 private Map<String, KeyInfo> parse( InputStream input ) throws IOException
+	 private Map<String, List<KeyInfo>> parse( InputStream input ) throws IOException
 	 {
 	        final LineReader lr = new LineReader( new InputStreamReader( input ) );
-	        Map<String, KeyInfo> keyInfos = new HashMap<String,KeyInfo>();
+	        Map<String, List<KeyInfo>> keyInfos = new HashMap<>();
 	        char[] convtBuf = new char[1024];
 	        int[] limit;
 	        int keyLen;
@@ -214,8 +223,11 @@ public class PropertiesFileChecker {
 	        char c;
 	        boolean hasSep;
 	        boolean precedingBackslash;
+	        int lineNumber = 0;
 
 	        while ((limit = lr.readLine())[0] >= 0) {
+	        	lineNumber++;
+	        	lineNumber+=limit[2];
 	            c = 0;
 	            keyLen = 0;
 	            valueStart = limit[0];
@@ -254,22 +266,35 @@ public class PropertiesFileChecker {
 	            }
 
 	            String key = loadConvert(lr.lineBuf, 0, keyLen, convtBuf);
-	            KeyInfo info = new KeyInfo( limit[1] - limit[0] - 1, keyLen );
+	            KeyInfo info = new KeyInfo( limit[1] - limit[0] - 1, keyLen, lineNumber );
 
 	            info.value = loadConvert(lr.lineBuf, valueStart, limit[0] - valueStart, convtBuf);
 
-	            keyInfos.put( key, info );
+	            List<KeyInfo> infos = keyInfos.get(key);
+
+	            if (infos != null) {
+	            	infos.add(info);
+	            }
+	            else {
+	            	infos = new ArrayList<>();
+	            	infos.add(info);
+
+	            	keyInfos.put( key, infos );
+	            }
 	        }
 	        return keyInfos;
 	}
 
-	public SearchResult findProperty( String key ){
-		KeyInfo keyInfo = keyInfos.get(key);
-		if(keyInfo != null){
-			SearchResult searchResult = new SearchResult(file, keyInfo.offset, keyInfo.offset + keyInfo.length);
-			return searchResult;
+	public List<SearchResult> findProperties( String key ){
+		List<SearchResult> retval = new ArrayList<>();
+		List<KeyInfo> infos = keyInfos.get(key);
+
+		if(infos != null){
+			for (KeyInfo info : infos) {
+				retval.add(new SearchResult(file, info.offset, info.offset + info.length, info.lineNumber, info.lineNumber));
+			}
 		}
-		return null;
+		return retval;
 	}
 
 }

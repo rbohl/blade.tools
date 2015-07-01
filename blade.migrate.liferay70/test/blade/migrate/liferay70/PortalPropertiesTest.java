@@ -30,6 +30,7 @@ public class PortalPropertiesTest
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );
+        assertEquals( 10, problems.get(0).lineNumber);
     }
 
     @Test
@@ -41,6 +42,6 @@ public class PortalPropertiesTest
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );
-
     }
+
 }

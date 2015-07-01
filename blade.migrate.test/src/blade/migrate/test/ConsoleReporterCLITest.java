@@ -23,9 +23,10 @@ public class ConsoleReporterCLITest {
 				"   ____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________\n" +
 				"   | Title                    | Summary                                                                                   | Url                                                                                                                                                                                               | Type           | Ticket             | File                       | Line|\n" +
 				"   |===================================================================================================================================================================================================================================================================================================================================================================================================|\n" +
-				"1. |                          | Removed Portal Properties Used to Display Sections in Form Navigators                     | https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-portal-properties-used-to-display-sections-in-form-navigators                                  | java,properties| LPS-54903          | portal.properties          | -1  |\n" +
-				"2. | AssetRenderer API Changes| Changed the AssetRenderer API to Include the PortletRequest and PortletResponse Parameters| https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-the-assetrenderer-and-indexer-apis-to-include-the-portletrequest-and-portletresponse-parameters| java           | LPS-44639,LPS-44894| KBArticleAssetRenderer.java| 64  |\n" +
-				"3. | Indexer API Changes      | Changed the Indexer API to Include the PortletRequest and PortletResponse Parameters      | https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-the-assetrenderer-and-indexer-apis-to-include-the-portletrequest-and-portletresponse-parameters| java           | LPS-44639,LPS-44894| AdminIndexer.java          | 140 |\n";
+				"1. | AssetRenderer API Changes| Changed the AssetRenderer API to Include the PortletRequest and PortletResponse Parameters| https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-the-assetrenderer-and-indexer-apis-to-include-the-portletrequest-and-portletresponse-parameters| java           | LPS-44639,LPS-44894| KBArticleAssetRenderer.java| 64  |\n" +
+				"2. | Indexer API Changes      | Changed the Indexer API to Include the PortletRequest and PortletResponse Parameters      | https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-the-assetrenderer-and-indexer-apis-to-include-the-portletrequest-and-portletresponse-parameters| java           | LPS-44639,LPS-44894| AdminIndexer.java          | 140 |\n" +
+				"3. | Portal Property Changes  | Removed Portal Properties Used to Display Sections in Form Navigators                     | https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-portal-properties-used-to-display-sections-in-form-navigators                                  | java,properties| LPS-54903          | portal.properties          | 10  |\n";
+
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PrintStream printStream = new PrintStream(baos);
@@ -48,9 +49,9 @@ public class ConsoleReporterCLITest {
 				"   _______________________________________________________________________________\n" +
 				"   | Title                    | Type           | File                       | Line|\n" +
 				"   |==============================================================================|\n" +
-				"1. |                          | java,properties| portal.properties          | -1  |\n" +
-				"2. | AssetRenderer API Changes| java           | KBArticleAssetRenderer.java| 64  |\n" +
-				"3. | Indexer API Changes      | java           | AdminIndexer.java          | 140 |\n";
+				"1. | AssetRenderer API Changes| java           | KBArticleAssetRenderer.java| 64  |\n" +
+				"2. | Indexer API Changes      | java           | AdminIndexer.java          | 140 |\n" +
+				"3. | Portal Property Changes  | java,properties| portal.properties          | 10  |\n";
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PrintStream printStream = new PrintStream(baos);
