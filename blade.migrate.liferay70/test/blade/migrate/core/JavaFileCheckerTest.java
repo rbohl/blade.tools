@@ -15,11 +15,11 @@ public class JavaFileCheckerTest {
 		File file = new File( "projects/filetests/JavaFileCheckerTest.java" );
 		JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 		List<SearchResult> searchResults = javaFileChecker.findMethodInvocations("String", "valueOf");
-		
+
 		assertNotNull(searchResults);
-		
-		SearchResult searchResult = searchResults.get(0);		
-		
+
+		SearchResult searchResult = searchResults.get(0);
+
 		assertNotNull(searchResult);
 		assertEquals( 14, searchResult.startLine );
 		assertEquals( 15, searchResult.endLine );
@@ -32,11 +32,13 @@ public class JavaFileCheckerTest {
 		File file = new File( "projects/filetests/JavaFileCheckerTest.java" );
 		JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 		List<SearchResult> searchResults = javaFileChecker.findMethodInvocations("foo", "bar");
-		
+
 		assertNotNull(searchResults);
-		
+
+		assertEquals(3, searchResults.size());
+
 		SearchResult searchResult = searchResults.get(0);
-		
+
 		assertNotNull(searchResult);
 		assertEquals( 10, searchResult.startLine );
 		assertEquals( 11, searchResult.endLine );

@@ -10,9 +10,17 @@ public class Test {
 			foo.
 				bar(value));
 
-		Sysout.out.println(
+		System.out.println(
 			String.
 				valueOf(1));
+
+		foo.bar("1");
+	}
+
+	Foo foo = new Foo();
+
+	public void anotherMethod() {
+		foo.bar("2");
 	}
 
 }
