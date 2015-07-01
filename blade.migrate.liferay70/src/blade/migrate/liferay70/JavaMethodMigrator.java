@@ -69,9 +69,10 @@ public class JavaMethodMigrator implements FileMigrator {
 		}
 
 		if (searchResults != null) {
-			for(SearchResult result : searchResults){
+			for (SearchResult result : searchResults) {
 				problems.add(new Problem(this.problemTitle, this.problemUrl, this.problemSummary,
-						this.problemType, this.problemTickets, file, result.startLine));
+					this.problemType, this.problemTickets, file, methodResult.startLine,
+					methodResult.startOffset, methodResult.endOffset));
 			}			
 		}
 

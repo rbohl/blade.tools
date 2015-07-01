@@ -1,8 +1,11 @@
 package blade.migrate.provider;
 
 import blade.migrate.api.Migration;
+import blade.migrate.api.Problem;
+import blade.migrate.api.Reporter;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.felix.service.command.CommandProcessor;
 
@@ -19,7 +22,7 @@ import org.osgi.service.component.annotations.Reference;
 public class MigrateCommand {
 
 	public void migrate(File projectDir) {
-		projectMigrationService.findProblems(projectDir);
+		projectMigrationService.reportProblems(projectDir, Reporter.FORMAT_LONG);
 	}
 
 	@Reference

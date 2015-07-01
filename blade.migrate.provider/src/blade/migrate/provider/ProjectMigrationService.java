@@ -42,7 +42,7 @@ public class ProjectMigrationService implements Migration {
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "removeProjectMigrator"
+		unbind = "removeFileMigrator"
 
 	)
 	public void addFileMigrator(ServiceReference<FileMigrator> fileMigrator) {
@@ -54,7 +54,6 @@ public class ProjectMigrationService implements Migration {
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY,
 		unbind = "removeProjectMigrator"
-
 	)
 	public void addProjectMigrator(ProjectMigrator projectMigrator) {
 		projectMigrators.add(projectMigrator);
@@ -79,7 +78,6 @@ public class ProjectMigrationService implements Migration {
 
 	public void removeFileMigrator(
 		ServiceReference<FileMigrator> fileMigrator) {
-
 		fileMigrators.remove(fileMigrator);
 	}
 
@@ -91,20 +89,18 @@ public class ProjectMigrationService implements Migration {
 	public void reportProblems(File projectDir, int format) {
 		List<Problem> problems = findProblems(projectDir);
 
+		ServiceReference<Reporter> sr = this.context.getServiceReference(Reporter.class);
+		Reporter reporter = this.context.getService(sr);
+
 		if (problems.size() != 0) {
-			this.reporter.beginReporting(format);
+			reporter.beginReporting(format);
 
 			for (Problem problem : problems) {
 				reporter.report(problem);
 			}
 
-			this.reporter.endReporting();
+			reporter.endReporting();
 		}
-	}
-
-	@Reference
-	public void setReporter(Reporter reporter) {
-		this.reporter = reporter;
 	}
 
 	private void walkFiles(final File dir, final List<Problem> problems) {
@@ -158,6 +154,5 @@ public class ProjectMigrationService implements Migration {
 	private BundleContext context;
 	private Set<ServiceReference<FileMigrator>> fileMigrators = new HashSet<>();
 	private Set<ProjectMigrator> projectMigrators = new HashSet<>();
-	private Reporter reporter;
 
 }

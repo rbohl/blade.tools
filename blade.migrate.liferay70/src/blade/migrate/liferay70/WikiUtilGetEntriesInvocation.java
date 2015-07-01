@@ -11,7 +11,6 @@ import blade.migrate.api.FileMigrator;
 		"method.expression=WikiUtil",
 		"method.type=invocation",
 		"method.name=getEntries",
-		"method.param.types=Hits",
 		"problem.title=Removed WikiUtil.getEntries Method",
 		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-wikiutilgetentries-method",
 		"problem.summary=Removed WikiUtil.getEntries Method",

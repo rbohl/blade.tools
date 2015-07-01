@@ -34,7 +34,7 @@ public class EmailSignatureProperties implements FileMigrator {
 				problems.add(new Problem("Email Sigurature Properties",
 						"https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#merged-configured-email-signature-field-into-the-body-of-email-messages-from-message-boards-and-wiki",
 						"Merged Configured Email Signature Field into the Body of Email Messages from Message Boards and Wiki",
-						"properties", "LPS-44599", file, -1));
+						"properties", "LPS-44599", file, -1, -1, -1));
 			}
 		}
 
