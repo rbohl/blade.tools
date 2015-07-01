@@ -189,24 +189,13 @@ public class JavaFileChecker {
 				String methodNameValue = node.getName().toString();
 				Expression expression = node.getExpression();
 				ITypeBinding type = null;
-				if(expression != null){
-					type= expression.resolveTypeBinding();		
-				}				
-				String expType = null;
-				if(type != null){
-					expType = type.getName();
-				}								
-				//System.out.println("expression:"+expression);		
-				//System.out.println("methodNameValue:"+methodNameValue);		
-			   //System.out.println("Type:"+expType);		
-				//IMethodBinding  method = node.resolveMethodBinding();
-				//if(method != null){
-					//System.out.println("resolveMethodBinding:"+method.getDeclaringClass().getQualifiedName()+"."+method.getName());
-					//System.out.println("Annotations:"+method.getAnnotations()[0].getName());
-				//}			
-				
-				if ( methodName.equals(methodNameValue) && 
-						(type != null	&& type.getName().equals(expressionValue)  ||  
+
+				if (expression != null) {
+					type= expression.resolveTypeBinding();
+				}
+
+				if ( methodName.equals(methodNameValue) &&
+						(type != null	&& type.getName().equals(expressionValue)  ||
 						expression != null && expression.toString().equals(expressionValue) )  ) {
 					final int startOffset = expression.getStartPosition();
 					final int startLine = ast.getLineNumber(startOffset);
@@ -221,12 +210,7 @@ public class JavaFileChecker {
 			}
 		});
 
-		if (0 != searchResults.size()) {
-			return searchResults;
-		} else {
-			return null;
-		}
-
+		return searchResults;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -240,21 +224,19 @@ public class JavaFileChecker {
 		JavaCore.setComplianceOptions(JavaCore.VERSION_1_6, options);
 
 		parser.setCompilerOptions(options);
-		
-		//why does JavaFileChecker not check if file is null , shoule I check here
-		//setUnitName for resolve bindings 
+
+		//setUnitName for resolve bindings
 		String unitName = file.getName();
-		parser.setUnitName(unitName); 
-		
-		String[] sources ={ "" }; 
-		String[] classpath = {""};//{"projects/lib/portal-impl.jar","projects/lib/portal-service.jar"};//{"/opt/jdk1.7.0_45/lib/rt.jar"};		
-		////setEnvironment for resolve bindings even if the args is empty
-		parser.setEnvironment(classpath, sources, new String[] { "UTF-8" }, true);	
+		parser.setUnitName(unitName);
+
+		String[] sources = { "" };
+		String[] classpath = { "" };
+		//setEnvironment for resolve bindings even if the args is empty
+		parser.setEnvironment(classpath, sources, new String[] { "UTF-8" }, true);
 
 		parser.setResolveBindings(true);
 		parser.setStatementsRecovery(true);
 		parser.setBindingsRecovery(true);
-		//parser.set
 		parser.setSource(fileHelper.readFile(file).toCharArray());
 		parser.setIgnoreMethodBodies(false);
 
