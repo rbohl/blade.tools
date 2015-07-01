@@ -23,8 +23,6 @@ public class PortalUtilGetClassNamePortletIdInvocationTest
 	{
 		assertTrue( testFile.exists() );
 		apis = new PortalUtilGetClassNamePortletIdInvocation();
-		apis.methodExpression = "PortalUtil";
-		apis.methodName = "getClassNamePortletId";
 	}
 
     @Test

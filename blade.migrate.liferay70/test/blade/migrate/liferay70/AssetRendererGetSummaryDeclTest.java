@@ -23,9 +23,6 @@ public class AssetRendererGetSummaryDeclTest
 	{
 		assertTrue( testFile.exists() );
 		apis = new AssetRendererGetSummaryDecl();
-		apis.methodType = "declaration";
-		apis.methodName = "getSummary";
-		apis.methodParamTypes = "Locale".split(",");
 	}
 
     @Test

@@ -23,9 +23,6 @@ public class DDMTemplateUpdateTemplateInvocationTest
 	{
 		assertTrue( testFile.exists() );
 		ddm = new DDMTemplateUpdateTemplateInvocation();
-		ddm.methodType = "invocation";
-		ddm.methodName = "updateTemplate";
-		ddm.methodExpression = "DDMTemplateLocalServiceUtil";
 	}
 
     @Test

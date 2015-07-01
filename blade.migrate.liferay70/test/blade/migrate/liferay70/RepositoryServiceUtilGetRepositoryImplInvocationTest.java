@@ -13,19 +13,16 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class RepositoryServiceUtilGetRepositoryImplInvTest
+public class RepositoryServiceUtilGetRepositoryImplInvocationTest
 {
 	final File testFile = new File( "projects/filetests/RepositoryServiceUtilTest.java" );
-	RepositoryServiceUtilGetRepositoryImplInv rs;
+	RepositoryServiceUtilGetRepositoryImplInvocation rs;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		rs = new RepositoryServiceUtilGetRepositoryImplInv();
-		rs.methodType = "invocation";
-		rs.methodName = "getRepositoryImpl";
-		rs.methodExpression = "RepositoryLocalServiceUtil";
+		rs = new RepositoryServiceUtilGetRepositoryImplInvocation();
 	}
 
     @Test

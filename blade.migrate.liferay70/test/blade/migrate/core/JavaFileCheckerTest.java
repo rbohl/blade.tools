@@ -14,7 +14,7 @@ public class JavaFileCheckerTest {
 	public void checkStaticMethodInvocation() throws Exception {
 		File file = new File( "projects/filetests/JavaFileCheckerTest.java" );
 		JavaFileChecker javaFileChecker = new JavaFileChecker(file);
-		List<SearchResult> searchResults = javaFileChecker.findMethodInvocation("String", "valueOf");
+		List<SearchResult> searchResults = javaFileChecker.findMethodInvocations("String", "valueOf");
 		
 		assertNotNull(searchResults);
 		
@@ -31,7 +31,7 @@ public class JavaFileCheckerTest {
 	public void checkMethodInvocation() throws Exception {
 		File file = new File( "projects/filetests/JavaFileCheckerTest.java" );
 		JavaFileChecker javaFileChecker = new JavaFileChecker(file);
-		List<SearchResult> searchResults = javaFileChecker.findMethodInvocation("foo", "bar");
+		List<SearchResult> searchResults = javaFileChecker.findMethodInvocations("foo", "bar");
 		
 		assertNotNull(searchResults);
 		

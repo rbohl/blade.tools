@@ -23,9 +23,6 @@ public class DDMStructureUpdateStructureInvocationTest
 	{
 		assertTrue( testFile.exists() );
 		ddm = new DDMStructureUpdateStructureInvocation();
-		ddm.methodType = "invocation";
-		ddm.methodName = "updateStructure";
-		ddm.methodExpression = "DDMStructureLocalServiceUtil";
 	}
 
     @Test

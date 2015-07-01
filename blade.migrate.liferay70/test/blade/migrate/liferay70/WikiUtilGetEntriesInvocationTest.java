@@ -23,8 +23,6 @@ public class WikiUtilGetEntriesInvocationTest
 	{
 		assertTrue( testFile.exists() );
 		apis = new WikiUtilGetEntriesInvocation();
-		apis.methodExpression = "WikiUtil";
-		apis.methodName = "getEntries";
 	}
 
     @Test

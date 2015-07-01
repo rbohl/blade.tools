@@ -39,41 +39,41 @@ public class JavaFileChecker {
 			throw new IllegalArgumentException(e);
 		}
 	}
-	
+
 	public List<SearchResult> findCatchExceptions(final String[] exceptions) {
 
 		final List<SearchResult> searchResults = new ArrayList<>();
-		
+
 		ast.accept(new ASTVisitor() {
 
 			@Override
 			public boolean visit(CatchClause node){
 				String exceptionTypeName = node.getException().getType().toString();
 				boolean retVal = false;
-				
+
 				for (String exceptionType : exceptions) {
 					if ( exceptionTypeName.equals(exceptionType)){
 						final int startLine = ast.getLineNumber(node.getException().getStartPosition());
 						final int startOffset = node.getException().getStartPosition();
-						
+
 						int endLine = ast.getLineNumber(node.getStartPosition());
 							int endOffset = node.getStartPosition();
 							searchResults
 									.add(new SearchResult(file, startOffset,
 										endOffset, startLine, endLine));
-							
+
 							retVal = true;
-					}					
+					}
 				}
 
 				return retVal;
 			}
 		});
-		
+
 		return searchResults;
 
 	}
-	
+
 
 	public SearchResult findImport(final String importName) {
 		final List<SearchResult> searchResults = new ArrayList<>();
@@ -106,7 +106,7 @@ public class JavaFileChecker {
 		return null;
 	}
 
-	public List<SearchResult> findMethodDeclartion(
+	public List<SearchResult> findMethodDeclaration(
 		final String name, final String[] params) {
 
 		final List<SearchResult> searchResults = new ArrayList<>();
@@ -178,7 +178,7 @@ public class JavaFileChecker {
 	 * @param methodName     the method name
 	 * @return    search results
 	 */
-	public List<SearchResult> findMethodInvocation(
+	public List<SearchResult> findMethodInvocations(
 		final String expressionValue, final String methodName) {
 		final List<SearchResult> searchResults = new ArrayList<>();
 
@@ -206,7 +206,7 @@ public class JavaFileChecker {
 
 		if (0 != searchResults.size()) {
 			return searchResults;
-		}else{
+		} else {
 			return null;
 		}
 

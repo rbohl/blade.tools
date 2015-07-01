@@ -1,13 +1,16 @@
 package blade.migrate.liferay70;
 
 import blade.migrate.api.FileMigrator;
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.SearchResult;
+
+import java.io.File;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 @Component(
 	property = {
-		"file.extension=java", "method.name=doGetSummary",
-		"method.param.types=Document,Locale,String,PortletURL",
-		"method.type=declaration",
+		"file.extension=java",
 		"problem.summary=Changed the Indexer API to Include the PortletRequest and PortletResponse Parameters",
 		"problem.tickets=LPS-44639,LPS-44894",
 		"problem.title=Indexer API Changes", "problem.type=java",
@@ -15,5 +18,12 @@ import org.osgi.service.component.annotations.Component;
 	},
 	service = FileMigrator.class
 )
-public class IndexerDoGetSummaryDecl extends JavaMethodMigrator {
+public class IndexerDoGetSummaryDecl extends JavaFileMigrator {
+
+	@Override
+	protected List<SearchResult> searchJavaFile(File file) {
+		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
+
+		return javaFileChecker.findMethodDeclaration("doGetSummary", new String[] {"Document", "Locale", "String", "PortletURL"});
+	}
 }

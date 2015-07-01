@@ -1,4 +1,3 @@
-
 package blade.migrate.liferay70;
 
 import static org.junit.Assert.assertEquals;
@@ -21,9 +20,6 @@ public class IndexerDoGetSummaryDeclTest {
 	public void beforeTest() {
 		assertTrue(testFile.exists());
 		apis = new IndexerDoGetSummaryDecl();
-		apis.methodType = "declaration";
-		apis.methodName = "doGetSummary";
-		apis.methodParamTypes = "Document,Locale,String,PortletURL".split(",");
 	}
 
 	@Test

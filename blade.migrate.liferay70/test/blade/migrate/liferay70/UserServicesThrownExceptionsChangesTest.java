@@ -23,10 +23,6 @@ public class UserServicesThrownExceptionsChangesTest
 	{
 		assertTrue( testFile.exists() );
 		cte = new UserServicesThrownExceptionsChanges();
-		cte.methodType = "exception";
-		cte.methodName = "*";
-		cte.methodExpression = "*";
-		cte.methodParamTypes = new String[]{"DuplicateUserScreenNameException","DuplicateUserEmailAddressException"};
 	}
 
     @Test
