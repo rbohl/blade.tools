@@ -15,7 +15,7 @@ import blade.migrate.api.Problem;
 
 public class PortalUtilGetClassNamePortletIdInvocationTest
 {
-	final File testFile = new File( "projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/TestUtil.java" );
+	final File testFile = new File( "projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/PortalUtilTest.java" );
 	PortalUtilGetClassNamePortletIdInvocation apis;
 
 	@Before

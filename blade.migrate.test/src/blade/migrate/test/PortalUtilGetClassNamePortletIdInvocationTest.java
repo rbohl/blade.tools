@@ -24,7 +24,7 @@ public class PortalUtilGetClassNamePortletIdInvocationTest {
 		Migration m = context.getService(sr);
 		List<Problem> problems = m
 				.findProblems(new File(
-						"../blade.migrate.liferay70/projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/TestUtil.java"));
+						"../blade.migrate.liferay70/projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/PortalUtilTest.java"));
 
 		assertEquals(1, problems.size());
 	}
