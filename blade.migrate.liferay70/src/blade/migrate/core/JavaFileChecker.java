@@ -25,7 +25,7 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 public class JavaFileChecker {
 
 	/**
-	 * initialize the Checker 
+	 * initialize the Checker
 	 * @param file java file
 	 */
 	public JavaFileChecker(File file) {
@@ -137,7 +137,7 @@ public class JavaFileChecker {
 	}
 
 	/**
-	 * find the method invocations for a particular method on a given expression 
+	 * find the method invocations for a particular method on a given expression
 	 * @param expressionValue    the expression value
 	 * @param methodName     the method name
 	 * @return    search results
@@ -152,11 +152,7 @@ public class JavaFileChecker {
 			public boolean visit(MethodInvocation node) {
 				String methodNameValue = node.getName().toString();
 				Expression expression = node.getExpression();
-				ITypeBinding type = node.getExpression().resolveTypeBinding();
-				
-				
-				System.out.println(expression+"."+methodNameValue+" Type:"+type);
-				
+
 				if ( methodName.equals(methodNameValue) && expression != null
 						&& expression.toString().equals(expressionValue)) {
 					final int startOffset = expression.getStartPosition();
@@ -177,7 +173,7 @@ public class JavaFileChecker {
 		}else{
 			return null;
 		}
-		
+
 	}
 
 	@SuppressWarnings("unchecked")

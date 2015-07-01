@@ -11,7 +11,6 @@ import blade.migrate.api.FileMigrator;
 		"method.expression=PortalUtil",
 		"method.type=invocation",
 		"method.name=getClassNamePortletId",
-		"method.param.types=String",
 		"problem.title=Removed the getClassNamePortletId(String) Method from PortalUtil Class",
 		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-the-getclassnameportletidstring-method-from-portalutil-class",
 		"problem.summary=Removed the getClassNamePortletId(String) Method from PortalUtil Class",
