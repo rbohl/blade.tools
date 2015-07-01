@@ -1,8 +1,7 @@
-package blade.migrate.liferay70;
+package blade.migrate.core;
 
 import blade.migrate.api.FileMigrator;
 import blade.migrate.api.Problem;
-import blade.migrate.core.SearchResult;
 
 import java.io.File;
 

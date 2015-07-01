@@ -8,6 +8,7 @@ import org.osgi.service.component.annotations.Component;
 
 import blade.migrate.api.FileMigrator;
 import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.JavaFileMigrator;
 import blade.migrate.core.SearchResult;
 
 @Component(

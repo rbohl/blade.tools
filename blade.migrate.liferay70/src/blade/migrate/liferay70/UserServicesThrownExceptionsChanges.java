@@ -2,6 +2,7 @@ package blade.migrate.liferay70;
 
 import blade.migrate.api.FileMigrator;
 import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.JavaFileMigrator;
 import blade.migrate.core.SearchResult;
 
 import java.io.File;
