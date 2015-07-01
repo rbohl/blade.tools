@@ -40,7 +40,7 @@ public class JavaFileChecker {
 		}
 	}
 	
-	public List<SearchResult> findExceptionCatch(final String[] exceptions) {
+	public List<SearchResult> findCatchExceptions(final String[] exceptions) {
 
 		final List<SearchResult> searchResults = new ArrayList<>();
 		

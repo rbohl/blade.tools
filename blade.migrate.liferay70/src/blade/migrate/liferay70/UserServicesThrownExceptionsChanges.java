@@ -19,5 +19,5 @@ import org.osgi.service.component.annotations.Component;
 		},
 		service = FileMigrator.class
 )
-public class ChangesUserServicesThrownExceptions extends JavaMethodMigrator {
+public class UserServicesThrownExceptionsChanges extends JavaMethodMigrator {
 }

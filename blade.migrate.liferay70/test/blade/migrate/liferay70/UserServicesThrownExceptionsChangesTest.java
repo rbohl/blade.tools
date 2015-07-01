@@ -13,16 +13,16 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class ChangesUserServicesThrownExceptionsTest
+public class UserServicesThrownExceptionsChangesTest
 {
-	final File testFile = new File( "projects/filetests/ChangesUserServicesThrownExceptionsTest.java" );
-	ChangesUserServicesThrownExceptions cte;
+	final File testFile = new File( "projects/filetests/UserServicesThrownExceptionsChangesTest.java" );
+	UserServicesThrownExceptionsChanges cte;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		cte = new ChangesUserServicesThrownExceptions();
+		cte = new UserServicesThrownExceptionsChanges();
 		cte.methodType = "exception";
 		cte.methodName = "*";
 		cte.methodExpression = "*";
