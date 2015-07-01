@@ -13,23 +13,23 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class DDMStructureUpdateStructureDeclTest
+public class DDMTemplateUpdateTemplateInvocationTest
 {
-	final File testFile = new File( "projects/filetests/DDMStructureLocalServiceUtilTest.java" );
-	DDMStructureUpdateStructureDecl ddm;
+	final File testFile = new File( "projects/filetests/DDMTemplateLocalServiceUtilTest.java" );
+	DDMTemplateUpdateTemplateInvocation ddm;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		ddm = new DDMStructureUpdateStructureDecl();
+		ddm = new DDMTemplateUpdateTemplateInvocation();
 		ddm.methodType = "invocation";
-		ddm.methodName = "updateStructure";
-		ddm.methodExpression = "DDMStructureLocalServiceUtil";
+		ddm.methodName = "updateTemplate";
+		ddm.methodExpression = "DDMTemplateLocalServiceUtil";
 	}
 
     @Test
-    public void DDMStructureAnalyzeTest() throws Exception
+    public void DDMTemplateAnalyzeTest() throws Exception
     {
         List<Problem> problems = ddm.analyzeFile(testFile);
 
@@ -38,7 +38,7 @@ public class DDMStructureUpdateStructureDeclTest
     }
 
     @Test
-    public void DDMStructureAnalyzeTestTwice() throws Exception
+    public void DDMTemplateAnalyzeTestTwice() throws Exception
     {
     	List<Problem> problems = ddm.analyzeFile(testFile);
     	problems = ddm.analyzeFile(testFile);

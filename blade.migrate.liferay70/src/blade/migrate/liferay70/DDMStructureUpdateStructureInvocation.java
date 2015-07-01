@@ -8,9 +8,9 @@ import blade.migrate.api.FileMigrator;
 		property = {
 			"file.extension=java",
 			"method.type=invocation",
-			"method.name=updateTemplate",
-			"method.expression=DDMTemplateLocalServiceUtil",
-			"problem.title=DDMTemplateLocalService add new param userId",
+			"method.name=updateStructure",
+			"method.expression=DDMStructureLocalServiceUtil",
+			"problem.title=DDMStructureLocalService add new param userId",
 			"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#added-userid-parameter-to-update-operations-of-ddmstructurelocalservice-and-ddmtemplatelocalservice",
 			"problem.summary=Added userId Parameter to Update Operations of DDMStructureLocalService and DDMTemplateLocalService",
 			"problem.type=java",
@@ -18,6 +18,6 @@ import blade.migrate.api.FileMigrator;
 		},
 		service = FileMigrator.class
 )
-public class DDMTemplateUpdateTemplateDecl extends JavaMethodMigrator {
+public class DDMStructureUpdateStructureInvocation extends JavaMethodMigrator {
 
 }
