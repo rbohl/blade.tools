@@ -63,9 +63,8 @@ public class JavaMethodMigrator implements FileMigrator {
 			searchResults = javaFileChecker.findMethodDeclartion(this.methodName,
 				this.methodParamTypes);
 		}
-		else if ("exception".equals(methodType))
-		{
-			searchResults = javaFileChecker.findExceptionCatch(this.methodParamTypes);			
+		else if ("exception".equals(methodType)) {
+			searchResults = javaFileChecker.findCatchExceptions(this.methodParamTypes);
 		}
 		else {
 			searchResults = javaFileChecker.findMethodInvocation(this.methodExpression,
