@@ -1,4 +1,3 @@
-
 package blade.migrate.liferay70;
 
 import static org.junit.Assert.assertEquals;
@@ -13,34 +12,31 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class WikiUtilGetEntriesInvocationTest
-{
-	final File testFile = new File( "projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/WikiUtilTest.java" );
+public class WikiUtilGetEntriesInvocationTest {
+	final File testFile = new File(
+			"projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/WikiUtilTest.java");
 	WikiUtilGetEntriesInvocation component;
 
 	@Before
-	public void beforeTest()
-	{
-		assertTrue( testFile.exists() );
+	public void beforeTest() {
+		assertTrue(testFile.exists());
 		component = new WikiUtilGetEntriesInvocation();
 	}
 
-    @Test
-    public void assetRendererAPIsAnalyzeTest() throws Exception
-    {
-        List<Problem> problems = component.analyzeFile(testFile);
+	@Test
+	public void assetRendererAPIsAnalyzeTest() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 1, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(1, problems.size());
+	}
 
-    @Test
-    public void assetRendererAPIsAnalyzeTestTwice() throws Exception
-    {
-    	List<Problem> problems = component.analyzeFile(testFile);
-    	problems = component.analyzeFile(testFile);
+	@Test
+	public void assetRendererAPIsAnalyzeTestTwice() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
+		problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 1, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(1, problems.size());
+	}
 }

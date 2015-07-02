@@ -1,4 +1,3 @@
-
 package blade.migrate.liferay70;
 
 import static org.junit.Assert.assertEquals;
@@ -13,34 +12,31 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class RepositoryServiceUtilGetRepositoryImplInvocationTest
-{
-	final File testFile = new File( "projects/filetests/RepositoryServiceUtilTest.java" );
+public class RepositoryServiceUtilGetRepositoryImplInvocationTest {
+	final File testFile = new File(
+			"projects/filetests/RepositoryServiceUtilTest.java");
 	RepositoryServiceUtilGetRepositoryImplInvocation component;
 
 	@Before
-	public void beforeTest()
-	{
-		assertTrue( testFile.exists() );
+	public void beforeTest() {
+		assertTrue(testFile.exists());
 		component = new RepositoryServiceUtilGetRepositoryImplInvocation();
 	}
 
-    @Test
-    public void RepositoryServiceUtilAnalyzeTest() throws Exception
-    {
-        List<Problem> problems = component.analyzeFile(testFile);
+	@Test
+	public void repositoryServiceUtilAnalyzeTest() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 1, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(1, problems.size());
+	}
 
-    @Test
-    public void RepositoryServiceUtilTestTwice() throws Exception
-    {
-    	List<Problem> problems = component.analyzeFile(testFile);
-    	problems = component.analyzeFile(testFile);
+	@Test
+	public void repositoryServiceUtilTestTwice() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
+		problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 1, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(1, problems.size());
+	}
 }

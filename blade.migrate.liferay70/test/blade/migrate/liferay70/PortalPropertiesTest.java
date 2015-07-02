@@ -12,35 +12,32 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class PortalPropertiesTest
-{
-	final File file = new File( "projects/knowledge-base-portlet-6.2.x/docroot/WEB-INF/src/portal.properties" );
+public class PortalPropertiesTest {
+	final File file = new File(
+			"projects/knowledge-base-portlet-6.2.x/docroot/WEB-INF/src/portal.properties");
 
 	@Before
-	public void beforeTest()
-	{
-		assertTrue( file.exists() );
+	public void beforeTest() {
+		assertTrue(file.exists());
 	}
 
-    @Test
-    public void portalPropertiesAnalyzeTest() throws Exception
-    {
-        List<Problem> problems = new PortalProperties().analyzeFile( file );
+	@Test
+	public void portalPropertiesAnalyzeTest() throws Exception {
+		List<Problem> problems = new PortalProperties().analyzeFile(file);
 
-        assertNotNull( problems );
-        assertEquals( 1, problems.size() );
-        assertEquals( 10, problems.get(0).lineNumber);
-    }
+		assertNotNull(problems);
+		assertEquals(1, problems.size());
+		assertEquals(10, problems.get(0).lineNumber);
+	}
 
-    @Test
-    public void portalPropertiesAnalyzeTest2() throws Exception
-    {
-        PortalProperties portalProperties = new PortalProperties();
-		List<Problem> problems = portalProperties.analyzeFile( file );
-		problems = portalProperties.analyzeFile( file );
+	@Test
+	public void portalPropertiesAnalyzeTest2() throws Exception {
+		PortalProperties portalProperties = new PortalProperties();
+		List<Problem> problems = portalProperties.analyzeFile(file);
+		problems = portalProperties.analyzeFile(file);
 
-        assertNotNull( problems );
-        assertEquals( 1, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(1, problems.size());
+	}
 
 }

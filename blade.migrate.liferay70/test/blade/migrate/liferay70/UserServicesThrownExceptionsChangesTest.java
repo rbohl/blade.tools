@@ -1,4 +1,3 @@
-
 package blade.migrate.liferay70;
 
 import static org.junit.Assert.assertEquals;
@@ -13,34 +12,31 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class UserServicesThrownExceptionsChangesTest
-{
-	final File testFile = new File( "projects/filetests/UserServicesThrownExceptionsChangesTest.java" );
+public class UserServicesThrownExceptionsChangesTest {
+	final File testFile = new File(
+			"projects/filetests/UserServicesThrownExceptionsChangesTest.java");
 	UserServicesThrownExceptionsChanges component;
 
 	@Before
-	public void beforeTest()
-	{
-		assertTrue( testFile.exists() );
+	public void beforeTest() {
+		assertTrue(testFile.exists());
 		component = new UserServicesThrownExceptionsChanges();
 	}
 
-    @Test
-    public void ChangesUserServicesAnalyzeTest() throws Exception
-    {
-        List<Problem> problems = component.analyzeFile(testFile);
+	@Test
+	public void ChangesUserServicesAnalyzeTest() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 2, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(2, problems.size());
+	}
 
-    @Test
-    public void ChangesUserServicesAnalyzeTestTwice() throws Exception
-    {
-    	List<Problem> problems = component.analyzeFile(testFile);
-    	problems = component.analyzeFile(testFile);
+	@Test
+	public void ChangesUserServicesAnalyzeTestTwice() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
+		problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 2, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(2, problems.size());
+	}
 }

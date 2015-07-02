@@ -1,4 +1,3 @@
-
 package blade.migrate.liferay70;
 
 import static org.junit.Assert.assertEquals;
@@ -13,21 +12,18 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class SearchPermissionCheckerGetPermissionQueryDeclTest
-{
+public class SearchPermissionCheckerGetPermissionQueryDeclTest {
 	final File testFile = new File( "projects/filetests/SearchPermissionCheckerImpl.java" );
 	SearchPermissionCheckerGetPermissionQueryDecl component;
 
 	@Before
-	public void beforeTest()
-	{
+	public void beforeTest() {
 		assertTrue( testFile.exists() );
 		component = new SearchPermissionCheckerGetPermissionQueryDecl();
 	}
 
     @Test
-    public void searchPermissionCheckerTest() throws Exception
-    {
+    public void searchPermissionCheckerTest() throws Exception {
         List<Problem> problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
@@ -35,8 +31,7 @@ public class SearchPermissionCheckerGetPermissionQueryDeclTest
     }
 
     @Test
-    public void asearchPermissionCheckerTestTwice() throws Exception
-    {
+    public void asearchPermissionCheckerTestTwice() throws Exception {
     	List<Problem> problems = component.analyzeFile(testFile);
     	problems = component.analyzeFile(testFile);
 

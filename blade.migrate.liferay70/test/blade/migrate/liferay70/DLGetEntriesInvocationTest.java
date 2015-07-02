@@ -13,34 +13,30 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class DLGetEntriesInvocationTest
-{
-	final File testFile = new File( "projects/filetests/DLGetEntriesTest.java" );
+public class DLGetEntriesInvocationTest {
+	final File testFile = new File("projects/filetests/DLGetEntriesTest.java");
 	DLGetEntriesInvocation component;
 
 	@Before
-	public void beforeTest()
-	{
-		assertTrue( testFile.exists() );
+	public void beforeTest() {
+		assertTrue(testFile.exists());
 		component = new DLGetEntriesInvocation();
 	}
 
-    @Test
-    public void assetDLgetEntriesTest() throws Exception
-    {
-        List<Problem> problems = component.analyzeFile(testFile);
+	@Test
+	public void assetDLgetEntriesTest() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 5, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(5, problems.size());
+	}
 
-    @Test
-    public void assetDLgetEntriesTestTwice() throws Exception
-    {
-    	List<Problem> problems = component.analyzeFile(testFile);
-    	problems = component.analyzeFile(testFile);
+	@Test
+	public void assetDLgetEntriesTestTwice() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
+		problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 5, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(5, problems.size());
+	}
 }

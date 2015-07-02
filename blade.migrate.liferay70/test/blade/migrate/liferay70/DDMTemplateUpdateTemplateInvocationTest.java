@@ -1,4 +1,3 @@
-
 package blade.migrate.liferay70;
 
 import static org.junit.Assert.assertEquals;
@@ -13,34 +12,31 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class DDMTemplateUpdateTemplateInvocationTest
-{
-	final File testFile = new File( "projects/filetests/DDMTemplateLocalServiceUtilTest.java" );
+public class DDMTemplateUpdateTemplateInvocationTest {
+	final File testFile = new File(
+			"projects/filetests/DDMTemplateLocalServiceUtilTest.java");
 	DDMTemplateUpdateTemplateInvocation component;
 
 	@Before
-	public void beforeTest()
-	{
-		assertTrue( testFile.exists() );
+	public void beforeTest() {
+		assertTrue(testFile.exists());
 		component = new DDMTemplateUpdateTemplateInvocation();
 	}
 
-    @Test
-    public void ddmTemplateAnalyzeTest() throws Exception
-    {
-        List<Problem> problems = component.analyzeFile(testFile);
+	@Test
+	public void ddmTemplateAnalyzeTest() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 1, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(1, problems.size());
+	}
 
-    @Test
-    public void ddmTemplateAnalyzeTestTwice() throws Exception
-    {
-    	List<Problem> problems = component.analyzeFile(testFile);
-    	problems = component.analyzeFile(testFile);
+	@Test
+	public void ddmTemplateAnalyzeTestTwice() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
+		problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 1, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(1, problems.size());
+	}
 }

@@ -1,4 +1,3 @@
-
 package blade.migrate.liferay70;
 
 import static org.junit.Assert.assertEquals;
@@ -13,34 +12,32 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class PortalUtilGetClassNamePortletIdInvocationTest
-{
-	final File testFile = new File( "projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/PortalUtilTest.java" );
+public class PortalUtilGetClassNamePortletIdInvocationTest {
+	final File testFile = new File(
+			"projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/PortalUtilTest.java");
 	PortalUtilGetClassNamePortletIdInvocation component;
 
 	@Before
-	public void beforeTest()
-	{
-		assertTrue( testFile.exists() );
+	public void beforeTest() {
+		assertTrue(testFile.exists());
 		component = new PortalUtilGetClassNamePortletIdInvocation();
 	}
 
-    @Test
-    public void portalUtilGetClassNamePortletIdAnalyzeTest() throws Exception
-    {
-        List<Problem> problems = component.analyzeFile(testFile);
+	@Test
+	public void portalUtilGetClassNamePortletIdAnalyzeTest() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 1, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(1, problems.size());
+	}
 
-    @Test
-    public void portalUtilGetClassNamePortletIdAnalyzeTestTwice() throws Exception
-    {
-    	List<Problem> problems = component.analyzeFile(testFile);
-    	problems = component.analyzeFile(testFile);
+	@Test
+	public void portalUtilGetClassNamePortletIdAnalyzeTestTwice()
+			throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
+		problems = component.analyzeFile(testFile);
 
-        assertNotNull( problems );
-        assertEquals( 1, problems.size() );
-    }
+		assertNotNull(problems);
+		assertEquals(1, problems.size());
+	}
 }
