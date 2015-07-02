@@ -13,20 +13,20 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class DLDLImplDLUtilgetEntriesInvocationTest
+public class DLgetEntriesInvocationTest
 {
-	final File testFile = new File( "projects/filetests/DLDLImplDLUtilgetEntriesTest.java" );
-	DLDLImplDLUtilgetEntriesInvocation apis;
+	final File testFile = new File( "projects/filetests/DLgetEntriesTest.java" );
+	DLgetEntriesInvocation apis;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		apis = new DLDLImplDLUtilgetEntriesInvocation();
+		apis = new DLgetEntriesInvocation();
 	}
 
     @Test
-    public void assetDLDLImplDLUtilgetEntriesTest() throws Exception
+    public void assetDLgetEntriesTest() throws Exception
     {
         List<Problem> problems = apis.analyzeFile(testFile);
 
@@ -35,7 +35,7 @@ public class DLDLImplDLUtilgetEntriesInvocationTest
     }
 
     @Test
-    public void assetDLDLImplDLUtilgetEntriesTestTwice() throws Exception
+    public void assetDLgetEntriesTestTwice() throws Exception
     {
     	List<Problem> problems = apis.analyzeFile(testFile);
     	problems = apis.analyzeFile(testFile);

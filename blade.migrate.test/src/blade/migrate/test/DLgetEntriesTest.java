@@ -12,7 +12,7 @@ import org.osgi.framework.ServiceReference;
 import blade.migrate.api.Migration;
 import blade.migrate.api.Problem;
 
-public class DLDLImplDLUtilgetEntriesTest {
+public class DLgetEntriesTest {
 
 	@Test
 	public void testFileMigratorFilter() throws Exception {
@@ -21,7 +21,7 @@ public class DLDLImplDLUtilgetEntriesTest {
 		Migration m = context.getService(sr);
 		List<Problem> problems = m
 				.findProblems(new File(
-						"../blade.migrate.liferay70/projects/filetests/DLDLImplDLUtilgetEntriesTest.java"));
+						"../blade.migrate.liferay70/projects/filetests/DLgetEntriesTest.java"));
 
 		assertEquals(5, problems.size());
 	}
