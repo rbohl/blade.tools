@@ -16,19 +16,19 @@ import blade.migrate.api.Problem;
 public class PortalUtilGetClassNamePortletIdInvocationTest
 {
 	final File testFile = new File( "projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/PortalUtilTest.java" );
-	PortalUtilGetClassNamePortletIdInvocation apis;
+	PortalUtilGetClassNamePortletIdInvocation component;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		apis = new PortalUtilGetClassNamePortletIdInvocation();
+		component = new PortalUtilGetClassNamePortletIdInvocation();
 	}
 
     @Test
     public void portalUtilGetClassNamePortletIdAnalyzeTest() throws Exception
     {
-        List<Problem> problems = apis.analyzeFile(testFile);
+        List<Problem> problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );
@@ -37,8 +37,8 @@ public class PortalUtilGetClassNamePortletIdInvocationTest
     @Test
     public void portalUtilGetClassNamePortletIdAnalyzeTestTwice() throws Exception
     {
-    	List<Problem> problems = apis.analyzeFile(testFile);
-    	problems = apis.analyzeFile(testFile);
+    	List<Problem> problems = component.analyzeFile(testFile);
+    	problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );

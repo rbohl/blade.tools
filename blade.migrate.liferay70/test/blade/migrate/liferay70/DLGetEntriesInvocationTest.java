@@ -13,22 +13,22 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class DLgetEntriesInvocationTest
+public class DLGetEntriesInvocationTest
 {
-	final File testFile = new File( "projects/filetests/DLgetEntriesTest.java" );
-	DLgetEntriesInvocation apis;
+	final File testFile = new File( "projects/filetests/DLGetEntriesTest.java" );
+	DLGetEntriesInvocation component;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		apis = new DLgetEntriesInvocation();
+		component = new DLGetEntriesInvocation();
 	}
 
     @Test
     public void assetDLgetEntriesTest() throws Exception
     {
-        List<Problem> problems = apis.analyzeFile(testFile);
+        List<Problem> problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 5, problems.size() );
@@ -37,8 +37,8 @@ public class DLgetEntriesInvocationTest
     @Test
     public void assetDLgetEntriesTestTwice() throws Exception
     {
-    	List<Problem> problems = apis.analyzeFile(testFile);
-    	problems = apis.analyzeFile(testFile);
+    	List<Problem> problems = component.analyzeFile(testFile);
+    	problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 5, problems.size() );

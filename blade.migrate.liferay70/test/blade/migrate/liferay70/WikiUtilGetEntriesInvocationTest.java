@@ -16,19 +16,19 @@ import blade.migrate.api.Problem;
 public class WikiUtilGetEntriesInvocationTest
 {
 	final File testFile = new File( "projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/WikiUtilTest.java" );
-	WikiUtilGetEntriesInvocation apis;
+	WikiUtilGetEntriesInvocation component;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		apis = new WikiUtilGetEntriesInvocation();
+		component = new WikiUtilGetEntriesInvocation();
 	}
 
     @Test
     public void assetRendererAPIsAnalyzeTest() throws Exception
     {
-        List<Problem> problems = apis.analyzeFile(testFile);
+        List<Problem> problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );
@@ -37,8 +37,8 @@ public class WikiUtilGetEntriesInvocationTest
     @Test
     public void assetRendererAPIsAnalyzeTestTwice() throws Exception
     {
-    	List<Problem> problems = apis.analyzeFile(testFile);
-    	problems = apis.analyzeFile(testFile);
+    	List<Problem> problems = component.analyzeFile(testFile);
+    	problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );

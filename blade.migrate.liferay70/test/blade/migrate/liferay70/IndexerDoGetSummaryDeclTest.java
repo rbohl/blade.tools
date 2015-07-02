@@ -14,26 +14,26 @@ import blade.migrate.api.Problem;
 
 public class IndexerDoGetSummaryDeclTest {
 	final File testFile = new File( "projects/knowledge-base-portlet-6.2.x/docroot/WEB-INF/src/com/liferay/knowledgebase/admin/util/AdminIndexer.java" );
-	IndexerDoGetSummaryDecl apis;
+	IndexerDoGetSummaryDecl component;
 
 	@Before
 	public void beforeTest() {
 		assertTrue(testFile.exists());
-		apis = new IndexerDoGetSummaryDecl();
+		component = new IndexerDoGetSummaryDecl();
 	}
 
 	@Test
-	public void indexerAPIsAnalyzeTest() throws Exception {
-		List<Problem> problems = apis.analyzeFile(testFile);
+	public void indexerDoGetSummaryDeclTest() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
 
 		assertNotNull(problems);
 		assertEquals(1, problems.size());
 	}
 
 	@Test
-	public void indexerAPIsAnalyzeTest2() throws Exception {
-		List<Problem> problems = apis.analyzeFile(testFile);
-		problems = apis.analyzeFile(testFile);
+	public void indexerDoGetSummaryDeclTest2x() throws Exception {
+		List<Problem> problems = component.analyzeFile(testFile);
+		problems = component.analyzeFile(testFile);
 
 		assertNotNull(problems);
 		assertEquals(1, problems.size());

@@ -16,19 +16,19 @@ import blade.migrate.api.Problem;
 public class SearchPermissionCheckerGetPermissionQueryDeclTest
 {
 	final File testFile = new File( "projects/filetests/SearchPermissionCheckerImpl.java" );
-	SearchPermissionCheckerGetPermissionQueryDecl checker;
+	SearchPermissionCheckerGetPermissionQueryDecl component;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		checker = new SearchPermissionCheckerGetPermissionQueryDecl();
+		component = new SearchPermissionCheckerGetPermissionQueryDecl();
 	}
 
     @Test
     public void searchPermissionCheckerTest() throws Exception
     {
-        List<Problem> problems = checker.analyzeFile(testFile);
+        List<Problem> problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );
@@ -37,8 +37,8 @@ public class SearchPermissionCheckerGetPermissionQueryDeclTest
     @Test
     public void asearchPermissionCheckerTestTwice() throws Exception
     {
-    	List<Problem> problems = checker.analyzeFile(testFile);
-    	problems = checker.analyzeFile(testFile);
+    	List<Problem> problems = component.analyzeFile(testFile);
+    	problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );

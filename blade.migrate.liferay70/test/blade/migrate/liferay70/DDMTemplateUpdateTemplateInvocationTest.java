@@ -16,29 +16,29 @@ import blade.migrate.api.Problem;
 public class DDMTemplateUpdateTemplateInvocationTest
 {
 	final File testFile = new File( "projects/filetests/DDMTemplateLocalServiceUtilTest.java" );
-	DDMTemplateUpdateTemplateInvocation ddm;
+	DDMTemplateUpdateTemplateInvocation component;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		ddm = new DDMTemplateUpdateTemplateInvocation();
+		component = new DDMTemplateUpdateTemplateInvocation();
 	}
 
     @Test
-    public void DDMTemplateAnalyzeTest() throws Exception
+    public void ddmTemplateAnalyzeTest() throws Exception
     {
-        List<Problem> problems = ddm.analyzeFile(testFile);
+        List<Problem> problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );
     }
 
     @Test
-    public void DDMTemplateAnalyzeTestTwice() throws Exception
+    public void ddmTemplateAnalyzeTestTwice() throws Exception
     {
-    	List<Problem> problems = ddm.analyzeFile(testFile);
-    	problems = ddm.analyzeFile(testFile);
+    	List<Problem> problems = component.analyzeFile(testFile);
+    	problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );

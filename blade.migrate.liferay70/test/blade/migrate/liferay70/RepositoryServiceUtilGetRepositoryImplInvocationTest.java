@@ -16,19 +16,19 @@ import blade.migrate.api.Problem;
 public class RepositoryServiceUtilGetRepositoryImplInvocationTest
 {
 	final File testFile = new File( "projects/filetests/RepositoryServiceUtilTest.java" );
-	RepositoryServiceUtilGetRepositoryImplInvocation rs;
+	RepositoryServiceUtilGetRepositoryImplInvocation component;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		rs = new RepositoryServiceUtilGetRepositoryImplInvocation();
+		component = new RepositoryServiceUtilGetRepositoryImplInvocation();
 	}
 
     @Test
     public void RepositoryServiceUtilAnalyzeTest() throws Exception
     {
-        List<Problem> problems = rs.analyzeFile(testFile);
+        List<Problem> problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );
@@ -37,8 +37,8 @@ public class RepositoryServiceUtilGetRepositoryImplInvocationTest
     @Test
     public void RepositoryServiceUtilTestTwice() throws Exception
     {
-    	List<Problem> problems = rs.analyzeFile(testFile);
-    	problems = rs.analyzeFile(testFile);
+    	List<Problem> problems = component.analyzeFile(testFile);
+    	problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );

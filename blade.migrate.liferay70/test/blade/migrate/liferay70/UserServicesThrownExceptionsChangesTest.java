@@ -16,19 +16,19 @@ import blade.migrate.api.Problem;
 public class UserServicesThrownExceptionsChangesTest
 {
 	final File testFile = new File( "projects/filetests/UserServicesThrownExceptionsChangesTest.java" );
-	UserServicesThrownExceptionsChanges cte;
+	UserServicesThrownExceptionsChanges component;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		cte = new UserServicesThrownExceptionsChanges();
+		component = new UserServicesThrownExceptionsChanges();
 	}
 
     @Test
     public void ChangesUserServicesAnalyzeTest() throws Exception
     {
-        List<Problem> problems = cte.analyzeFile(testFile);
+        List<Problem> problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 2, problems.size() );
@@ -37,8 +37,8 @@ public class UserServicesThrownExceptionsChangesTest
     @Test
     public void ChangesUserServicesAnalyzeTestTwice() throws Exception
     {
-    	List<Problem> problems = cte.analyzeFile(testFile);
-    	problems = cte.analyzeFile(testFile);
+    	List<Problem> problems = component.analyzeFile(testFile);
+    	problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
         assertEquals( 2, problems.size() );
