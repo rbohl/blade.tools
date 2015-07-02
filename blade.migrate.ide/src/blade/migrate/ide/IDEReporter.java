@@ -2,14 +2,12 @@ package blade.migrate.ide;
 
 import java.io.File;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Component;
 
@@ -44,7 +42,7 @@ public class IDEReporter implements Reporter {
 			IFile wsFile = files[0];
 
 			try {
-				IMarker marker = wsFile.createMarker( "blade.migrate.ide.MigrationMarker" );
+				IMarker marker = wsFile.createMarker( "com.liferay.ide.core.MigrationProblemMarker" );
 				marker.setAttribute( IMarker.SEVERITY, IMarker.SEVERITY_ERROR );
 	            marker.setAttribute( IMarker.MESSAGE, problem.title );
 	            marker.setAttribute( IMarker.LINE_NUMBER, problem.lineNumber );
