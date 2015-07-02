@@ -164,12 +164,7 @@ public class JavaFileChecker {
 			}
 		});
 
-		if (0 != searchResults.size()) {
-			return searchResults;
-		}else{
-			return null;
-		}
-
+		return searchResults;
 	}
 
 	/**
