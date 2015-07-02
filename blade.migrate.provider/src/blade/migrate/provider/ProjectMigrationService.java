@@ -3,6 +3,7 @@ package blade.migrate.provider;
 import blade.migrate.api.FileMigrator;
 import blade.migrate.api.Migration;
 import blade.migrate.api.Problem;
+import blade.migrate.api.ProgressMonitor;
 import blade.migrate.api.ProjectMigrator;
 import blade.migrate.api.Reporter;
 
@@ -39,6 +40,13 @@ public class ProjectMigrationService implements Migration {
 	}
 
 	@Reference(
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	public void setProgressMonitor(ProgressMonitor progressMonitor) {
+		this.progressMonitor = progressMonitor;
+	}
+
+	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY,
@@ -61,17 +69,26 @@ public class ProjectMigrationService implements Migration {
 
 	@Override
 	public List<Problem> findProblems(File projectDir) {
+		this.progressMonitor.beginTask("Migrating directory " + projectDir, -1);
+		this.progressMonitor.done();
+
 		final List<Problem> problems = new ArrayList<>();
 
-		for (ProjectMigrator pm : projectMigrators) {
+		for (ProjectMigrator projectMigrator : projectMigrators) {
 			try {
-				problems.addAll(pm.analyze(projectDir));
+				List<Problem> migrationProblems = projectMigrator.analyze(projectDir);
+
+				problems.addAll(migrationProblems);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
+		this.progressMonitor.beginTask("Analyzing files", -1);
+
 		walkFiles(projectDir, problems);
+
+		this.progressMonitor.done();
 
 		return problems;
 	}
@@ -123,6 +140,8 @@ public class ProjectMigrationService implements Migration {
 						if ( extension.equals(fileExt) ) {
 							FileMigrator fmigrator = context.getService(fm);
 
+							progressMonitor.setTaskName("Analyzing file " + fileName);
+
 							List<Problem> fileProblems = fmigrator.analyzeFile(
 								file);
 
@@ -153,6 +172,7 @@ public class ProjectMigrationService implements Migration {
 
 	private BundleContext context;
 	private Set<ServiceReference<FileMigrator>> fileMigrators = new HashSet<>();
+	private ProgressMonitor progressMonitor;
 	private Set<ProjectMigrator> projectMigrators = new HashSet<>();
 
 }

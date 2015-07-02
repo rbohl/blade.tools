@@ -1,6 +1,10 @@
 package blade.migrate.api;
 
+import org.osgi.annotation.versioning.ProviderType;
+
+@ProviderType
 public interface Reporter {
+
 	public void beginReporting(int format);
 
 	public void endReporting();
