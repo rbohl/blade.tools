@@ -24,9 +24,9 @@ public class AssetRendererGetSummaryDeclTest {
 		Migration m = context.getService(sr);
 		List<Problem> problems = m
 				.findProblems(new File(
-						"../blade.migrate.liferay70/projects/knowledge-base-portlet-6.2.x"));
+						"../blade.migrate.liferay70/projects/knowledge-base-portlet-6.2.x/docroot/WEB-INF/src/com/liferay/knowledgebase/admin/asset/KBArticleAssetRenderer.java"));
 
-		assertEquals(3, problems.size());
+		assertEquals(1, problems.size());
 	}
 
 	private final BundleContext context = FrameworkUtil.getBundle(
