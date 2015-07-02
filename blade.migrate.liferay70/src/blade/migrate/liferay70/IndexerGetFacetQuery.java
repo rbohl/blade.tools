@@ -32,7 +32,8 @@ public class IndexerGetFacetQuery extends JavaFileMigrator {
 
 		searchResults.addAll(declaration);
 
-		final List<SearchResult> invocations = javaFileChecker.findMethodInvocations("Indexer", null, "getFacetQuery");
+		final List<SearchResult> invocations = javaFileChecker.findMethodInvocations("Indexer", null, "getFacetQuery",
+				null);
 
 		searchResults.addAll(invocations);
 

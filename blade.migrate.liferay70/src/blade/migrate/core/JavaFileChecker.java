@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.SimpleName;
 
 /**
  * Parses a java file and provides some  methods for finding search results
@@ -176,7 +177,8 @@ public class JavaFileChecker {
 	 * @return    search results
 	 */
 	public List<SearchResult> findMethodInvocations(
-		final String typeHint, final String expressionValue, final String methodName) {
+		final String typeHint, final String expressionValue, final String methodName,
+		final String[] methodParamTypes) {
 		final List<SearchResult> searchResults = new ArrayList<>();
 
 		ast.accept(new ASTVisitor() {
@@ -197,13 +199,50 @@ public class JavaFileChecker {
 						// with no typeHint then expressions can be used to match Static invocation
 						 (typeHint == null && expression != null && expression.toString().equals(expressionValue)))) {
 
-					final int startOffset = expression.getStartPosition();
-					final int startLine = ast.getLineNumber(startOffset);
-					final int endOffset = node.getStartPosition() + node.getLength();
-					final int endLine = ast.getLineNumber(endOffset);
+					boolean match = false;
 
-					searchResults.add(new SearchResult(file, startOffset,
-						endOffset, startLine, endLine));
+					if (methodParamTypes != null) {
+						Object[] args = node.arguments().toArray();
+
+						if (args != null && args.length == methodParamTypes.length) {
+							boolean possibleMatch = true;
+
+							for(int i = 0; i < args.length; i++) {
+								Object arg = args[i];
+
+								if (arg instanceof SimpleName) {
+									SimpleName simpleName = (SimpleName)arg;
+
+									ITypeBinding argType = simpleName.resolveTypeBinding();
+
+									if (argType != null && argType.getName().equals(methodParamTypes[i])) {
+										continue;
+									}
+									else {
+										possibleMatch = false;
+										break;
+									}
+								}
+							}
+
+							if (possibleMatch) {
+								match = true;
+							}
+						}
+					}
+					else {
+						match = true;
+					}
+
+					if (match) {
+						final int startOffset = expression.getStartPosition();
+						final int startLine = ast.getLineNumber(startOffset);
+						final int endOffset = node.getStartPosition() + node.getLength();
+						final int endLine = ast.getLineNumber(endOffset);
+
+						searchResults.add(new SearchResult(file, startOffset,
+							endOffset, startLine, endLine));
+					}
 				}
 
 				return true;

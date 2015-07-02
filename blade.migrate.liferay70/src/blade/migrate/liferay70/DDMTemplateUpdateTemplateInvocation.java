@@ -27,7 +27,7 @@ public class DDMTemplateUpdateTemplateInvocation extends JavaFileMigrator {
 	protected List<SearchResult> searchJavaFile(File file) {
 		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 
-		return javaFileChecker.findMethodInvocations(null, "DDMTemplateLocalServiceUtil", "updateTemplate");
+		return javaFileChecker.findMethodInvocations(null, "DDMTemplateLocalServiceUtil", "updateTemplate", null);
 	}
 
 }

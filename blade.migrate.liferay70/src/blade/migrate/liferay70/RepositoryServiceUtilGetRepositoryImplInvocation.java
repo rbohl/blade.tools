@@ -27,7 +27,8 @@ public class RepositoryServiceUtilGetRepositoryImplInvocation extends JavaFileMi
 	protected List<SearchResult> searchJavaFile(File file) {
 		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 
-		return javaFileChecker.findMethodInvocations(null, "RepositoryLocalServiceUtil", "getRepositoryImpl");
+		return javaFileChecker.findMethodInvocations(null,
+				"RepositoryLocalServiceUtil", "getRepositoryImpl", null);
 	}
 
 }
