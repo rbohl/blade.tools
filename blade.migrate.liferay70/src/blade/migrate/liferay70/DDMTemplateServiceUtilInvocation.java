@@ -13,11 +13,10 @@ import blade.migrate.core.SearchResult;
 
 @Component(
 	property = {
-		"file.extension=java",
+		"file.extensions=java",
 		"problem.title=Added Required Parameter resourceClassNameId for DDM Template Search Operations",
 		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#added-required-parameter-resourceclassnameid-for-ddm-template-search-operations",
 		"problem.summary=Added Required Parameter resourceClassNameId for DDM Template Search Operations",
-		"problem.type=java,jsp",
 		"problem.tickets=LPS-52990",
 	},
 	service = FileMigrator.class
@@ -26,7 +25,7 @@ public class DDMTemplateServiceUtilInvocation extends JavaFileMigrator {
 
     @Override
     protected List<SearchResult> searchJavaFile(File file) {
-        List<SearchResult> result = new ArrayList<SearchResult>();
+        final List<SearchResult> result = new ArrayList<SearchResult>();
 
         final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 
