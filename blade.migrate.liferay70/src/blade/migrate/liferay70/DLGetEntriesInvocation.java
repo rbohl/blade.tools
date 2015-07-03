@@ -27,27 +27,27 @@ public class DLGetEntriesInvocation extends JavaFileMigrator {
 		final List<SearchResult> searchResults = new ArrayList<SearchResult>();
 		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 
-		String[] argTypes = new String[]{"Hits"};
-		List<SearchResult> dlResultsType = javaFileChecker.findMethodInvocations("DL", null, "getEntries", argTypes);
-		List<SearchResult> dlResultsStatic = javaFileChecker.findMethodInvocations(null, "DL", "getEntries", argTypes);
-		List<SearchResult> dlImplresultsType = javaFileChecker.findMethodInvocations("DLImpl", null, "getEntries",
-				null);
-		List<SearchResult> dlImplresultsStatic = javaFileChecker.findMethodInvocations(null, "DLImpl", "getEntries",
-				argTypes);
-		List<SearchResult> dlUtilresultsType = javaFileChecker.findMethodInvocations("DLUtil", null, "getEntries",
-				argTypes);
-		List<SearchResult> dlUtilresultsStatic = javaFileChecker.findMethodInvocations(null, "DLUtil", "getEntries",
-				argTypes);
+		final String[] argTypes = new String[] { "Hits" };
 
-		searchResults.addAll(dlResultsType);
-		searchResults.addAll(dlResultsStatic);
-		searchResults.addAll(dlImplresultsType);
-		searchResults.addAll(dlImplresultsStatic);
-		searchResults.addAll(dlUtilresultsType);
-		searchResults.addAll(dlUtilresultsStatic);
+		searchResults.addAll(javaFileChecker.findMethodInvocations("DL", null,
+				"getEntries", argTypes));
+
+		searchResults.addAll(javaFileChecker.findMethodInvocations(null, "DL",
+				"getEntries", argTypes));
+
+		searchResults.addAll(javaFileChecker.findMethodInvocations("DLImpl",
+				null, "getEntries", null));
+
+		searchResults.addAll(javaFileChecker.findMethodInvocations(null,
+				"DLImpl", "getEntries", argTypes));
+
+		searchResults.addAll(javaFileChecker.findMethodInvocations("DLUtil",
+				null, "getEntries", argTypes));
+
+		searchResults.addAll(javaFileChecker.findMethodInvocations(null,
+				"DLUtil", "getEntries", argTypes));
 
 		return searchResults;
-
 	}
 
 }
