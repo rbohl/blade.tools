@@ -3,9 +3,11 @@ package blade.migrate.core;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
@@ -26,6 +28,7 @@ import org.eclipse.jdt.core.dom.SimpleName;
  */
 public class JavaFileChecker {
 
+
 	/**
 	 * initialize the Checker
 	 * @param file java file
@@ -35,7 +38,20 @@ public class JavaFileChecker {
 		this.fileHelper = new FileHelper();
 
 		try {
-			this.ast = createJavaClassVisitor();
+			synchronized (map) {
+				WeakReference<CompilationUnit> astRef = map.get(file);
+
+				if (astRef == null || astRef.get() == null) {
+					final CompilationUnit newAst = createJavaClassVisitor();
+
+					map.put(file, new WeakReference<CompilationUnit>(newAst));
+
+					this.ast = newAst;
+				}
+				else {
+					this.ast = astRef.get();
+				}
+			}
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		}
@@ -167,7 +183,7 @@ public class JavaFileChecker {
 
 		return searchResults;
 	}
-	
+
 	/**
 	 * find the method invocations for a particular method on a given type or expression
 	 *
@@ -285,5 +301,6 @@ public class JavaFileChecker {
 	private final CompilationUnit ast;
 	private final File file;
 	private final FileHelper fileHelper;
+	private static Map<File, WeakReference<CompilationUnit>> map = new WeakHashMap<>();
 
 }
