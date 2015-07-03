@@ -8,6 +8,7 @@ public class AssetPubliserUtilTest {
 
     public void assetPubliserUtilTest() {
     	AssetPublisherUtil.getEntries(new HitsImpl());
+    	AssetPublisherUtil.foo();
     }
 
 }

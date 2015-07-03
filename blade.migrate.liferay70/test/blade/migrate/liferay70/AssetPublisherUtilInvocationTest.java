@@ -30,7 +30,7 @@ public class AssetPublisherUtilInvocationTest
         List<Problem> problems = assetPub.analyzeFile(testFile);
 
         assertNotNull( problems );
-        assertEquals( 1, problems.size() );
+        assertEquals( 2, problems.size() );
     }
 
 }
