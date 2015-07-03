@@ -12,10 +12,10 @@ import org.osgi.service.component.annotations.Component;
 
 @Component(
 	property = {
-		"file.extension=java",
+		"file.extensions=java",
 		"problem.summary=Replaced Method getPermissionQuery with getPermissionFilter in SearchPermissionChecker",
 		"problem.tickets=LPS-56064",
-		"problem.title=Replaced Method getPermissionQuery", "problem.type=java",
+		"problem.title=Replaced Method getPermissionQuery",
 		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#replaced-method-getpermissionquery-with-getpermissionfilter-in-searchpermissionchecker-and-getfacetquery-with-getfacetbooleanfilter-in-indexer"
 	},
 	service = FileMigrator.class

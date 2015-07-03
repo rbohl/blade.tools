@@ -31,7 +31,7 @@ public abstract class JavaFileMigrator implements FileMigrator {
 		this.problemTitle = (String)properties.get("problem.title");
 		this.problemUrl = (String)properties.get("problem.url");
 		this.problemSummary = (String)properties.get("problem.summary");
-		this.problemType = (String)properties.get("problem.type");
+		this.problemType = (String)properties.get("file.extensions");
 		this.problemTickets = (String)properties.get("problem.tickets");
 	}
 

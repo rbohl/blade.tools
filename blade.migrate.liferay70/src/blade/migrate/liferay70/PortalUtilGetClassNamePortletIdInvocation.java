@@ -13,11 +13,10 @@ import blade.migrate.core.SearchResult;
 
 @Component(
 	property = {
-		"file.extension=java",
+		"file.extensions=java",
 		"problem.title=Removed the getClassNamePortletId(String) Method from PortalUtil Class",
 		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-the-getclassnameportletidstring-method-from-portalutil-class",
 		"problem.summary=Removed the getClassNamePortletId(String) Method from PortalUtil Class",
-		"problem.type=java,jsp",
 		"problem.tickets=LPS-50604",
 	},
 	service = FileMigrator.class

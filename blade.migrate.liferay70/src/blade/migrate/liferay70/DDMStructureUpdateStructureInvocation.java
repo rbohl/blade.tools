@@ -12,12 +12,11 @@ import blade.migrate.core.SearchResult;
 
 @Component(
 		property = {
-			"file.extension=java",
+			"file.extensions=java",
+			"problem.summary=Added userId Parameter to Update Operations of DDMStructureLocalService and DDMTemplateLocalService",
+			"problem.tickets=LPS-50939",
 			"problem.title=DDMStructureLocalService add new param userId",
 			"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#added-userid-parameter-to-update-operations-of-ddmstructurelocalservice-and-ddmtemplatelocalservice",
-			"problem.summary=Added userId Parameter to Update Operations of DDMStructureLocalService and DDMTemplateLocalService",
-			"problem.type=java",
-			"problem.tickets=LPS-50939",
 		},
 		service = FileMigrator.class
 )

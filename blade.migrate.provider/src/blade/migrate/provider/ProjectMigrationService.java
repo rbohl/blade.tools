@@ -135,9 +135,9 @@ public class ProjectMigrationService implements Migration {
 						fileName.lastIndexOf('.')+1);
 
 					for ( ServiceReference<FileMigrator> fm : fileMigrators ) {
-						Object fileExt = fm.getProperty("file.extension");
+						String fileExtensions = (String)fm.getProperty("file.extensions");
 
-						if ( extension.equals(fileExt) ) {
+						if ( fileExtensions != null && fileExtensions.contains(extension) ) {
 							FileMigrator fmigrator = context.getService(fm);
 
 							progressMonitor.setTaskName("Analyzing file " + fileName);

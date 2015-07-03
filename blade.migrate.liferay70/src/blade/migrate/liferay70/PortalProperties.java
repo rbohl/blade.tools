@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
-@Component(property = { "file.extension=properties" })
+@Component(property = { "file.extensions=properties" })
 public class PortalProperties implements FileMigrator {
 
 	private final List<String> properties = new ArrayList<>();

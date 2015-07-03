@@ -11,7 +11,7 @@ import blade.migrate.api.Problem;
 import blade.migrate.core.PropertiesFileChecker;
 import blade.migrate.core.SearchResult;
 
-@Component(property = { "file.extension=properties" })
+@Component(property = { "file.extensions=properties" })
 public class EmailSignatureProperties implements FileMigrator {
 
 	private final List<String> properties = new ArrayList<String>();
