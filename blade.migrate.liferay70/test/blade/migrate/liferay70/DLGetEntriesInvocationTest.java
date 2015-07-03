@@ -28,7 +28,7 @@ public class DLGetEntriesInvocationTest {
 		List<Problem> problems = component.analyzeFile(testFile);
 
 		assertNotNull(problems);
-		assertEquals(5, problems.size());
+		assertEquals(4, problems.size());
 	}
 
 	@Test
@@ -37,6 +37,6 @@ public class DLGetEntriesInvocationTest {
 		problems = component.analyzeFile(testFile);
 
 		assertNotNull(problems);
-		assertEquals(5, problems.size());
+		assertEquals(4, problems.size());
 	}
 }

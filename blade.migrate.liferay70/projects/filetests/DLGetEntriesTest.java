@@ -3,15 +3,16 @@ public class DLDLImplDLUtilgetEntriesTest {
 
 	public void testMethod(DLImpl dlImpl){
 		DL dl = new DLImpl();
+		Hits hits = null;
 		//var call
 		dl.getEntries(hits);
 		dl.getEntries();
 		
 		//static call
-		DL.getEntries();
+		DL.getEntries(hits);
 		
 		//passed var call
-		dlImpl.getEntries();
+		dlImpl.getEntries(hits);
 	}
 	
 
