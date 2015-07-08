@@ -32,9 +32,12 @@ public class DDMStructureLocalServiceInvocationTest
 
         assertNotNull( problems );
         assertEquals( 1, problems.size() );
-        assertEquals( 7,problems.get(0).lineNumber);
-        assertEquals( 144,problems.get(0).startOffset);
-        assertEquals( 270,problems.get(0).endOffset);
+
+        Problem problem = problems.get(0);
+
+        assertEquals( 7, problem.lineNumber);
+        assertEquals( 138, problem.startOffset);
+        assertEquals( 264, problem.endOffset);
     }
 
 }
