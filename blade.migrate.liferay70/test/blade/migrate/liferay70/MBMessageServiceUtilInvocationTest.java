@@ -32,6 +32,12 @@ public class MBMessageServiceUtilInvocationTest
 
         assertNotNull( problems );
         assertEquals( 3, problems.size() );
+
+        Problem problem = problems.get(0);
+
+		assertEquals( 248, problem.lineNumber );
+		assertEquals( 7830, problem.startOffset );
+		assertEquals( 8058, problem.endOffset );
     }
 
     @Test

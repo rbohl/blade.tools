@@ -15,7 +15,7 @@ import blade.migrate.core.SearchResult;
 @Component(
 	property = {
 		"file.extensions=java",
-		"problem.title=Removed permissionClassName, permissionClassPK, and permissionOwner Parameters from MBMessage API",
+		"problem.title=MBMessageService API Changes",
 		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-permissionclassname-permissionclasspk-and-permissionowner-parameters-from-mbmessage-api",
 		"problem.summary=Removed permissionClassName, permissionClassPK, and permissionOwner Parameters from MBMessage API",
 		"problem.tickets=LPS-55877",
