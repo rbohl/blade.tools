@@ -27,7 +27,9 @@ public class PortalPropertiesTest {
 
 		assertNotNull(problems);
 		assertEquals(1, problems.size());
-		assertEquals(19, problems.get(0).lineNumber);
+
+		Problem problem = problems.get(0);
+		assertEquals(10, problem.lineNumber);
 	}
 
 	@Test
