@@ -13,16 +13,16 @@ import org.junit.Test;
 
 import blade.migrate.api.Problem;
 
-public class DLAppHelperLocalServiceUtilDeleteInvocationTest
+public class DLAppHelperLocalServiceUtilInvocationTest
 {
-	final File testFile = new File( "projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/DLAppHelperLocalServiceUtilDeleteTest.java" );
-	DLAppHelperLocalServiceUtilDeleteInvocation component;
+	final File testFile = new File( "projects/test-ext/docroot/WEB-INF/ext-impl/src/com/liferay/test/DLAppHelperLocalServiceUtilTest.java" );
+	DLAppHelperLocalServiceUtilInvocation component;
 
 	@Before
 	public void beforeTest()
 	{
 		assertTrue( testFile.exists() );
-		component = new DLAppHelperLocalServiceUtilDeleteInvocation();
+		component = new DLAppHelperLocalServiceUtilInvocation();
 	}
 
     @Test
@@ -31,7 +31,7 @@ public class DLAppHelperLocalServiceUtilDeleteInvocationTest
         List<Problem> problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
-        assertEquals( 2, problems.size() );
+        assertEquals( 4, problems.size() );
     }
 
     @Test
@@ -41,6 +41,6 @@ public class DLAppHelperLocalServiceUtilDeleteInvocationTest
     	problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
-        assertEquals( 2, problems.size() );
+        assertEquals( 4, problems.size() );
     }
 }

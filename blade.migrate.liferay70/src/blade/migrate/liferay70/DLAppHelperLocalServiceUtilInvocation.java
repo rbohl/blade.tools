@@ -21,7 +21,7 @@ import blade.migrate.core.SearchResult;
 	},
 	service = FileMigrator.class
 )
-public class DLAppHelperLocalServiceUtilDeleteInvocation extends JavaFileMigrator {
+public class DLAppHelperLocalServiceUtilInvocation extends JavaFileMigrator {
 
     @Override
     protected List<SearchResult> searchJavaFile(File file) {
@@ -36,6 +36,14 @@ public class DLAppHelperLocalServiceUtilDeleteInvocation extends JavaFileMigrato
         result.addAll(
             javaFileChecker.findMethodInvocations(
                 null, "DLAppHelperLocalServiceUtil", "deleteFolder", null) );
+
+        result.addAll(
+            javaFileChecker.findMethodInvocations(
+                null, "DLAppHelperLocalServiceUtil", "moveFileEntry", null));
+
+        result.addAll(
+            javaFileChecker.findMethodInvocations(
+                null, "DLAppHelperLocalServiceUtil", "moveFolder", null) );
 
         return result;
     }
