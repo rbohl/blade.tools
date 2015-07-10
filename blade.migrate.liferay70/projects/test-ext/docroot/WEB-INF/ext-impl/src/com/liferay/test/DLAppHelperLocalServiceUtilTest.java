@@ -20,4 +20,8 @@ public class DLAppHelperLocalServiceUtilTest {
         DLAppHelperLocalServiceUtil.moveFolder(null);
     }
 
+    public void addFileEntry() {
+        DLAppHelperLocalServiceUtil.addFileEntry(null);
+    }
+
 }

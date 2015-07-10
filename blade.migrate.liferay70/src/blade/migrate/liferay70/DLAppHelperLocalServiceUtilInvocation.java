@@ -45,6 +45,10 @@ public class DLAppHelperLocalServiceUtilInvocation extends JavaFileMigrator {
             javaFileChecker.findMethodInvocations(
                 null, "DLAppHelperLocalServiceUtil", "moveFolder", null) );
 
+        result.addAll(
+            javaFileChecker.findMethodInvocations(
+                null, "DLAppHelperLocalServiceUtil", "addFileEntry", null) );
+
         return result;
     }
 

@@ -31,7 +31,7 @@ public class DLAppHelperLocalServiceUtilInvocationTest
         List<Problem> problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
-        assertEquals( 4, problems.size() );
+        assertEquals( 5, problems.size() );
     }
 
     @Test
@@ -41,6 +41,6 @@ public class DLAppHelperLocalServiceUtilInvocationTest
     	problems = component.analyzeFile(testFile);
 
         assertNotNull( problems );
-        assertEquals( 4, problems.size() );
+        assertEquals( 5, problems.size() );
     }
 }
