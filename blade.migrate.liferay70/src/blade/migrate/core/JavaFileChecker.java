@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
@@ -336,6 +337,37 @@ public class JavaFileChecker {
 
 		return searchResults;
 	}
+
+	public List<SearchResult> findQualifiedName(final String exception) {
+		final List<SearchResult> searchResults = new ArrayList<>();
+
+		_ast.accept(new ASTVisitor() {
+
+			@Override
+			public boolean visit(QualifiedName node) {
+				String qualifyName = node.getFullyQualifiedName();
+				boolean retVal = false;
+
+				if (qualifyName.equals(exception)) {
+					final int startLine = _ast
+							.getLineNumber(node.getStartPosition());
+					final int startOffset = node.getStartPosition();
+					int endLine = _ast.getLineNumber(
+							node.getStartPosition() + node.getLength());
+					int endOffset = node.getStartPosition() + node.getLength();
+					searchResults.add(new SearchResult(_file, startOffset,
+							endOffset, startLine, endLine));
+
+					retVal = true;
+				}
+
+				return retVal;
+			}
+		});
+
+		return searchResults;
+	}
+
 	public List<SearchResult> findSuperClass(final String superClassName){
 		final List<SearchResult> searchResults = new ArrayList<>();
 
