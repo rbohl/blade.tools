@@ -62,56 +62,75 @@ public class JavaFileChecker {
 		final List<SearchResult> searchResults = new ArrayList<>();
 
 		ast.accept(new ASTVisitor() {
+
 			@Override
 			public boolean visit(TypeDeclaration node) {
 				ITypeBinding superClass = null;
-				if(node.resolveBinding() != null ){
+
+				if (node.resolveBinding() != null) {
 					superClass = node.resolveBinding().getSuperclass();
-					if(superClass != null ) {
-						if(superClass.getName().equals(superClassName)) {
-							int startLine = ast.getLineNumber(node.getName().getStartPosition());
+
+					if (superClass != null) {
+						if (superClass.getName().equals(superClassName)) {
+							int startLine = ast.getLineNumber(
+									node.getName().getStartPosition());
 							int startOffset = node.getName().getStartPosition();
-							int endLine = ast.getLineNumber(node.getName()
-									.getStartPosition() + node.getName().getLength());
-							int endOffset = node.getName().getStartPosition() +
-									node.getName().getLength();
+							int endLine = ast.getLineNumber(
+									node.getName().getStartPosition()
+											+ node.getName().getLength());
+							int endOffset = node.getName().getStartPosition()
+									+ node.getName().getLength();
+
 							searchResults
-										.add(new SearchResult(file, startOffset,
+									.add(new SearchResult(file, startOffset,
 											endOffset, startLine, endLine));
 						}
 					}
 				}
+
 				return true;
 			}
 		});
+
 		return searchResults;
 	}
 
-	public List<SearchResult> findInterfaceImplements(final String interfaceName){
+	public List<SearchResult> findImplementsInterface(final String interfaceName){
 		final List<SearchResult> searchResults = new ArrayList<>();
+
 		ast.accept(new ASTVisitor() {
+
 			@Override
 			public boolean visit(TypeDeclaration node) {
 				ITypeBinding[] superInterfaces = null;
-				if(node.resolveBinding() != null ){
-					superInterfaces =node.resolveBinding().getInterfaces();
-					if(superInterfaces != null && superInterfaces.length > 0) {
-						if(superInterfaces[0].getName().equals(interfaceName)) {
-							int startLine = ast.getLineNumber(node.getName().getStartPosition());
+
+				if (node.resolveBinding() != null) {
+					superInterfaces = node.resolveBinding().getInterfaces();
+
+					if (superInterfaces != null && superInterfaces.length > 0) {
+
+						if (superInterfaces[0].getName()
+								.equals(interfaceName)) {
+							int startLine = ast.getLineNumber(
+									node.getName().getStartPosition());
 							int startOffset = node.getName().getStartPosition();
-							int endLine = ast.getLineNumber(node.getName()
-									.getStartPosition() + node.getName().getLength());
-							int endOffset = node.getName().getStartPosition() +
-									node.getName().getLength();
+							int endLine = ast.getLineNumber(
+									node.getName().getStartPosition()
+											+ node.getName().getLength());
+							int endOffset = node.getName().getStartPosition()
+									+ node.getName().getLength();
+
 							searchResults
-										.add(new SearchResult(file, startOffset,
+									.add(new SearchResult(file, startOffset,
 											endOffset, startLine, endLine));
 						}
 					}
 				}
+
 				return true;
 			}
 		});
+
 		return searchResults;
 	}
 
