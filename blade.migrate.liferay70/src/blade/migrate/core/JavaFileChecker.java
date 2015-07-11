@@ -30,27 +30,29 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 public class JavaFileChecker {
 
 
+
+
 	/**
 	 * initialize the Checker
 	 * @param file java file
 	 */
 	public JavaFileChecker(File file) {
-		this.file = file;
-		this.fileHelper = new FileHelper();
+		this._file = file;
+		this._fileHelper = new FileHelper();
 
 		try {
-			synchronized (map) {
-				WeakReference<CompilationUnit> astRef = map.get(file);
+			synchronized (_map) {
+				WeakReference<CompilationUnit> astRef = _map.get(file);
 
 				if (astRef == null || astRef.get() == null) {
 					final CompilationUnit newAst = createJavaClassVisitor();
 
-					map.put(file, new WeakReference<CompilationUnit>(newAst));
+					_map.put(file, new WeakReference<CompilationUnit>(newAst));
 
-					this.ast = newAst;
+					this._ast = newAst;
 				}
 				else {
-					this.ast = astRef.get();
+					this._ast = astRef.get();
 				}
 			}
 		} catch (Exception e) {
@@ -58,88 +60,41 @@ public class JavaFileChecker {
 		}
 	}
 
-	public List<SearchResult> findSuperClass(final String superClassName){
-		final List<SearchResult> searchResults = new ArrayList<>();
+	@SuppressWarnings("unchecked")
+	private CompilationUnit createJavaClassVisitor()
+		throws FileNotFoundException, IOException {
 
-		ast.accept(new ASTVisitor() {
+		ASTParser parser = ASTParser.newParser(AST.JLS4);
 
-			@Override
-			public boolean visit(TypeDeclaration node) {
-				ITypeBinding superClass = null;
+		Map<String, String> options = JavaCore.getOptions();
 
-				if (node.resolveBinding() != null) {
-					superClass = node.resolveBinding().getSuperclass();
+		JavaCore.setComplianceOptions(JavaCore.VERSION_1_6, options);
 
-					if (superClass != null) {
-						if (superClass.getName().equals(superClassName)) {
-							int startLine = ast.getLineNumber(
-									node.getName().getStartPosition());
-							int startOffset = node.getName().getStartPosition();
-							int endLine = ast.getLineNumber(
-									node.getName().getStartPosition()
-											+ node.getName().getLength());
-							int endOffset = node.getName().getStartPosition()
-									+ node.getName().getLength();
+		parser.setCompilerOptions(options);
 
-							searchResults
-									.add(new SearchResult(file, startOffset,
-											endOffset, startLine, endLine));
-						}
-					}
-				}
+		//setUnitName for resolve bindings
+		String unitName = _file.getName();
+		parser.setUnitName(unitName);
 
-				return true;
-			}
-		});
+		String[] sources = { "" };
+		String[] classpath = { "" };
+		//setEnvironment for resolve bindings even if the args is empty
+		parser.setEnvironment(classpath, sources, new String[] { "UTF-8" }, true);
 
-		return searchResults;
+		parser.setResolveBindings(true);
+		parser.setStatementsRecovery(true);
+		parser.setBindingsRecovery(true);
+		parser.setSource(_fileHelper.readFile(_file).toCharArray());
+		parser.setIgnoreMethodBodies(false);
+
+		return (CompilationUnit)parser.createAST(null);
 	}
-
-	public List<SearchResult> findImplementsInterface(final String interfaceName){
-		final List<SearchResult> searchResults = new ArrayList<>();
-
-		ast.accept(new ASTVisitor() {
-
-			@Override
-			public boolean visit(TypeDeclaration node) {
-				ITypeBinding[] superInterfaces = null;
-
-				if (node.resolveBinding() != null) {
-					superInterfaces = node.resolveBinding().getInterfaces();
-
-					if (superInterfaces != null && superInterfaces.length > 0) {
-
-						if (superInterfaces[0].getName()
-								.equals(interfaceName)) {
-							int startLine = ast.getLineNumber(
-									node.getName().getStartPosition());
-							int startOffset = node.getName().getStartPosition();
-							int endLine = ast.getLineNumber(
-									node.getName().getStartPosition()
-											+ node.getName().getLength());
-							int endOffset = node.getName().getStartPosition()
-									+ node.getName().getLength();
-
-							searchResults
-									.add(new SearchResult(file, startOffset,
-											endOffset, startLine, endLine));
-						}
-					}
-				}
-
-				return true;
-			}
-		});
-
-		return searchResults;
-	}
-
 
 	public List<SearchResult> findCatchExceptions(final String[] exceptions) {
 
 		final List<SearchResult> searchResults = new ArrayList<>();
 
-		ast.accept(new ASTVisitor() {
+		_ast.accept(new ASTVisitor() {
 
 			@Override
 			public boolean visit(CatchClause node){
@@ -148,13 +103,13 @@ public class JavaFileChecker {
 
 				for (String exceptionType : exceptions) {
 					if ( exceptionTypeName.equals(exceptionType)){
-						final int startLine = ast.getLineNumber(node.getException().getStartPosition());
+						final int startLine = _ast.getLineNumber(node.getException().getStartPosition());
 						final int startOffset = node.getException().getStartPosition();
 
-						int endLine = ast.getLineNumber(node.getException().getStartPosition() + node.getException().getLength());
+						int endLine = _ast.getLineNumber(node.getException().getStartPosition() + node.getException().getLength());
 							int endOffset = node.getException().getStartPosition() + node.getException().getLength();
 							searchResults
-									.add(new SearchResult(file, startOffset,
+									.add(new SearchResult(_file, startOffset,
 										endOffset, startLine, endLine));
 
 							retVal = true;
@@ -169,24 +124,62 @@ public class JavaFileChecker {
 
 	}
 
+	public List<SearchResult> findImplementsInterface(final String interfaceName){
+		final List<SearchResult> searchResults = new ArrayList<>();
+
+		_ast.accept(new ASTVisitor() {
+
+			@Override
+			public boolean visit(TypeDeclaration node) {
+				ITypeBinding[] superInterfaces = null;
+
+				if (node.resolveBinding() != null) {
+					superInterfaces = node.resolveBinding().getInterfaces();
+
+					if (superInterfaces != null && superInterfaces.length > 0) {
+
+						if (superInterfaces[0].getName()
+								.equals(interfaceName)) {
+							int startLine = _ast.getLineNumber(
+									node.getName().getStartPosition());
+							int startOffset = node.getName().getStartPosition();
+							int endLine = _ast.getLineNumber(
+									node.getName().getStartPosition()
+											+ node.getName().getLength());
+							int endOffset = node.getName().getStartPosition()
+									+ node.getName().getLength();
+
+							searchResults
+									.add(new SearchResult(_file, startOffset,
+											endOffset, startLine, endLine));
+						}
+					}
+				}
+
+				return true;
+			}
+		});
+
+		return searchResults;
+	}
 
 	public SearchResult findImport(final String importName) {
 		final List<SearchResult> searchResults = new ArrayList<>();
 
-		ast.accept(new ASTVisitor() {
+		_ast.accept(new ASTVisitor() {
 
 			@Override
 			public boolean visit(ImportDeclaration node) {
 				if (importName.equals(node.getName().toString())) {
-					int startLine = ast.getLineNumber(node.getName()
+					int startLine = _ast.getLineNumber(node.getName()
 						.getStartPosition());
 					int startOffset = node.getName().getStartPosition();
-					int endLine = ast.getLineNumber(node.getName()
+					int endLine = _ast.getLineNumber(node.getName()
 						.getStartPosition() + node.getName().getLength());
 					int endOffset = node.getName().getStartPosition() +
 						node.getName().getLength();
 
-					searchResults.add(new SearchResult(file, startOffset,
+					searchResults.add(new SearchResult(_file, startOffset,
 						endOffset, startLine, endLine));
 				}
 
@@ -200,13 +193,12 @@ public class JavaFileChecker {
 
 		return null;
 	}
-
 	public List<SearchResult> findMethodDeclaration(
 		final String name, final String[] params) {
 
 		final List<SearchResult> searchResults = new ArrayList<>();
 
-		ast.accept(new ASTVisitor() {
+		_ast.accept(new ASTVisitor() {
 
 			@Override
 			public boolean visit(MethodDeclaration node) {
@@ -230,7 +222,7 @@ public class JavaFileChecker {
 				}
 
 				if (sameParmSize) {
-					final int startLine = ast.getLineNumber(node.getName()
+					final int startLine = _ast.getLineNumber(node.getName()
 						.getStartPosition());
 					final int startOffset = node.getName().getStartPosition();
 					node.accept(new ASTVisitor() {
@@ -243,11 +235,11 @@ public class JavaFileChecker {
 							// SingleVariableDeclaration node contains the
 							// parms's type
 
-							int endLine = ast.getLineNumber(node
+							int endLine = _ast.getLineNumber(node
 								.getStartPosition());
 							int endOffset = node.getStartPosition();
 							searchResults
-									.add(new SearchResult(file, startOffset,
+									.add(new SearchResult(_file, startOffset,
 										endOffset, startLine, endLine));
 
 							return false;
@@ -261,7 +253,6 @@ public class JavaFileChecker {
 
 		return searchResults;
 	}
-
 	/**
 	 * find the method invocations for a particular method on a given type or expression
 	 *
@@ -275,7 +266,7 @@ public class JavaFileChecker {
 		final String[] methodParamTypes) {
 		final List<SearchResult> searchResults = new ArrayList<>();
 
-		ast.accept(new ASTVisitor() {
+		_ast.accept(new ASTVisitor() {
 
 			@Override
 			public boolean visit(MethodInvocation node) {
@@ -330,11 +321,11 @@ public class JavaFileChecker {
 
 					if (match) {
 						final int startOffset = expression.getStartPosition();
-						final int startLine = ast.getLineNumber(startOffset);
+						final int startLine = _ast.getLineNumber(startOffset);
 						final int endOffset = node.getStartPosition() + node.getLength();
-						final int endLine = ast.getLineNumber(endOffset);
+						final int endLine = _ast.getLineNumber(endOffset);
 
-						searchResults.add(new SearchResult(file, startOffset,
+						searchResults.add(new SearchResult(_file, startOffset,
 							endOffset, startLine, endLine));
 					}
 				}
@@ -345,40 +336,47 @@ public class JavaFileChecker {
 
 		return searchResults;
 	}
+	public List<SearchResult> findSuperClass(final String superClassName){
+		final List<SearchResult> searchResults = new ArrayList<>();
 
-	@SuppressWarnings("unchecked")
-	private CompilationUnit createJavaClassVisitor()
-		throws FileNotFoundException, IOException {
+		_ast.accept(new ASTVisitor() {
 
-		ASTParser parser = ASTParser.newParser(AST.JLS4);
+			@Override
+			public boolean visit(TypeDeclaration node) {
+				ITypeBinding superClass = null;
 
-		Map<String, String> options = JavaCore.getOptions();
+				if (node.resolveBinding() != null) {
+					superClass = node.resolveBinding().getSuperclass();
 
-		JavaCore.setComplianceOptions(JavaCore.VERSION_1_6, options);
+					if (superClass != null) {
+						if (superClass.getName().equals(superClassName)) {
+							int startLine = _ast.getLineNumber(
+									node.getName().getStartPosition());
+							int startOffset = node.getName().getStartPosition();
+							int endLine = _ast.getLineNumber(
+									node.getName().getStartPosition()
+											+ node.getName().getLength());
+							int endOffset = node.getName().getStartPosition()
+									+ node.getName().getLength();
 
-		parser.setCompilerOptions(options);
+							searchResults
+									.add(new SearchResult(_file, startOffset,
+											endOffset, startLine, endLine));
+						}
+					}
+				}
 
-		//setUnitName for resolve bindings
-		String unitName = file.getName();
-		parser.setUnitName(unitName);
+				return true;
+			}
+		});
 
-		String[] sources = { "" };
-		String[] classpath = { "" };
-		//setEnvironment for resolve bindings even if the args is empty
-		parser.setEnvironment(classpath, sources, new String[] { "UTF-8" }, true);
-
-		parser.setResolveBindings(true);
-		parser.setStatementsRecovery(true);
-		parser.setBindingsRecovery(true);
-		parser.setSource(fileHelper.readFile(file).toCharArray());
-		parser.setIgnoreMethodBodies(false);
-
-		return (CompilationUnit)parser.createAST(null);
+		return searchResults;
 	}
 
-	private final CompilationUnit ast;
-	private final File file;
-	private final FileHelper fileHelper;
-	private static Map<File, WeakReference<CompilationUnit>> map = new WeakHashMap<>();
+	private static Map<File, WeakReference<CompilationUnit>> _map = new WeakHashMap<>();
+
+	private final CompilationUnit _ast;
+	private final File _file;
+	private final FileHelper _fileHelper;
 
 }
