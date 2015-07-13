@@ -1,7 +1,8 @@
 package blade.migrate.liferay70;
 
 import blade.migrate.api.FileMigrator;
-import blade.migrate.core.PropertiesFileMigrator;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 @Component(
@@ -16,7 +17,8 @@ import org.osgi.service.component.annotations.Component;
 )
 public class PortalProperties extends PropertiesFileMigrator {
 
-	public PortalProperties() {
+	@Override
+	protected void addPropertiesToSearch(List<String> properties) {
 		properties.add("company.settings.form.configuration");
 		properties.add("company.settings.form.identification");
 		properties.add("company.settings.form.miscellaneous");

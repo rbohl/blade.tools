@@ -15,15 +15,18 @@ import blade.migrate.api.Problem;
 public class PortalPropertiesTest {
 	final File file = new File(
 			"projects/knowledge-base-portlet-6.2.x/docroot/WEB-INF/src/portal.properties");
+	PortalProperties component;
 
 	@Before
 	public void beforeTest() {
 		assertTrue(file.exists());
+		component = new PortalProperties();
+		component.addPropertiesToSearch(component._properties);
 	}
 
 	@Test
 	public void portalPropertiesAnalyzeTest() throws Exception {
-		List<Problem> problems = new PortalProperties().analyzeFile(file);
+		List<Problem> problems = component.analyzeFile(file);
 
 		assertNotNull(problems);
 		assertEquals(1, problems.size());
@@ -34,9 +37,8 @@ public class PortalPropertiesTest {
 
 	@Test
 	public void portalPropertiesAnalyzeTest2() throws Exception {
-		PortalProperties portalProperties = new PortalProperties();
-		List<Problem> problems = portalProperties.analyzeFile(file);
-		problems = portalProperties.analyzeFile(file);
+		List<Problem> problems = component.analyzeFile(file);
+		problems = component.analyzeFile(file);
 
 		assertNotNull(problems);
 		assertEquals(1, problems.size());

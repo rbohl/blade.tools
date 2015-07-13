@@ -1,9 +1,10 @@
 package blade.migrate.liferay70;
 
+import java.util.List;
+
 import org.osgi.service.component.annotations.Component;
 
 import blade.migrate.api.FileMigrator;
-import blade.migrate.core.PropertiesFileMigrator;
 
 @Component(
 	property = {
@@ -17,7 +18,8 @@ import blade.migrate.core.PropertiesFileMigrator;
 )
 public class EmailSignatureProperties extends PropertiesFileMigrator {
 
-	public EmailSignatureProperties() {
+	@Override
+	protected void addPropertiesToSearch(List<String> properties) {
 		properties.add("message.boards.email.message.added.signature");
 		properties.add("message.boards.email.message.updated.signature");
 		properties.add("wiki.email.page.added.signature");

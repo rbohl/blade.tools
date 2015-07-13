@@ -14,15 +14,18 @@ import blade.migrate.api.Problem;
 
 public class EmailSignaturePropertiesTest {
 	final File file = new File("projects/test-portlet/docroot/WEB-INF/src/portal.properties");
+	EmailSignatureProperties component;
 
 	@Before
 	public void beforeTest() {
 		assertTrue(file.exists());
+		component = new EmailSignatureProperties();
+		component.addPropertiesToSearch(component._properties);
 	}
 
 	@Test
 	public void emailSignaturePropertiesAnalyzeTest() throws Exception {
-		List<Problem> problems = new EmailSignatureProperties().analyzeFile(file);
+		List<Problem> problems = component.analyzeFile(file);
 
 		assertNotNull(problems);
 		assertEquals(1, problems.size());
@@ -30,9 +33,8 @@ public class EmailSignaturePropertiesTest {
 
 	@Test
 	public void emailSignaturePropertiesAnalyzeTest2() throws Exception {
-		EmailSignatureProperties emailSignatureProperties = new EmailSignatureProperties();
-		List<Problem> problems = emailSignatureProperties.analyzeFile(file);
-		problems = emailSignatureProperties.analyzeFile(file);
+		List<Problem> problems = component.analyzeFile(file);
+		problems = component.analyzeFile(file);
 
 		assertNotNull(problems);
 		assertEquals(1, problems.size());
