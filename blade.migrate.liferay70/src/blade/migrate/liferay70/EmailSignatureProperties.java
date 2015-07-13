@@ -9,10 +9,10 @@ import blade.migrate.api.FileMigrator;
 @Component(
 	property = {
 		"file.extensions=properties",
-		"problem.title=Email Sigurature Properties",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#merged-configured-email-signature-field-into-the-body-of-email-messages-from-message-boards-and-wiki",
+		"problem.title=Email Signature Properties",
 		"problem.summary=Merged Configured Email Signature Field into the Body of Email Messages from Message Boards and Wiki",
 		"problem.tickets=LPS-44599",
+		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#merged-configured-email-signature-field-into-the-body-of-email-messages-from-message-boards-and-wiki",
 	},
 	service = FileMigrator.class
 )

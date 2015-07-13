@@ -9,9 +9,9 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=properties",
 		"problem.title=Portal Property Changes",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-portal-properties-used-to-display-sections-in-form-navigators",
 		"problem.summary=Removed Portal Properties Used to Display Sections in Form Navigators",
 		"problem.tickets=LPS-54903",
+		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-portal-properties-used-to-display-sections-in-form-navigators",
 	},
 	service = FileMigrator.class
 )
