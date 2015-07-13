@@ -1,20 +1,20 @@
 package blade.migrate.liferay70;
 
 import blade.migrate.api.FileMigrator;
-import blade.migrate.api.Problem;
-import blade.migrate.core.PropertiesFileChecker;
-import blade.migrate.core.SearchResult;
-
-import java.io.File;
-
-import java.util.ArrayList;
-import java.util.List;
+import blade.migrate.core.PropertiesFileMigrator;
 
 import org.osgi.service.component.annotations.Component;
-@Component(property = { "file.extensions=properties" })
-public class PortalProperties implements FileMigrator {
-
-	private final List<String> properties = new ArrayList<>();
+@Component(
+	property = {
+		"file.extensions=properties",
+		"problem.title=Portal Property Changes",
+		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-portal-properties-used-to-display-sections-in-form-navigators",
+		"problem.summary=Removed Portal Properties Used to Display Sections in Form Navigators",
+		"problem.tickets=LPS-54903",
+	},
+	service = FileMigrator.class
+)
+public class PortalProperties extends PropertiesFileMigrator {
 
 	public PortalProperties() {
 		properties.add("company.settings.form.configuration");
@@ -47,28 +47,6 @@ public class PortalProperties implements FileMigrator {
 		properties.add("users.form.update.identification");
 		properties.add("users.form.update.main");
 		properties.add("users.form.update.miscellaneous");
-	}
-
-	@Override
-	public List<Problem> analyzeFile( File file )
-	{
-		PropertiesFileChecker propertiesFileChecker = new PropertiesFileChecker(
-			file);
-		final List<Problem> problems = new ArrayList<>();
-
-		for (String key : properties) {
-			List<SearchResult> searchResults = propertiesFileChecker.findProperties(key);
-
-			if (searchResults != null) {
-				for (SearchResult searchResult : searchResults) {
-					problems.add(new Problem("Portal Property Changes", "https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-portal-properties-used-to-display-sections-in-form-navigators",
-						"Removed Portal Properties Used to Display Sections in Form Navigators",
-						"java,properties", "LPS-54903", file, searchResult.startLine, searchResult.startOffset, searchResult.endOffset));
-				}
-			}
-		}
-
-		return problems;
 	}
 
 }
