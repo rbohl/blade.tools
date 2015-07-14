@@ -13,30 +13,29 @@ import org.junit.Test;
 import blade.migrate.api.Problem;
 
 public class UsersLastNameRequiredPropertiesTest {
-	final File file = new File(
-			"projects/knowledge-base-portlet-6.2.x/docroot/WEB-INF/src/portal.properties");
+	final File file = new File("projects/knowledge-base-portlet-6.2.x/docroot/WEB-INF/src/portal.properties");
+	UsersLastNameRequiredProperties component;
 
 	@Before
 	public void beforeTest() {
 		assertTrue(file.exists());
+		component = new UsersLastNameRequiredProperties();
+		component.addPropertiesToSearch(component._properties);
 	}
 
 	@Test
 	public void usersLastNameRequiredPropertiesTest() throws Exception {
-		List<Problem> problems = new UsersLastNameRequiredProperties().analyzeFile(file);
+		List<Problem> problems = component.analyzeFile(file);
 
 		assertNotNull(problems);
 		assertEquals(1, problems.size());
-
-		Problem problem = problems.get(0);
-		assertEquals(14, problem.lineNumber);
 	}
 
 	@Test
 	public void portalPropertiesAnalyzeTest2() throws Exception {
-		UsersLastNameRequiredProperties target = new UsersLastNameRequiredProperties();
-		List<Problem> problems = target.analyzeFile(file);
-		problems = target.analyzeFile(file);
+		List<Problem> problems = component.analyzeFile(file);
+		problems = component.analyzeFile(file);
+
 		assertNotNull(problems);
 		assertEquals(1, problems.size());
 	}
