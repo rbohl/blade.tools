@@ -13,7 +13,7 @@ import blade.migrate.core.SearchResult;
 
 @Component(
 	property = {
-		"file.extension=java",
+		"file.extensions=java",
 		"problem.title=StorageAdapter API Changes",
 		"problem.summary=Removed Operations That Used the Fields Class from the StorageAdapter Interface",
 		"problem.tickets=LPS-53021",
