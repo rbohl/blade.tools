@@ -23,15 +23,15 @@ bnd-release	=	https://bndtools.ci.cloudbees.com/job/bnd.master/645/artifact/dist
 
 -plugin.eclipserepo = \
 	aQute.bnd.deployer.repository.FixedIndexedRepo; \
-		name=Eclipse SDK 3.7.2; \
-		locations=http://eclipse-repo-3.7.2.s3.amazonaws.com/index.xml.gz
-		
-		
+		name=Mars OBR; \
+		locations=http://106.187.96.36/gamerson/mars-obr/index.xml.gz
+
+
 -plugin.bndrepo = \
 	aQute.bnd.deployer.repository.FixedIndexedRepo; \
 		name=bnd.master; \
 		locations=${bnd-release}/index.xml.gz
-		
+
 -plugin.jpmrepo = \
 	aQute.bnd.jpm.Repository; \
 	    includeStage		=       true; \
