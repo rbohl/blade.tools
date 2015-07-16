@@ -2,18 +2,16 @@ package blade.migrate.test;
 
 import static org.junit.Assert.assertEquals;
 
-import blade.migrate.api.Migration;
-import blade.migrate.api.Problem;
-
 import java.io.File;
-
 import java.util.List;
 
 import org.junit.Test;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+
+import blade.migrate.api.Migration;
+import blade.migrate.api.Problem;
 
 public class AllProblemsTest {
 
@@ -26,7 +24,7 @@ public class AllProblemsTest {
 				.findProblems(new File(
 						"../blade.migrate.liferay70/projects/"));
 
-		assertEquals(84, problems.size());
+		assertEquals(86, problems.size());
 	}
 
 	private final BundleContext context = FrameworkUtil.getBundle(
