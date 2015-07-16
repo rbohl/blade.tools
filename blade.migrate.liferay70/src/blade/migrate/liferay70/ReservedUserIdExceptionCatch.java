@@ -27,5 +27,6 @@ public class ReservedUserIdExceptionCatch  extends JavaFileMigrator {
 		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 
 		return javaFileChecker.findCatchExceptions(new String[]{"ReservedUserIdException"});
+
 	}
 }
