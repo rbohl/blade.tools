@@ -3,16 +3,15 @@ package blade.cli.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import aQute.lib.io.IO;
-
 import blade.cli.blade;
 
 import java.io.File;
-
 import java.util.regex.Pattern;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import aQute.lib.io.IO;
 
 @SuppressWarnings("restriction")
 public class TestBladeCLI {
@@ -24,7 +23,8 @@ public class TestBladeCLI {
 			"gradle",
 			"-d",
 			"generated/test",
-			"foo", "jspportlet"
+			"-p", "jspportlet",
+			"foo",
 		};
 
 		new blade().run(args);
@@ -77,8 +77,8 @@ public class TestBladeCLI {
 			"generated/test",
 			"-c",
 			"Foo",
+			"-p", "portlet",
 			"gradle.test",
-			"portlet"
 		};
 
 		new blade().run(args);
@@ -128,8 +128,8 @@ public class TestBladeCLI {
 		String[] args = new String[] {
 			"-t", "create", "-b", "gradle",
 			"-d", "generated/test",
+			"-p", "service",
 			"servicepreaction",
-			"service",
 			"com.liferay.portal.kernel.events.LifecycleAction"
 		};
 
@@ -177,8 +177,8 @@ public class TestBladeCLI {
 	public void createMavenJSPPortletProject() throws Exception {
 		String[] args = new String[] {
 			"-t", "create", "-d", "generated/test",
+			"-p", "jspportlet",
 			"foo",
-			"jspportlet"
 		};
 
 		new blade().run(args);
@@ -228,10 +228,10 @@ public class TestBladeCLI {
 		String[] args = new String[] {
 			"-t", "create",
 			"-d", "generated/test",
-			"-c",
-			"PackagePathTest",
+			"-c", "PackagePathTest",
+			"-p", "service",
 			"blade.package.path.test",
-			"service", "com.liferay.portal.kernel.events.LifecycleAction"
+			"com.liferay.portal.kernel.events.LifecycleAction"
 		};
 
 		new blade().run(args);
@@ -320,7 +320,8 @@ public class TestBladeCLI {
 		String[] args = new String[] {
 			"-t", "create", "-d",
 			"generated/test",
-			"servicepreaction", "service",
+			"-p", "service",
+			"servicepreaction",
 			"com.liferay.portal.kernel.events.LifecycleAction"
 		};
 
@@ -354,8 +355,10 @@ public class TestBladeCLI {
 		String[] args = new String[] {
 			"-t", "create", "-d", "generated/test", "-c",
 			"LoginPreAction",
+			"-p",
+			"service",
 			"loginpre",
-			"service", "com.liferay.portal.kernel.events.LifecycleAction"
+			"com.liferay.portal.kernel.events.LifecycleAction"
 		};
 
 		new blade().run(args);

@@ -1,6 +1,9 @@
 
 package blade.cli.cmds;
 
+import blade.cli.CreateOptions;
+import blade.cli.blade;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,8 +21,6 @@ import aQute.bnd.osgi.Jar;
 import aQute.bnd.osgi.Processor;
 import aQute.bnd.osgi.Resource;
 import aQute.lib.io.IO;
-import blade.cli.CreateOptions;
-import blade.cli.blade;
 
 public class CreateCommand {
 
@@ -36,7 +37,7 @@ public class CreateCommand {
 
 		List<String> args = options._();
 
-		if (args.size() < 2) {
+		if (args.size() < 1) {
 			// Default command
 			printHelp();
 		}
@@ -82,11 +83,11 @@ public class CreateCommand {
 		}
 
 		Type type = options.projectType();
-		
+
 		if(type==null){
 			type = Type.portlet;
 		}
-		
+
 		Pattern glob = Pattern.compile("^" +
 			build.toString() + "/" + type + "/.*|\\...+/.*");
 
@@ -113,7 +114,7 @@ public class CreateCommand {
 		subs.put("_CLASSNAME_", classname);
 
 		if (Type.service.equals(type)) {
-			String service = options._().get(2);
+			String service = options._().get(1);
 
 			if (service.isEmpty()) {
 				blade.error(
