@@ -65,7 +65,7 @@ public class JavaFileChecker {
 	private CompilationUnit createJavaClassVisitor()
 		throws FileNotFoundException, IOException {
 
-		ASTParser parser = ASTParser.newParser(AST.JLS4);
+		ASTParser parser = ASTParser.newParser(AST.JLS8);
 
 		Map<String, String> options = JavaCore.getOptions();
 
