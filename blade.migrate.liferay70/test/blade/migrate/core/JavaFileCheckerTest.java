@@ -23,8 +23,8 @@ public class JavaFileCheckerTest {
 		assertNotNull(searchResult);
 		assertEquals( 14, searchResult.startLine );
 		assertEquals( 15, searchResult.endLine );
-		assertEquals( 218, searchResult.startOffset );
-		assertEquals( 240, searchResult.endOffset );
+		assertEquals( 229, searchResult.startOffset );
+		assertEquals( 251, searchResult.endOffset );
 	}
 
 	@Test
@@ -42,7 +42,18 @@ public class JavaFileCheckerTest {
 		assertNotNull(searchResult);
 		assertEquals( 10, searchResult.startLine );
 		assertEquals( 11, searchResult.endLine );
-		assertEquals( 170, searchResult.startOffset );
-		assertEquals( 189, searchResult.endOffset );
+		assertEquals( 181, searchResult.startOffset );
+		assertEquals( 200, searchResult.endOffset );
+	}
+	@Test
+	public void checkGuessMethodInvocation() {
+		File file = new File( "projects/filetests/JavaFileCheckerTest.java" );
+		JavaFileChecker javaFileChecker = new JavaFileChecker(file);
+		List<SearchResult> results = javaFileChecker.findMethodInvocations(null, "JavaFileChecker" , "staticCall", new String[]{"String","String","String"});
+		assertNotNull(results);
+		assertEquals(3, results.size());
+		results = javaFileChecker.findMethodInvocations("JavaFileChecker", null, "call", new String[]{"String","String","String"});
+		assertNotNull(results);
+		assertEquals(3, results.size());
 	}
 }

@@ -13,7 +13,9 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
+import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.CatchClause;
+import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -296,34 +298,69 @@ public class JavaFileChecker {
 					boolean match = false;
 
 					if (methodParamTypes != null) {
+						List<Expression>  argExpressions = (List<Expression>)node.arguments(); 
+						for(Expression express : argExpressions){
+							ITypeBinding myType = express.resolveTypeBinding();
+							if(myType != null){
+								System.out.println(myType.getName());
+							}else{
+								System.out.println("typebinding can be resolved");
+							}
+						}
 						Object[] args = node.arguments().toArray();
 
 						if (args != null && args.length == methodParamTypes.length) {
+							//args number matched
 							boolean possibleMatch = true;
 
 							for(int i = 0; i < args.length; i++) {
 								Object arg = args[i];
-
+								ITypeBinding argType = null;
+								//class cast according to instance type , find three types by now
 								if (arg instanceof SimpleName) {
 									SimpleName simpleName = (SimpleName)arg;
-
-									ITypeBinding argType = simpleName.resolveTypeBinding();
-
-									if (argType != null && argType.getName().equals(methodParamTypes[i])) {
-										continue;
-									}
-									else {
-										possibleMatch = false;
-										break;
-									}
+									argType = simpleName.resolveTypeBinding();
+								}
+								else if(arg instanceof ClassInstanceCreation){
+									ClassInstanceCreation classInstanceCreation = (ClassInstanceCreation)arg;
+									argType = classInstanceCreation.resolveTypeBinding();
+								}else if(arg instanceof MethodInvocation ){
+									MethodInvocation methodInvocation = (MethodInvocation)arg;
+									argType = methodInvocation.resolveTypeBinding();
+								}else if(arg instanceof BooleanLiteral){
+									BooleanLiteral booleanLiteral = (BooleanLiteral)arg;
+									argType = booleanLiteral.resolveTypeBinding();
+								}
+								else{
+									//TODO
+									//unknow arg type
+									System.out.println("error: unknow arg type");
+									possibleMatch = false;
+									break;
+								}
+								if (argType != null && argType.getName().equals(methodParamTypes[i])) {
+									continue;
+								}
+								else {
+									possibleMatch = false;
+									break;
 								}
 							}
-
 							if (possibleMatch) {
 								match = true;
 							}
+							else{
+								//TODO
+								//args number matched but args types didn't match . make a warning ?
+								System.out.println("guess right! "+_ast.getLineNumber(expression.getStartPosition()));
+							}
+						}
+						//args number mismatched
+						else{
+							match =false;
 						}
 					}
+					//any method args types is OK without setting methodParamTypes
 					else {
 						match = true;
 					}

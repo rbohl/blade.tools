@@ -1,6 +1,6 @@
 package blade.migrate.liferay70;
 
-public class Test {
+public class JavaFileChecker {
 	boolean value = false;
 
 	public static void main(String[] args) {
@@ -15,6 +15,17 @@ public class Test {
 				valueOf(1));
 
 		foo.bar("1");
+		JavaFileChecker andyTest = new Test();
+		String str = null;
+		andyTest.call(str , str , str);
+		andyTest.call(str , new String() , str);
+		andyTest.call(str , new String() , andyTest.getString());
+		andyTest.call(str , new String() , strange.getString());
+		andyTest.call2(str,str,str);
+		JavaFileChecker.staticCall(str, str, str);
+		JavaFileChecker.staticCall(str , new String() , str);
+		JavaFileChecker.staticCall(str , new String() , andyTest.getString());
+		JavaFileChecker.staticCall(str , new String() , strange.getString());
 	}
 
 	Foo foo = new Foo();
@@ -26,5 +37,14 @@ public class Test {
 	public void typeTest() {
 		NotFoo foo = new NotFoo();
 		foo.bar(false);
+	}
+
+	public String getString(){
+		return new String();
+	}
+
+
+	public static void staticCall(String str1 , String str2 , String str3){
+
 	}
 }
