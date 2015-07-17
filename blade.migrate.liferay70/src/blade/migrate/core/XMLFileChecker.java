@@ -1,9 +1,7 @@
-
 package blade.migrate.core;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +13,16 @@ import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
 public class XMLFileChecker {
 
 	public XMLFileChecker(File file) {
+		_file = file;
 
-		this.file = file;
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 
 		try {
-			parser = factory.newSAXParser();
+			_parser = factory.newSAXParser();
 		}
 		catch (ParserConfigurationException | SAXException e) {
 			new IllegalArgumentException(e);
@@ -33,84 +32,81 @@ public class XMLFileChecker {
 	public List<SearchResult> findTag(String tagName, String value)
 		throws IOException, ParserConfigurationException, SAXException {
 
-		List<SearchResult> results = new ArrayList<>();
-
 		// start parsing the given file and generates results
 
-		this.parser.parse(
-			this.file, new SearchExecutor(tagName, value, results, file));
-		return results;
+		SearchExecutor searcher = new SearchExecutor(tagName, value);
+
+		_parser.parse(_file, searcher);
+
+		return searcher.getResults();
 	}
 
-	private File file;
-	private SAXParser parser;
+	private File _file;
+	private SAXParser _parser;
 
-}
+	class SearchExecutor extends DefaultHandler {
 
-class SearchExecutor extends DefaultHandler {
+		public SearchExecutor(String tagName, String value) {
+			super();
 
-	public SearchExecutor(
-		String tagName, String value, List<SearchResult> results, File file) {
+			_tagName = tagName;
+			_value = value;
+			_results = new ArrayList<>();
+		}
 
-		super();
-		this.tagName = tagName;
-		this.value = value;
-		this.results = results;
-		this.file = file;
-	}
+		public List<SearchResult> getResults() {
+			return _results;
+		}
 
-	@Override
-	public void setDocumentLocator(final Locator locator) {
+		@Override
+		public void setDocumentLocator(final Locator locator) {
+			this.locator = locator;
+		}
 
-		this.locator = locator;
-	}
+		@Override
+		public void startDocument()
+			throws SAXException {
+			_results.clear();
+		}
 
-	@Override
-	public void startDocument()
-		throws SAXException {
+		@Override
+		public void startElement(
+			String uri, String localName, String qName, Attributes attributes)
+				throws SAXException {
 
-		// init the result list
+			if (_tagName.equals(qName)) {
+				inState = true;
+			}
+		}
 
-	}
+		@Override
+		public void endElement(String uri, String localName, String qName)
+			throws SAXException {
+			// reset the state when goes to end of each element
 
-	@Override
-	public void startElement(
-		String uri, String localName, String qName, Attributes attributes)
+			inState = false;
+		}
+
+		@Override
+		public void characters(char[] ch, int start, int length)
 			throws SAXException {
 
-		if (tagName.equals(qName)) {
-			inState = true;
+			String content = new String(ch, start, length);
+
+			if (inState && _value.equals(content)) {
+				_results.add(
+					new SearchResult(
+						_file,
+						0, 0, locator.getLineNumber(), locator.getLineNumber()));
+			}
 		}
+
+		private String _tagName;
+		private String _value;
+		// is in the target Tag
+		private boolean inState = false;
+		private Locator locator;
+		private List<SearchResult> _results = null;
 	}
 
-	@Override
-	public void endElement(String uri, String localName, String qName)
-		throws SAXException {
-
-		// reset the state when goes to end of each element
-
-		inState = false;
-	}
-
-	@Override
-	public void characters(char[] ch, int start, int length)
-		throws SAXException {
-
-		String content = new String(ch, start, length);
-
-		if (inState && value.equals(content)) {
-			results.add(
-				new SearchResult(
-					file,
-					0, 0, locator.getLineNumber(), locator.getLineNumber()));
-		}
-	}
-
-	private String tagName;
-	private String value;
-	// is in the target Tag
-	private boolean inState = false;
-	private Locator locator;
-	private List<SearchResult> results = null;
-	private File file;
 }
