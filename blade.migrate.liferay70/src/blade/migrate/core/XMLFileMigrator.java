@@ -5,7 +5,6 @@ import blade.migrate.api.FileMigrator;
 import blade.migrate.api.Problem;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.List;
@@ -16,16 +15,16 @@ public abstract class XMLFileMigrator implements FileMigrator {
 
 	@Activate
 	public void activate(ComponentContext ctx) {
-		this._context = ctx;
+		_context = ctx;
 
 		final Dictionary<String, Object> properties =
-			this._context.getProperties();
+			_context.getProperties();
 
-		this._problemTitle = (String)properties.get("problem.title");
-		this._problemUrl = (String)properties.get("problem.url");
-		this._problemSummary = (String)properties.get("problem.summary");
-		this._problemType = (String)properties.get("file.extensions");
-		this._problemTickets = (String)properties.get("problem.tickets");
+		_problemTitle = (String)properties.get("problem.title");
+		_problemUrl = (String)properties.get("problem.url");
+		_problemSummary = (String)properties.get("problem.summary");
+		_problemType = (String)properties.get("file.extensions");
+		_problemTickets = (String)properties.get("problem.tickets");
 	}
 
 	@Override
@@ -38,11 +37,11 @@ public abstract class XMLFileMigrator implements FileMigrator {
 			for (SearchResult searchResult : searchResults) {
 				problems.add(
 					new Problem(
-						this._problemTitle,
-						this._problemUrl,
-						this._problemSummary,
-						this._problemType,
-						this._problemTickets,
+						_problemTitle,
+						_problemUrl,
+						_problemSummary,
+						_problemType,
+						_problemTickets,
 						file,
 						searchResult.startLine,
 						searchResult.startOffset, searchResult.endOffset));
