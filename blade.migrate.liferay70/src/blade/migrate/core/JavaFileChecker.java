@@ -299,60 +299,41 @@ public class JavaFileChecker {
 
 					if (methodParamTypes != null) {
 						List<Expression>  argExpressions = (List<Expression>)node.arguments(); 
-						for(Expression express : argExpressions){
-							ITypeBinding myType = express.resolveTypeBinding();
-							if(myType != null){
-								System.out.println(myType.getName());
-							}else{
-								System.out.println("typebinding can be resolved");
-							}
-						}
-						Object[] args = node.arguments().toArray();
-
-						if (args != null && args.length == methodParamTypes.length) {
+						Expression[] args = new Expression[argExpressions.size()];
+						argExpressions.toArray(args);
+						if (argExpressions != null && args.length == methodParamTypes.length) {
 							//args number matched
 							boolean possibleMatch = true;
 
 							for(int i = 0; i < args.length; i++) {
-								Object arg = args[i];
-								ITypeBinding argType = null;
-								//class cast according to instance type , find three types by now
-								if (arg instanceof SimpleName) {
-									SimpleName simpleName = (SimpleName)arg;
-									argType = simpleName.resolveTypeBinding();
-								}
-								else if(arg instanceof ClassInstanceCreation){
-									ClassInstanceCreation classInstanceCreation = (ClassInstanceCreation)arg;
-									argType = classInstanceCreation.resolveTypeBinding();
-								}else if(arg instanceof MethodInvocation ){
-									MethodInvocation methodInvocation = (MethodInvocation)arg;
-									argType = methodInvocation.resolveTypeBinding();
-								}else if(arg instanceof BooleanLiteral){
-									BooleanLiteral booleanLiteral = (BooleanLiteral)arg;
-									argType = booleanLiteral.resolveTypeBinding();
-								}
-								else{
+								Expression arg = args[i];
+								ITypeBinding argType = arg.resolveTypeBinding();
+								if (argType != null ){
+									//can resolve the type
+									 if( argType.getName().equals(methodParamTypes[i])) {
+										 //type matched
+											continue;
+									 }else{
+										 //type unmatched
+										 possibleMatch = false;
+										 break;
+									 }
+								}else{
 									//TODO
-									//unknow arg type
-									System.out.println("error: unknow arg type");
+									//can't resolve the type but  args number matched . make a warning ?
 									possibleMatch = false;
-									break;
-								}
-								if (argType != null && argType.getName().equals(methodParamTypes[i])) {
-									continue;
-								}
-								else {
-									possibleMatch = false;
+									System.out.println("Guess Right : arg number is right but type is not fully matched . Line :"+_ast.getLineNumber(expression.getStartPosition()) +" File:"+_file.getName());
+									/*final int startOffset = expression.getStartPosition();
+									final int startLine = _ast.getLineNumber(startOffset);
+									final int endOffset = node.getStartPosition() + node.getLength();
+									final int endLine = _ast.getLineNumber(endOffset);
+									searchResults.add(new SearchResult(_file, startOffset,
+										endOffset, startLine, endLine));*/
 									break;
 								}
 							}
 							if (possibleMatch) {
 								match = true;
-							}
-							else{
-								//TODO
-								//args number matched but args types didn't match . make a warning ?
-								System.out.println("guess right! "+_ast.getLineNumber(expression.getStartPosition()));
 							}
 						}
 						//args number mismatched

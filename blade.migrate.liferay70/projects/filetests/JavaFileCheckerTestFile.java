@@ -22,7 +22,7 @@ public class JavaFileChecker {
 		andyTest.call(str , new String() , andyTest.getString());
 		andyTest.call(str , new String() , strange.getString());
 		andyTest.call2(str,str,str);
-		JavaFileChecker.staticCall(str, str, str);
+		JavaFileChecker.staticCall(str+"ss", str, str);
 		JavaFileChecker.staticCall(str , new String() , str);
 		JavaFileChecker.staticCall(str , new String() , andyTest.getString());
 		JavaFileChecker.staticCall(str , new String() , strange.getString());
