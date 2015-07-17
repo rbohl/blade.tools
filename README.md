@@ -27,13 +27,13 @@ Visit the JPM4J [Windows installation](https://www.jpm4j.org/#!/md/windows) setu
 Clone this repo, and then from the command line execute following command:
 
 ```
-$ gradle export.blade.cli
+$ gradle build export.blade.cli
 ```
 
 ### Install Blade Tools jar using JPM
 
 ```
-$ jpm install -fl blade.cli/generated/distributions/executables/blade.cli.jar
+$ jpm install -fl blade.cli/generated/distributions/executable/blade.cli.jar
 ```
 
 Now you should have the ```blade``` executable in your path. Try it by running:
@@ -55,7 +55,30 @@ Current available commands
 
 ### Create
 
+The ```Create``` command allows you to create new Liferay 7 module projects based on gradle or maven build.
+
+```
+$ blade create helloworld 
+```
+
+This will create a new helloworld portlet module project that contains an OSGi component built by a gradle script.
+ To see all the options of the create command just run ```$blade create -h``` for all options.
+
 ### Deploy
+
+First, start Liferay 7 Portal, once it is running you can build your Liferay 7 module and deploy it
+
+```
+helloworld $ gradle build
+helloworld $ blade deploy build/libs/helloworld-1.0.jar
+```
+
+If you have Liferay 7 running the blade tool should connect to the Liferay Module Framework and install your newly built module jar file.  You can check the OSGi shell of Liferay to verify
+
+```
+$ telnet localhost 11311
+```
+Then issue the command ```lb helloworld```
 
 ### Migrate
 
