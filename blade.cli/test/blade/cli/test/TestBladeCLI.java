@@ -6,15 +6,21 @@ import static org.junit.Assert.assertTrue;
 import blade.cli.blade;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import aQute.lib.io.IO;
 
-@SuppressWarnings("restriction")
 public class TestBladeCLI {
+
+	@BeforeClass
+	public static void copyTemplates() throws IOException {
+		IO.copy(new File("templates.zip"), new File("bin_test/templates.zip"));
+	}
 
 	@Test
 	public void createGradleJSPPortletProject() throws Exception {
