@@ -1,4 +1,3 @@
-
 package blade.migrate.core;
 
 import blade.migrate.api.FileMigrator;
@@ -11,14 +10,17 @@ import java.util.List;
 
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
+
+/**
+ * @author Andy Wu
+ */
 public abstract class XMLFileMigrator implements FileMigrator {
 
 	@Activate
 	public void activate(ComponentContext ctx) {
 		_context = ctx;
 
-		final Dictionary<String, Object> properties =
-			_context.getProperties();
+		final Dictionary<String, Object> properties = _context.getProperties();
 
 		_problemTitle = (String)properties.get("problem.title");
 		_problemUrl = (String)properties.get("problem.url");
@@ -35,16 +37,13 @@ public abstract class XMLFileMigrator implements FileMigrator {
 
 		if (searchResults != null) {
 			for (SearchResult searchResult : searchResults) {
-				problems.add(
-					new Problem(
-						_problemTitle,
-						_problemUrl,
-						_problemSummary,
-						_problemType,
-						_problemTickets,
-						file,
-						searchResult.startLine,
-						searchResult.startOffset, searchResult.endOffset));
+				Problem problem = new Problem(
+						_problemTitle, _problemUrl, _problemSummary,
+						_problemType, _problemTickets, file,
+						searchResult.startLine, searchResult.startOffset,
+						searchResult.endOffset);
+
+				problems.add(problem);
 			}
 		}
 
