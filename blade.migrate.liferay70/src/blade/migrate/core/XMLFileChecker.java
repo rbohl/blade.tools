@@ -32,14 +32,16 @@ public class XMLFileChecker {
 		}
 	}
 
-	public List<SearchResult> findTag(String tagName, String value)
-		throws IOException, ParserConfigurationException, SAXException {
-
+	public List<SearchResult> findTag(String tagName, String value) {
 		// start parsing the given file and generates results
 
 		SearchExecutor searcher = new SearchExecutor(tagName, value);
 
-		_parser.parse(_file, searcher);
+		try {
+			_parser.parse(_file, searcher);
+		} catch (SAXException | IOException e) {
+			e.printStackTrace();
+		}
 
 		return searcher.getResults();
 	}
