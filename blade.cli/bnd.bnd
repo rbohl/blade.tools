@@ -6,6 +6,9 @@
 	blade.migrate.api;version=latest,\
 	osgi.core
 
+-testpath: \
+	biz.aQute.junit
+
 -includeresource: \
 	{templates.zip}
 

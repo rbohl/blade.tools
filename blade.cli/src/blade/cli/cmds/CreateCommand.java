@@ -79,7 +79,7 @@ public class CreateCommand {
 		Build build = options.build();
 
 		if (build == null) {
-			build = Build.maven;
+			build = Build.gradle;
 		}
 
 		Type type = options.projectType();

@@ -1,9 +1,5 @@
 package blade.cli;
 
-import aQute.lib.getopt.Arguments;
-import aQute.lib.getopt.Description;
-import aQute.lib.getopt.Options;
-
 import blade.cli.cmds.Build;
 import blade.cli.cmds.IDE;
 import blade.cli.cmds.Type;
@@ -11,6 +7,10 @@ import blade.cli.cmds.Type;
 import java.io.File;
 
 import org.osgi.framework.Version;
+
+import aQute.lib.getopt.Arguments;
+import aQute.lib.getopt.Description;
+import aQute.lib.getopt.Options;
 
 @Arguments(arg = {"name", "[service]"})
 @Description("Creates a new Liferay module project.")
@@ -22,7 +22,7 @@ public interface CreateOptions extends Options {
 	public String classname();
 
 	@Description("The build type of project to create.  "
-			+ "Valid values are maven or gradle. Default: maven")
+			+ "Valid values are maven or gradle. Default: gradle")
 	public Build build();
 
 	@Description("The directory where to create the new project.")

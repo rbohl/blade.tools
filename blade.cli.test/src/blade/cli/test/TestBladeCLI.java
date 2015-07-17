@@ -19,8 +19,7 @@ public class TestBladeCLI {
 	@Test
 	public void createGradleJSPPortletProject() throws Exception {
 		String[] args = new String[] {
-			"-t", "create", "-b",
-			"gradle",
+			"-t", "create",
 			"-d",
 			"generated/test",
 			"-p", "jspportlet",
@@ -177,6 +176,7 @@ public class TestBladeCLI {
 	public void createMavenJSPPortletProject() throws Exception {
 		String[] args = new String[] {
 			"-t", "create", "-d", "generated/test",
+			"-b", "maven",
 			"-p", "jspportlet",
 			"foo",
 		};
@@ -228,6 +228,7 @@ public class TestBladeCLI {
 		String[] args = new String[] {
 			"-t", "create",
 			"-d", "generated/test",
+			"-b", "maven",
 			"-c", "PackagePathTest",
 			"-p", "service",
 			"blade.package.path.test",
@@ -264,6 +265,7 @@ public class TestBladeCLI {
 			"-t",
 			"create",
 			"-d", "generated/test",
+			"-b", "maven",
 			"foo",
 			"portlet"
 		};
@@ -320,6 +322,7 @@ public class TestBladeCLI {
 		String[] args = new String[] {
 			"-t", "create", "-d",
 			"generated/test",
+			"-b", "maven",
 			"-p", "service",
 			"servicepreaction",
 			"com.liferay.portal.kernel.events.LifecycleAction"
