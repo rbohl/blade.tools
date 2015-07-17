@@ -108,9 +108,7 @@ class SearchExecutor extends DefaultHandler {
 
 	private String tagName;
 	private String value;
-
 	// is in the target Tag
-
 	private boolean inState = false;
 	private Locator locator;
 	private List<SearchResult> results = null;
