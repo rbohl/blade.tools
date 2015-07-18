@@ -334,8 +334,7 @@ public class JavaFileChecker {
 						final int endOffset = node.getStartPosition() + node.getLength();
 						final int endLine = _ast.getLineNumber(endOffset);
 
-						searchResults.add(new SearchResult(_file, startOffset,
-							endOffset, startLine, endLine));
+						searchResults.add(createSearchResult(startOffset, endOffset, startLine, endLine));
 					}
 				}
 
@@ -344,6 +343,13 @@ public class JavaFileChecker {
 		});
 
 		return searchResults;
+	}
+
+	protected SearchResult createSearchResult(int startOffset, int endOffset,
+			int startLine, int endLine) {
+
+		return new SearchResult(_file, startOffset, endOffset, startLine,
+				endLine);
 	}
 
 	public List<SearchResult> findQualifiedName(final String exception) {

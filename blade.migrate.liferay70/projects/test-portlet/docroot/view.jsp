@@ -19,7 +19,3 @@
 <portlet:defineObjects />
 
 This is the <b>Test</b> portlet.
-
-<%
-RepositoryLocalServiceUtil.getRepositoryImpl(0, fileEntryId, 0);
-%>
