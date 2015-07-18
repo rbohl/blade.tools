@@ -12,7 +12,7 @@ import java.util.List;
 import org.osgi.service.component.annotations.Component;
 @Component(
 	property = {
-		"file.extensions=java",
+		"file.extensions=java,jsp,jspf",
 		"problem.summary=Replaced Method getFacetQuery with getFacetBooleanFilter in Indexer",
 		"problem.tickets=LPS-56064",
 		"problem.title=Indexer API Changes",
@@ -23,9 +23,8 @@ import org.osgi.service.component.annotations.Component;
 public class IndexerGetFacetQuery extends JavaFileMigrator {
 
 	@Override
-	protected List<SearchResult> searchJavaFile(File file) {
+	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
 		final List<SearchResult> searchResults = new ArrayList<>();
-		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 
 		final List<SearchResult> declaration = javaFileChecker.findMethodDeclaration("getFacetQuery",
 				new String[] { "String", "SearchContextPortletURL" });

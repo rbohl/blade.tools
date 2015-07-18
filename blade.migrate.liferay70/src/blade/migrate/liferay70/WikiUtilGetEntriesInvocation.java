@@ -1,15 +1,15 @@
 
 package blade.migrate.liferay70;
 
-import java.io.File;
-import java.util.List;
-
-import org.osgi.service.component.annotations.Component;
-
 import blade.migrate.api.FileMigrator;
 import blade.migrate.core.JavaFileChecker;
 import blade.migrate.core.JavaFileMigrator;
 import blade.migrate.core.SearchResult;
+
+import java.io.File;
+import java.util.List;
+
+import org.osgi.service.component.annotations.Component;
 
 @Component(
 	property = {
@@ -24,9 +24,7 @@ import blade.migrate.core.SearchResult;
 public class WikiUtilGetEntriesInvocation extends JavaFileMigrator {
 
 	@Override
-	protected List<SearchResult> searchJavaFile(File file) {
-		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
-
+	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
 		return javaFileChecker.findMethodInvocations(null, "WikiUtil",
 				"getEntries", null);
 	}

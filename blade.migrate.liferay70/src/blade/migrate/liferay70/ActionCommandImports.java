@@ -30,9 +30,8 @@ public class ActionCommandImports extends JavaFileMigrator {
 	};
 
 	@Override
-	protected List<SearchResult> searchJavaFile(File file) {
+	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
 		final List<SearchResult> searchResults = new ArrayList<>();
-		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 
 		for (String importName : imports) {
 			final SearchResult importResult = javaFileChecker.findImport(importName);

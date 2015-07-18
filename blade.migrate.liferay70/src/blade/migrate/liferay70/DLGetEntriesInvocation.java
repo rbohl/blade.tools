@@ -1,18 +1,18 @@
 package blade.migrate.liferay70;
 
+import blade.migrate.api.FileMigrator;
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.JavaFileMigrator;
+import blade.migrate.core.SearchResult;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
-
-import blade.migrate.api.FileMigrator;
-import blade.migrate.core.JavaFileChecker;
-import blade.migrate.core.JavaFileMigrator;
-import blade.migrate.core.SearchResult;
 @Component(
 	property = {
-		"file.extensions=java",
+		"file.extensions=java,jsp,jspf",
 		"problem.summary=The getEntries method was no longer used, and contained hardcoded references to classes that will be moved into OSGi bundles.",
 		"problem.tickets=LPS-56247",
 		"problem.title=Removed Method getEntries from DL, DLImpl, and DLUtil Classes",
@@ -23,9 +23,8 @@ import blade.migrate.core.SearchResult;
 public class DLGetEntriesInvocation extends JavaFileMigrator {
 
 	@Override
-	protected List<SearchResult> searchJavaFile(File file) {
+	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
 		final List<SearchResult> searchResults = new ArrayList<SearchResult>();
-		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 
 		final String[] argTypes = new String[] { "Hits" };
 
