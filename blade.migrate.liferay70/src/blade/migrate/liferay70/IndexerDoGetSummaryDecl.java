@@ -22,9 +22,7 @@ import org.osgi.service.component.annotations.Component;
 public class IndexerDoGetSummaryDecl extends JavaFileMigrator {
 
 	@Override
-	protected List<SearchResult> searchJavaFile(File file) {
-		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
-
+	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
 		return javaFileChecker.findMethodDeclaration("doGetSummary", new String[] {"Document", "Locale", "String", "PortletURL"});
 	}
 }

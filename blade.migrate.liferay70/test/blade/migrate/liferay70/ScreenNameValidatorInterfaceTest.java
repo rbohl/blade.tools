@@ -4,13 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.SearchResult;
+
 import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import blade.migrate.api.Problem;
 
 public class ScreenNameValidatorInterfaceTest {
 	final File testFile = new File("projects/filetests/DefaultScreenNameValidator.java");
@@ -23,10 +24,11 @@ public class ScreenNameValidatorInterfaceTest {
 	}
 
 	@Test
-	public void assetDLgetEntriesTest() throws Exception {
-		List<Problem> problems = component.analyzeFile(testFile);
+	public void screenNameValidatorInterface() throws Exception {
+		List<SearchResult> results = component.searchJavaFile(testFile,
+				new JavaFileChecker(testFile));
 
-		assertNotNull(problems);
-		assertEquals(1, problems.size());
+		assertNotNull(results);
+		assertEquals(1, results.size());
 	}
 }

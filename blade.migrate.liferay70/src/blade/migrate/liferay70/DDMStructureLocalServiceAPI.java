@@ -12,10 +12,10 @@ import org.osgi.service.component.annotations.Component;
 
 @Component(
 	property = {
-		"file.extension=java",
+		"file.extensions=java,jsp,jspf",
 		"problem.summary=DDM Structure Local Service API No Longer Has the updateXSDFieldMetadata operation",
 		"problem.tickets= LPS-47559",
-		"problem.title=DDM Structure Local Service API No Longer Has the updateXSDFieldMetadata operation", 
+		"problem.title=DDM Structure Local Service API No Longer Has the updateXSDFieldMetadata operation",
 		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#ddm-structure-local-service-api-no-longer-has-the-updatexsdfieldmetadata-operation"
 	},
 	service = FileMigrator.class
@@ -23,9 +23,7 @@ import org.osgi.service.component.annotations.Component;
 public class DDMStructureLocalServiceAPI extends JavaFileMigrator {
 
 	@Override
-	protected List<SearchResult> searchJavaFile(File file) {
-		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
-
+	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
 		return javaFileChecker.findMethodInvocations(null, "DDMStructureLocalServiceUtil", "updateXSDFieldMetadata",null);
 	}
 }

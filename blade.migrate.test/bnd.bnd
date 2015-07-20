@@ -17,6 +17,9 @@ Test-Cases: ${test-cases}
 -runbundles: \
 	blade.migrate.provider;version=latest,\
 	blade.migrate.liferay70;version=latest,\
+	org.apache.xerces,\
+	org.apache.xml.resolver,\
+	org.apache.xml.serializer,\
 	org.apache.felix.configadmin;version='[1.8.0,1.8.1)',\
 	org.apache.felix.metatype;version='[1.0.10,1.0.11)',\
 	org.apache.felix.scr;version='[1.8.2,1.8.3)',\
@@ -24,16 +27,36 @@ Test-Cases: ${test-cases}
 	org.eclipse.equinox.common,\
 	org.eclipse.equinox.preferences,\
 	org.eclipse.equinox.registry,\
+	org.eclipse.emf.common,\
+	org.eclipse.emf.ecore,\
 	org.eclipse.core.contenttype,\
 	org.eclipse.core.commands,\
 	org.eclipse.core.expressions,\
+	org.eclipse.core.filebuffers,\
 	org.eclipse.core.filesystem,\
 	org.eclipse.core.jobs,\
 	org.eclipse.core.resources,\
 	org.eclipse.core.runtime,\
 	org.eclipse.jdt.core,\
+	org.eclipse.osgi.services,\
+	org.eclipse.osgi.util,\
+	org.eclipse.wst.common.core,\
+	org.eclipse.wst.common.environment,\
+	org.eclipse.wst.common.frameworks,\
+	org.eclipse.wst.common.project.facet.core,\
+	org.eclipse.wst.common.uriresolver,\
+	org.eclipse.wst.css.core,\
+	org.eclipse.wst.html.core,\
+	org.eclipse.wst.sse.core,\
+	org.eclipse.wst.xml.core,\
+	org.eclipse.wst.validation,\
+	org.eclipse.jst.jsp.core,\
 	org.eclipse.text,\
-	com.ibm.icu
+	com.ibm.icu,\
+	javax.el,\
+	javax.servlet,\
+	javax.servlet.jsp,\
+	javax.xml
 
 -runrequires: osgi.identity;filter:='(osgi.identity=blade.migrate.provider)'
 

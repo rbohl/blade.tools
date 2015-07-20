@@ -4,13 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.SearchResult;
+
 import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import blade.migrate.api.Problem;
 
 public class RequiredParamGroupIdTest {
 
@@ -25,10 +26,11 @@ public class RequiredParamGroupIdTest {
 
 	@Test
 	public void assetRequiredParamGroupIdTest() throws Exception {
-		List<Problem> problems = component.analyzeFile(testFile);
+		List<SearchResult> results = component.searchJavaFile(testFile,
+				new JavaFileChecker(testFile));
 
-		assertNotNull(problems);
-		assertEquals(14, problems.size());
+		assertNotNull(results);
+		assertEquals(14, results.size());
 	}
 
 }

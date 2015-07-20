@@ -4,11 +4,12 @@ import blade.migrate.api.FileMigrator;
 import blade.migrate.api.Problem;
 
 import java.io.File;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.List;
 
+import org.eclipse.core.runtime.Path;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 
@@ -18,8 +19,8 @@ public abstract class JavaFileMigrator implements FileMigrator {
 	String problemTitle;
 	String problemUrl;
 	String problemSummary;
-	String problemType;
 	String problemTickets;
+	List<String> _fileExtentions;
 
 	@Activate
 	public void activate(ComponentContext ctx) {
@@ -28,10 +29,11 @@ public abstract class JavaFileMigrator implements FileMigrator {
 		final Dictionary<String, Object> properties =
 			this.context.getProperties();
 
+		_fileExtentions = Arrays.asList(((String)properties.get("file.extensions")).split(","));
+
 		this.problemTitle = (String)properties.get("problem.title");
 		this.problemUrl = (String)properties.get("problem.url");
 		this.problemSummary = (String)properties.get("problem.summary");
-		this.problemType = (String)properties.get("file.extensions");
 		this.problemTickets = (String)properties.get("problem.tickets");
 	}
 
@@ -39,12 +41,14 @@ public abstract class JavaFileMigrator implements FileMigrator {
 	public List<Problem> analyzeFile(File file) {
 		final List<Problem> problems = new ArrayList<>();
 
-		final List<SearchResult> searchResults = searchJavaFile(file);
+		final List<SearchResult> searchResults = searchJavaFile(file, createJavaFileChecker(file));
 
 		if (searchResults != null) {
 			for (SearchResult searchResult : searchResults) {
+				String fileExtension = new Path(file.getAbsolutePath()).getFileExtension();
+
 				problems.add(new Problem(this.problemTitle, this.problemUrl, this.problemSummary,
-					this.problemType, this.problemTickets, file, searchResult.startLine,
+					fileExtension, this.problemTickets, file, searchResult.startLine,
 					searchResult.startOffset, searchResult.endOffset));
 			}
 		}
@@ -52,6 +56,20 @@ public abstract class JavaFileMigrator implements FileMigrator {
 		return problems;
 	}
 
-	protected abstract List<SearchResult> searchJavaFile(File file);
+	protected JavaFileChecker createJavaFileChecker(File file) {
+		final String fileName = file.getName();
+
+		if (fileName.endsWith("java") && _fileExtentions.contains("java")) {
+			return new JavaFileChecker(file);
+		}
+		else if ((fileName.endsWith("jsp") && _fileExtentions.contains("jsp"))
+				|| (fileName.endsWith("jspf") && _fileExtentions.contains("jspf"))) {
+			return new JSPFileChecker(file);
+		}
+
+		return null;
+	}
+
+	protected abstract List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker);
 
 }

@@ -4,13 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.SearchResult;
+
 import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import blade.migrate.api.Problem;
 
 public class PortletConfigGetFormatMethodsTest {
 
@@ -27,18 +28,20 @@ public class PortletConfigGetFormatMethodsTest {
 
 	@Test
 	public void unicodeLanguageImplFile() throws Exception {
-		List<Problem> problems = component.analyzeFile(unicodeLanguageImplFile);
+		List<SearchResult> results = component.searchJavaFile(unicodeLanguageImplFile,
+				new JavaFileChecker(unicodeLanguageImplFile));
 
-		assertNotNull(problems);
-		assertEquals(6, problems.size());
+        assertNotNull(results);
+        assertEquals(6, results.size());
 	}
 
 	@Test
 	public void liferayPortletFile() throws Exception {
-		List<Problem> problems = component.analyzeFile(liferayPortletFile);
+		List<SearchResult> results = component.searchJavaFile(liferayPortletFile,
+				new JavaFileChecker(liferayPortletFile));
 
-		assertNotNull(problems);
-		assertEquals(3, problems.size());
+        assertNotNull(results);
+        assertEquals(3, results.size());
 	}
 
 }

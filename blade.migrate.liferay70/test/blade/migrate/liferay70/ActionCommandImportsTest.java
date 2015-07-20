@@ -4,13 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.SearchResult;
+
 import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import blade.migrate.api.Problem;
 
 public class ActionCommandImportsTest {
 
@@ -28,26 +29,31 @@ public class ActionCommandImportsTest {
 
 	@Test
 	public void sayHelloActionCommandFile() throws Exception {
-		List<Problem> problems = component.analyzeFile(sayHelloActionCommandFile);
+		List<SearchResult> results = component.searchJavaFile(sayHelloActionCommandFile,
+				new JavaFileChecker(sayHelloActionCommandFile));
 
-		assertNotNull(problems);
-		assertEquals(1, problems.size());
+		assertNotNull(results);
+		assertEquals(1, results.size());
 	}
 
 	@Test
 	public void sayHelloActionCommandFile2() throws Exception {
-		List<Problem> problems = component.analyzeFile(sayHelloActionCommandFile2);
+		List<SearchResult> results = component.searchJavaFile(sayHelloActionCommandFile2,
+				new JavaFileChecker(sayHelloActionCommandFile2));
 
-		assertNotNull(problems);
-		assertEquals(2, problems.size());
+		assertNotNull(results);
+		assertEquals(2, results.size());
 	}
 
 	@Test
 	public void sayHelloActionCommandFile2x() throws Exception {
-		List<Problem> problems = component.analyzeFile(sayHelloActionCommandFile);
-		problems = component.analyzeFile(sayHelloActionCommandFile);
+		List<SearchResult> results = component.searchJavaFile(sayHelloActionCommandFile,
+				new JavaFileChecker(sayHelloActionCommandFile));
 
-		assertNotNull(problems);
-		assertEquals(1, problems.size());
+		component.searchJavaFile(sayHelloActionCommandFile,
+				new JavaFileChecker(sayHelloActionCommandFile));
+
+		assertNotNull(results);
+		assertEquals(1, results.size());
 	}
 }

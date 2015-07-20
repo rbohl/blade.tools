@@ -4,13 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.SearchResult;
+
 import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import blade.migrate.api.Problem;
 
 public class UserServicesThrownExceptionsChangesTest {
 	final File testFile = new File(
@@ -25,18 +26,22 @@ public class UserServicesThrownExceptionsChangesTest {
 
 	@Test
 	public void ChangesUserServicesAnalyzeTest() throws Exception {
-		List<Problem> problems = component.analyzeFile(testFile);
+		List<SearchResult> results = component.searchJavaFile(testFile,
+				new JavaFileChecker(testFile));
 
-		assertNotNull(problems);
-		assertEquals(2, problems.size());
+		assertNotNull(results);
+		assertEquals(2, results.size());
 	}
 
 	@Test
 	public void ChangesUserServicesAnalyzeTestTwice() throws Exception {
-		List<Problem> problems = component.analyzeFile(testFile);
-		problems = component.analyzeFile(testFile);
+		List<SearchResult> results = component.searchJavaFile(testFile,
+				new JavaFileChecker(testFile));
 
-		assertNotNull(problems);
-		assertEquals(2, problems.size());
+		results = component.searchJavaFile(testFile,
+				new JavaFileChecker(testFile));
+
+		assertNotNull(results);
+		assertEquals(2, results.size());
 	}
 }

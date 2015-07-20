@@ -9,15 +9,14 @@ import blade.migrate.api.Reporter;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -135,7 +134,7 @@ public class ProjectMigrationService implements Migration {
 						fileName.lastIndexOf('.')+1);
 
 					for ( ServiceReference<FileMigrator> fm : fileMigrators ) {
-						String fileExtensions = (String)fm.getProperty("file.extensions");
+						List<String> fileExtensions = Arrays.asList(((String)fm.getProperty("file.extensions")).split(","));
 
 						if ( fileExtensions != null && fileExtensions.contains(extension) ) {
 							FileMigrator fmigrator = context.getService(fm);

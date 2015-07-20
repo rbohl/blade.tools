@@ -24,9 +24,8 @@ import org.osgi.service.component.annotations.Component;
 public class ConfigurationActionRenderMethod extends JavaFileMigrator {
 
 	@Override
-	protected List<SearchResult> searchJavaFile(File file) {
+	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
 		final List<SearchResult> searchResults = new ArrayList<>();
-		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 
 		// render method declarations
 		List<SearchResult> declarations = javaFileChecker.findMethodDeclaration("render",

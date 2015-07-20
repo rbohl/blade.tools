@@ -1,7 +1,6 @@
 package blade.migrate.core;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -30,16 +29,13 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
  */
 public class JavaFileChecker {
 
-
-
-
 	/**
 	 * initialize the Checker
 	 * @param file java file
 	 */
 	public JavaFileChecker(File file) {
-		this._file = file;
-		this._fileHelper = new FileHelper();
+		_file = file;
+		_fileHelper = new FileHelper();
 
 		try {
 			synchronized (_map) {
@@ -50,10 +46,10 @@ public class JavaFileChecker {
 
 					_map.put(file, new WeakReference<CompilationUnit>(newAst));
 
-					this._ast = newAst;
+					_ast = newAst;
 				}
 				else {
-					this._ast = astRef.get();
+					_ast = astRef.get();
 				}
 			}
 		} catch (Exception e) {
@@ -62,9 +58,7 @@ public class JavaFileChecker {
 	}
 
 	@SuppressWarnings("unchecked")
-	private CompilationUnit createJavaClassVisitor()
-		throws FileNotFoundException, IOException {
-
+	private CompilationUnit createJavaClassVisitor() {
 		ASTParser parser = ASTParser.newParser(AST.JLS8);
 
 		Map<String, String> options = JavaCore.getOptions();
@@ -85,10 +79,24 @@ public class JavaFileChecker {
 		parser.setResolveBindings(true);
 		parser.setStatementsRecovery(true);
 		parser.setBindingsRecovery(true);
-		parser.setSource(_fileHelper.readFile(_file).toCharArray());
+		parser.setSource(getJavaSource());
 		parser.setIgnoreMethodBodies(false);
 
 		return (CompilationUnit)parser.createAST(null);
+	}
+
+	protected File getFile() {
+		return _file;
+	}
+
+	protected char[] getJavaSource() {
+		try {
+			return _fileHelper.readFile(_file).toCharArray();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	public List<SearchResult> findCatchExceptions(final String[] exceptions) {
@@ -326,8 +334,7 @@ public class JavaFileChecker {
 						final int endOffset = node.getStartPosition() + node.getLength();
 						final int endLine = _ast.getLineNumber(endOffset);
 
-						searchResults.add(new SearchResult(_file, startOffset,
-							endOffset, startLine, endLine));
+						searchResults.add(createSearchResult(startOffset, endOffset, startLine, endLine));
 					}
 				}
 
@@ -336,6 +343,13 @@ public class JavaFileChecker {
 		});
 
 		return searchResults;
+	}
+
+	protected SearchResult createSearchResult(int startOffset, int endOffset,
+			int startLine, int endLine) {
+
+		return new SearchResult(_file, startOffset, endOffset, startLine,
+				endLine);
 	}
 
 	public List<SearchResult> findQualifiedName(final String exception) {

@@ -4,7 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import blade.migrate.api.Problem;
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.SearchResult;
 
 import java.io.File;
 import java.util.List;
@@ -25,10 +26,11 @@ public class MVCPortletInitParamsChangeClassTest {
 
 	@Test
 	public void testMVCPortletChangeExtendsTest() throws Exception {
-		List<Problem> problems = component.analyzeFile(testFile);
+		List<SearchResult> results = component.searchJavaFile(testFile,
+				new JavaFileChecker(testFile));
 
-		assertNotNull(problems);
-		assertEquals(1, problems.size());
+        assertNotNull(results);
+        assertEquals(1, results.size());
 	}
 
 	private MVCPortletInitParamsChangeClass component;

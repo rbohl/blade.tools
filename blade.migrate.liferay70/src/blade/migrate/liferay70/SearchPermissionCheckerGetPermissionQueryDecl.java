@@ -12,7 +12,7 @@ import org.osgi.service.component.annotations.Component;
 
 @Component(
 	property = {
-		"file.extensions=java",
+		"file.extensions=java,jsp,jspf",
 		"problem.summary=Replaced Method getPermissionQuery with getPermissionFilter in SearchPermissionChecker",
 		"problem.tickets=LPS-56064",
 		"problem.title=Replaced Method getPermissionQuery",
@@ -23,9 +23,7 @@ import org.osgi.service.component.annotations.Component;
 public class SearchPermissionCheckerGetPermissionQueryDecl extends JavaFileMigrator {
 
 	@Override
-	protected List<SearchResult> searchJavaFile(File file) {
-		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
-
+	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
 		return javaFileChecker.findMethodDeclaration(
 				"getPermissionQuery",
 				new String[] {"long", "long[]", "long", "String",

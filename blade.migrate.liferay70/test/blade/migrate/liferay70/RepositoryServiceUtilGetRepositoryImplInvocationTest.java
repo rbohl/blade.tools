@@ -4,17 +4,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.SearchResult;
+
 import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import blade.migrate.api.Problem;
-
 public class RepositoryServiceUtilGetRepositoryImplInvocationTest {
 	final File testFile = new File(
 			"projects/filetests/RepositoryServiceUtilTest.java");
+
+	final File jspFile = new File(
+			"projects/filetests/RepositoryServiceUtilTest.jsp");
+
 	RepositoryServiceUtilGetRepositoryImplInvocation component;
 
 	@Before
@@ -25,18 +30,22 @@ public class RepositoryServiceUtilGetRepositoryImplInvocationTest {
 
 	@Test
 	public void repositoryServiceUtilAnalyzeTest() throws Exception {
-		List<Problem> problems = component.analyzeFile(testFile);
+		List<SearchResult> results = component.searchJavaFile(testFile,
+				new JavaFileChecker(testFile));
 
-		assertNotNull(problems);
-		assertEquals(1, problems.size());
+		assertNotNull(results);
+		assertEquals(1, results.size());
 	}
 
 	@Test
 	public void repositoryServiceUtilTestTwice() throws Exception {
-		List<Problem> problems = component.analyzeFile(testFile);
-		problems = component.analyzeFile(testFile);
+		List<SearchResult> results = component.searchJavaFile(testFile,
+				new JavaFileChecker(testFile));
+		results = component.searchJavaFile(testFile,
+				new JavaFileChecker(testFile));
 
-		assertNotNull(problems);
-		assertEquals(1, problems.size());
+		assertNotNull(results);
+		assertEquals(1, results.size());
 	}
+
 }

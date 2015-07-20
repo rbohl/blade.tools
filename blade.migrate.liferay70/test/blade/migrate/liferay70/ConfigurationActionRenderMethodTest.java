@@ -4,13 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.SearchResult;
+
 import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import blade.migrate.api.Problem;
 
 public class ConfigurationActionRenderMethodTest {
 
@@ -26,18 +27,20 @@ public class ConfigurationActionRenderMethodTest {
 
 	@Test
 	public void configurationActionImplFile() throws Exception {
-		List<Problem> problems = component.analyzeFile(configurationActionImplFile);
+		List<SearchResult> results = component.searchJavaFile(configurationActionImplFile,
+				new JavaFileChecker(configurationActionImplFile));
 
-		assertNotNull(problems);
-		assertEquals(1, problems.size());
+		assertNotNull(results);
+		assertEquals(1, results.size());
 	}
 
 	@Test
 	public void editConfigurationActionFile() throws Exception {
-		List<Problem> problems = component.analyzeFile(editConfigurationActionFile);
+		List<SearchResult> results = component.searchJavaFile(editConfigurationActionFile,
+				new JavaFileChecker(editConfigurationActionFile));
 
-		assertNotNull(problems);
-		assertEquals(1, problems.size());
+		assertNotNull(results);
+		assertEquals(1, results.size());
 	}
 
 }

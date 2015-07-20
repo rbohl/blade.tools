@@ -12,7 +12,7 @@ import org.osgi.service.component.annotations.Component;
 
 @Component(
 	property = {
-		"file.extensions=java",
+		"file.extensions=java,jsp,jspf",
 		"problem.summary=Changed the AssetRenderer API to Include the PortletRequest and PortletResponse Parameters",
 		"problem.tickets=LPS-44639,LPS-44894",
 		"problem.title=AssetRenderer API Changes",
@@ -23,9 +23,8 @@ import org.osgi.service.component.annotations.Component;
 public class AssetRendererGetSummaryDecl extends JavaFileMigrator {
 
 	@Override
-	protected List<SearchResult> searchJavaFile(File file) {
-		final JavaFileChecker javaFileChecker = new JavaFileChecker(file);
-
-		return javaFileChecker.findMethodDeclaration("getSummary", new String[] {"Locale"});
+	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
+		return javaFileChecker.findMethodDeclaration("getSummary",
+				new String[] { "Locale" });
 	}
 }
