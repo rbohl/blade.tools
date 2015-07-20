@@ -1,17 +1,11 @@
 package blade.migrate.core;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
@@ -24,8 +18,6 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
-import aQute.lib.io.IO;
-
 public class JSPFileChecker extends JavaFileChecker {
 
 	public JSPFileChecker(File file) {
@@ -34,48 +26,44 @@ public class JSPFileChecker extends JavaFileChecker {
 		getTranslation(file);
 	}
 
-	public void addNaturesToProject( IProject proj, String[] natureIds, IProgressMonitor monitor )
-	        throws CoreException {
-        IProjectDescription description = proj.getDescription();
+	private JSPTranslationPrime createJSPTranslation() {
+		IDOMModel jspModel = null;
 
-        String[] prevNatures = description.getNatureIds();
-        String[] newNatures = new String[prevNatures.length + natureIds.length];
-
-        System.arraycopy( prevNatures, 0, newNatures, 0, prevNatures.length );
-
-        for( int i = prevNatures.length; i < newNatures.length; i++ ) {
-            newNatures[i] = natureIds[i - prevNatures.length];
-        }
-
-        description.setNatureIds( newNatures );
-        proj.setDescription( description, monitor );
-    }
-
-	private JSPTranslation createJSPTranslation() {
 		try {
-			IJavaProject project = getDefaultJavaProject();
-			IFile jspFile = getJSPFile();
+			final IFile jspFile = getWorkspaceHelper()
+					.createIFile(WorkspaceHelper.PROJECT_FILES, getFile());
 
-			IDOMModel jspModel = (IDOMModel) StructuredModelManager.getModelManager().getModelForRead(jspFile);
-			IDOMDocument domDocument = jspModel.getDocument();
-			IDOMNode domNode = (IDOMNode) domDocument.getDocumentElement();
+			jspModel = (IDOMModel) StructuredModelManager.getModelManager()
+					.getModelForRead(jspFile);
+			final IDOMDocument domDocument = jspModel.getDocument();
+			final IDOMNode domNode = (IDOMNode) domDocument
+					.getDocumentElement();
 
-			IProgressMonitor npm = new NullProgressMonitor();
-			JSPTranslator translator = new JSPTranslator();
+			final IProgressMonitor npm = new NullProgressMonitor();
+			final JSPTranslator translator = new JSPTranslator();
 
 			if (domNode != null) {
-				translator.reset((IDOMNode) domDocument.getDocumentElement(), npm);
-			}
-			else {
+				translator.reset((IDOMNode) domDocument.getDocumentElement(),
+						npm);
+			} else {
 				translator.reset((IDOMNode) domDocument.getFirstChild(), npm);
 			}
 
 			translator.translate();
-			_translation = new JSPTranslation(project, translator);
+
+			final IJavaProject javaProject = JavaCore
+					.create(jspFile.getProject());
+
+			_translation = new JSPTranslationPrime(javaProject, translator,
+					jspFile);
 
 			return _translation;
-		} catch ( Exception e ) {
+		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if (jspModel != null) {
+				jspModel.releaseFromRead();
+			}
 		}
 
 		return null;
@@ -85,42 +73,37 @@ public class JSPFileChecker extends JavaFileChecker {
 	protected SearchResult createSearchResult(int startOffset, int endOffset,
 			int startLine, int endLine) {
 
+		IDOMModel jspModel = null;
+
 		try {
-			JSPTranslation translation = getTranslation(getFile());
+			final JSPTranslationPrime translation = getTranslation(getFile());
 
-			int jspStartOffset = translation.getJspOffset(startOffset);
-			int jspEndOffset = translation.getJspOffset(endOffset);
+			final int jspStartOffset = translation.getJspOffset(startOffset);
+			final int jspEndOffset = translation.getJspOffset(endOffset);
 
-			IDOMModel jspModel = (IDOMModel) StructuredModelManager.getModelManager().getModelForRead(getJSPFile());
-			IDOMDocument domDocument = jspModel.getDocument();
+			jspModel = (IDOMModel) StructuredModelManager.getModelManager()
+					.getModelForRead(translation._jspFile);
+			final IDOMDocument domDocument = jspModel.getDocument();
 
-			IStructuredDocument structuredDocument = domDocument.getStructuredDocument();
-			int jspStartLine = structuredDocument.getLineOfOffset(jspStartOffset) + 1;
-			int jspEndLine = structuredDocument.getLineOfOffset(jspEndOffset);
+			final IStructuredDocument structuredDocument = domDocument
+					.getStructuredDocument();
+			final int jspStartLine = structuredDocument
+					.getLineOfOffset(jspStartOffset) + 1;
+			final int jspEndLine = structuredDocument
+					.getLineOfOffset(jspEndOffset);
 
-			return super.createSearchResult(jspStartOffset, jspEndOffset, jspStartLine, jspEndLine);
+			return super.createSearchResult(jspStartOffset, jspEndOffset,
+					jspStartLine, jspEndLine);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if (jspModel != null) {
+				jspModel.releaseFromRead();
+			}
 		}
 
-		return super.createSearchResult(startOffset, endOffset, startLine, endLine);
-	}
-
-	private IJavaProject getDefaultJavaProject() throws CoreException {
-		IProject checkerProject = ResourcesPlugin.getWorkspace().getRoot().getProject("__jsp_migration__");
-
-		if (checkerProject.exists()) {
-			checkerProject.open(new NullProgressMonitor());
-			return JavaCore.create(checkerProject);
-		}
-
-		IProgressMonitor monitor = new NullProgressMonitor();
-
-		checkerProject.create(monitor);
-		checkerProject.open(monitor);
-		addNaturesToProject(checkerProject, new String[] { JavaCore.NATURE_ID }, monitor);
-
-		return JavaCore.create(checkerProject);
+		return super.createSearchResult(startOffset, endOffset, startLine,
+				endLine);
 	}
 
 	@Override
@@ -130,31 +113,15 @@ public class JSPFileChecker extends JavaFileChecker {
 		return translation.getJavaText().toCharArray();
 	}
 
-	private IFile getJSPFile() throws CoreException, IOException {
-		IJavaProject project = getDefaultJavaProject();
-
-		IFile jspFile = project.getProject().getFile(getFile().getName());
-
-		final IProgressMonitor npm = new NullProgressMonitor();
-
-		if (jspFile.exists()) {
-			jspFile.delete(IFile.FORCE, npm);
-		}
-
-		jspFile.create(new ByteArrayInputStream(IO.read(getFile())), IFile.FORCE, npm);
-
-		return jspFile;
-	}
-
-	private JSPTranslation getTranslation(File file) {
+	private JSPTranslationPrime getTranslation(File file) {
 		try {
 			synchronized (_map) {
-				WeakReference<JSPTranslation> translationRef = _map.get(file);
+				WeakReference<JSPTranslationPrime> translationRef = _map.get(file);
 
 				if (translationRef == null || translationRef.get() == null) {
-					final JSPTranslation newTranslation = createJSPTranslation();
+					final JSPTranslationPrime newTranslation = createJSPTranslation();
 
-					_map.put(file, new WeakReference<JSPTranslation>(newTranslation));
+					_map.put(file, new WeakReference<JSPTranslationPrime>(newTranslation));
 
 					_translation = newTranslation;
 				}
@@ -169,6 +136,31 @@ public class JSPFileChecker extends JavaFileChecker {
 		return _translation;
 	}
 
-	private static Map<File, WeakReference<JSPTranslation>> _map = new WeakHashMap<>();
-	private JSPTranslation _translation;
+	private WorkspaceHelper getWorkspaceHelper() {
+		if (_workspaceHelper == null) {
+			_workspaceHelper = new WorkspaceHelper();
+		}
+
+		return _workspaceHelper;
+	}
+
+	/**
+	 * A simple subclass to hold a reference to the original jspFile
+	 */
+	private class JSPTranslationPrime extends JSPTranslation {
+
+		private IFile _jspFile;
+
+		public JSPTranslationPrime(IJavaProject javaProject,
+				JSPTranslator translator, IFile jspFile) {
+			super(javaProject, translator);
+
+			_jspFile = jspFile;
+		}
+	}
+
+	private static Map<File, WeakReference<JSPTranslationPrime>> _map = new WeakHashMap<>();
+
+	private JSPTranslationPrime _translation;
+	private WorkspaceHelper _workspaceHelper;
 }
