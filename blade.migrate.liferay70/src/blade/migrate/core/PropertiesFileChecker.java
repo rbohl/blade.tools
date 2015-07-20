@@ -19,8 +19,7 @@ public class PropertiesFileChecker {
         public final int lineNumber;
         public String value;
 
-        public KeyInfo( int offset, int length, int lineNumber )
-        {
+        public KeyInfo( int offset, int length, int lineNumber ) {
             this.offset = offset;
             this.length = length;
             this.lineNumber = lineNumber;
@@ -291,7 +290,7 @@ public class PropertiesFileChecker {
 
 		if(infos != null){
 			for (KeyInfo info : infos) {
-				retval.add(new SearchResult(file, info.offset, info.offset + info.length, info.lineNumber, info.lineNumber));
+				retval.add(new SearchResult(file, info.offset, info.offset + info.length, info.lineNumber, info.lineNumber, true));
 			}
 		}
 		return retval;

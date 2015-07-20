@@ -118,8 +118,8 @@ public class JavaFileChecker {
 						int endLine = _ast.getLineNumber(node.getException().getStartPosition() + node.getException().getLength());
 							int endOffset = node.getException().getStartPosition() + node.getException().getLength();
 							searchResults
-									.add(new SearchResult(_file, startOffset,
-										endOffset, startLine, endLine));
+									.add(createSearchResult(startOffset,
+										endOffset, startLine, endLine, true));
 
 							retVal = true;
 					}
@@ -159,8 +159,8 @@ public class JavaFileChecker {
 									+ node.getName().getLength();
 
 							searchResults
-									.add(new SearchResult(_file, startOffset,
-											endOffset, startLine, endLine));
+									.add(createSearchResult(startOffset,
+											endOffset, startLine, endLine, true));
 						}
 					}
 				}
@@ -188,8 +188,8 @@ public class JavaFileChecker {
 					int endOffset = node.getName().getStartPosition() +
 						node.getName().getLength();
 
-					searchResults.add(new SearchResult(_file, startOffset,
-						endOffset, startLine, endLine));
+					searchResults.add(createSearchResult(startOffset,
+						endOffset, startLine, endLine, true));
 				}
 
 				return false;
@@ -248,8 +248,8 @@ public class JavaFileChecker {
 								.getStartPosition());
 							int endOffset = node.getStartPosition();
 							searchResults
-									.add(new SearchResult(_file, startOffset,
-										endOffset, startLine, endLine));
+									.add(createSearchResult(startOffset,
+										endOffset, startLine, endLine, true));
 
 							return false;
 						};
@@ -334,7 +334,7 @@ public class JavaFileChecker {
 						final int endOffset = node.getStartPosition() + node.getLength();
 						final int endLine = _ast.getLineNumber(endOffset);
 
-						searchResults.add(createSearchResult(startOffset, endOffset, startLine, endLine));
+						searchResults.add(createSearchResult(startOffset, endOffset, startLine, endLine, true));
 					}
 				}
 
@@ -346,10 +346,10 @@ public class JavaFileChecker {
 	}
 
 	protected SearchResult createSearchResult(int startOffset, int endOffset,
-			int startLine, int endLine) {
+			int startLine, int endLine, boolean fullMatch) {
 
 		return new SearchResult(_file, startOffset, endOffset, startLine,
-				endLine);
+				endLine, fullMatch);
 	}
 
 	public List<SearchResult> findQualifiedName(final String exception) {
@@ -369,8 +369,8 @@ public class JavaFileChecker {
 					int endLine = _ast.getLineNumber(
 							node.getStartPosition() + node.getLength());
 					int endOffset = node.getStartPosition() + node.getLength();
-					searchResults.add(new SearchResult(_file, startOffset,
-							endOffset, startLine, endLine));
+					searchResults.add(createSearchResult(startOffset,
+							endOffset, startLine, endLine, true));
 
 					retVal = true;
 				}
@@ -406,8 +406,8 @@ public class JavaFileChecker {
 									+ node.getName().getLength();
 
 							searchResults
-									.add(new SearchResult(_file, startOffset,
-											endOffset, startLine, endLine));
+									.add(createSearchResult(startOffset,
+											endOffset, startLine, endLine, true));
 						}
 					}
 				}

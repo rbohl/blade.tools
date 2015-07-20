@@ -71,7 +71,7 @@ public class JSPFileChecker extends JavaFileChecker {
 
 	@Override
 	protected SearchResult createSearchResult(int startOffset, int endOffset,
-			int startLine, int endLine) {
+			int startLine, int endLine, boolean fullMatch) {
 
 		IDOMModel jspModel = null;
 
@@ -93,7 +93,7 @@ public class JSPFileChecker extends JavaFileChecker {
 					.getLineOfOffset(jspEndOffset);
 
 			return super.createSearchResult(jspStartOffset, jspEndOffset,
-					jspStartLine, jspEndLine);
+					jspStartLine, jspEndLine, fullMatch);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -103,7 +103,7 @@ public class JSPFileChecker extends JavaFileChecker {
 		}
 
 		return super.createSearchResult(startOffset, endOffset, startLine,
-				endLine);
+				endLine, fullMatch);
 	}
 
 	@Override

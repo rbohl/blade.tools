@@ -67,7 +67,7 @@ public class XMLFileChecker {
 				_results.add(
 					new SearchResult(
 						_file, 0, 0, locator.getLineNumber(),
-						locator.getLineNumber()));
+						locator.getLineNumber(), true));
 			}
 		}
 
