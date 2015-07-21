@@ -13,9 +13,7 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
-import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.CatchClause;
-import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -23,7 +21,6 @@ import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.QualifiedName;
-import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
@@ -298,12 +295,15 @@ public class JavaFileChecker {
 					boolean match = false;
 
 					if (methodParamTypes != null) {
+						@SuppressWarnings("unchecked")
 						List<Expression>  argExpressions = (List<Expression>)node.arguments(); 
 						Expression[] args = new Expression[argExpressions.size()];
 						argExpressions.toArray(args);
 						if (argExpressions != null && args.length == methodParamTypes.length) {
 							//args number matched
 							boolean possibleMatch = true;
+							boolean typeUnmatched = false;
+							boolean typeUnresolved = false;
 
 							for(int i = 0; i < args.length; i++) {
 								Expression arg = args[i];
@@ -316,21 +316,27 @@ public class JavaFileChecker {
 									 }else{
 										 //type unmatched
 										 possibleMatch = false;
+										 typeUnmatched = true;
 										 break;
 									 }
 								}else{
-									//TODO
-									//can't resolve the type but  args number matched . make a warning ?
 									possibleMatch = false;
-									System.out.println("Guess Right : arg number is right but type is not fully matched . Line :"+_ast.getLineNumber(expression.getStartPosition()) +" File:"+_file.getName());
-									/*final int startOffset = expression.getStartPosition();
-									final int startLine = _ast.getLineNumber(startOffset);
-									final int endOffset = node.getStartPosition() + node.getLength();
-									final int endLine = _ast.getLineNumber(endOffset);
-									searchResults.add(new SearchResult(_file, startOffset,
-										endOffset, startLine, endLine));*/
-									break;
+									//there are two cases :
+									//typeUnresolved : means that  all resolved type is matched and there is unsolved type , need to set fullMatch false
+									//typeUnmatched : means that some resolved type is unmatched , no need to add SearchResult
+
+									//do not add searchResults now , just record the state and continue
+									//because there maybe unmatched type later which will  break this case
+									typeUnresolved = true;
 								}
+							}
+							if( !typeUnmatched && typeUnresolved ){
+								final int startOffset = expression.getStartPosition();
+								final int startLine = _ast.getLineNumber(startOffset);
+								final int endOffset = node.getStartPosition() + node.getLength();
+								final int endLine = _ast.getLineNumber(endOffset);
+								//can't resolve the type but  args number matched  ,  note that the last param is false
+								searchResults.add(createSearchResult(startOffset, endOffset, startLine, endLine, false));
 							}
 							if (possibleMatch) {
 								match = true;

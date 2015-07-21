@@ -51,9 +51,9 @@ public class JavaFileCheckerTest {
 		JavaFileChecker javaFileChecker = new JavaFileChecker(file);
 		List<SearchResult> results = javaFileChecker.findMethodInvocations(null, "JavaFileChecker" , "staticCall", new String[]{"String","String","String"});
 		assertNotNull(results);
-		assertEquals(3, results.size());
+		assertEquals(4, results.size());
 		results = javaFileChecker.findMethodInvocations("JavaFileChecker", null, "call", new String[]{"String","String","String"});
 		assertNotNull(results);
-		assertEquals(3, results.size());
+		assertEquals(4, results.size());
 	}
 }
