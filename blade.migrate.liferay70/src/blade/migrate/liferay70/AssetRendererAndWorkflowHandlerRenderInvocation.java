@@ -1,15 +1,17 @@
 package blade.migrate.liferay70;
 
+import blade.migrate.api.FileMigrator;
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.JavaFileMigrator;
+import blade.migrate.core.SearchResult;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 
-import blade.migrate.api.FileMigrator;
-import blade.migrate.core.JavaFileChecker;
-import blade.migrate.core.JavaFileMigrator;
-import blade.migrate.core.SearchResult;
+
 @Component(
 	property = {
 		"file.extensions=java,jsp,jspf",
@@ -20,28 +22,35 @@ import blade.migrate.core.SearchResult;
 	},
 	service = FileMigrator.class
 )
-public class AssetRendererAndWorkflowHandlerRenderInvocation extends JavaFileMigrator {
+public class AssetRendererAndWorkflowHandlerRenderInvocation
+		extends JavaFileMigrator {
 
 	@Override
-	protected List<SearchResult> searchJavaFile(File file,JavaFileChecker javaFileChecker) {
+	protected List<SearchResult> searchJavaFile(File file,
+			JavaFileChecker javaFileChecker) {
+
 		final List<SearchResult> searchResults = new ArrayList<SearchResult>();
-		final String[] arArgTypes = new String[] { "RenderRequest" , "RenderResponse" , "String"};
-		final String[] wfhgTypes = new String[] { "long" , "RenderRequest","RenderResponse","String"};
+		final String[] assetRendererArgTypes = new String[] { "RenderRequest",
+				"RenderResponse", "String" };
+		final String[] workflowHandlerArgTypes = new String[] { "long",
+				"RenderRequest", "RenderResponse", "String" };
 
 		// render method declarations
-		List<SearchResult> declarations = javaFileChecker.findMethodDeclaration("render",arArgTypes);
+		List<SearchResult> declarations = javaFileChecker
+				.findMethodDeclaration("render", assetRendererArgTypes);
 		searchResults.addAll(declarations);
 
-		declarations = javaFileChecker.findMethodDeclaration("render",wfhgTypes);
+		declarations = javaFileChecker.findMethodDeclaration("render",
+				workflowHandlerArgTypes);
 		searchResults.addAll(declarations);
 
 		// render method invocations
-		List<SearchResult> invocations = javaFileChecker.findMethodInvocations("AssetRenderer", null,
-				"render", arArgTypes);
+		List<SearchResult> invocations = javaFileChecker.findMethodInvocations(
+				"AssetRenderer", null, "render", assetRendererArgTypes);
 		searchResults.addAll(invocations);
 
-		invocations = javaFileChecker.findMethodInvocations("WorkflowHandler",null,
-				"render", wfhgTypes);
+		invocations = javaFileChecker.findMethodInvocations("WorkflowHandler",
+				null, "render", workflowHandlerArgTypes);
 		searchResults.addAll(invocations);
 
 		return searchResults;
