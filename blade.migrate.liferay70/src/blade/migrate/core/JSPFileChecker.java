@@ -1,11 +1,15 @@
 package blade.migrate.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
@@ -17,6 +21,7 @@ import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.w3c.dom.NodeList;
 
 public class JSPFileChecker extends JavaFileChecker {
 
@@ -142,6 +147,33 @@ public class JSPFileChecker extends JavaFileChecker {
 		}
 
 		return _workspaceHelper;
+	}
+
+	public List<SearchResult> findJSPTags(String tagName) throws IOException,
+			CoreException {
+		final List<SearchResult> searchResults = new ArrayList<>();
+
+		IFile testFile = this.getWorkspaceHelper().createIFile(
+				WorkspaceHelper.PROJECT_FILES, super.getFile());
+		IDOMModel jspModel = (IDOMModel) StructuredModelManager
+				.getModelManager().getModelForRead(testFile);
+		IDOMDocument domDocument = jspModel.getDocument();
+		IStructuredDocument structuredDocument = domDocument
+				.getStructuredDocument();
+		NodeList nodeList = domDocument.getElementsByTagName(tagName);
+
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			IDOMNode domNode = (IDOMNode) nodeList.item(i);
+
+			int startOffset = domNode.getStartOffset();
+			int endOffset = domNode.getEndOffset();
+			int jspStartLine = structuredDocument.getLineOfOffset(startOffset) + 1;
+			int jspEndLine = structuredDocument.getLineOfOffset(endOffset) + 1;
+			searchResults.add(super.createSearchResult(startOffset, endOffset,
+					jspStartLine, jspEndLine, true));
+		}
+
+		return searchResults;
 	}
 
 	/**
