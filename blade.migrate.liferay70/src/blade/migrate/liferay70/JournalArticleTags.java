@@ -1,16 +1,14 @@
 package blade.migrate.liferay70;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import org.eclipse.core.runtime.CoreException;
-import org.osgi.service.component.annotations.Component;
-
 import blade.migrate.api.FileMigrator;
 import blade.migrate.core.JSPFileChecker;
 import blade.migrate.core.JSPTagsFileMigrator;
 import blade.migrate.core.SearchResult;
+
+import java.io.File;
+import java.util.List;
+
+import org.osgi.service.component.annotations.Component;
 
 @Component(
 	property = {
@@ -22,20 +20,10 @@ import blade.migrate.core.SearchResult;
 	},
 	service = FileMigrator.class
 )
-public class JournalArticleTagDecl extends JSPTagsFileMigrator {
+public class JournalArticleTags extends JSPTagsFileMigrator {
 
 	@Override
 	protected List<SearchResult> searchJSPFile(File file,JSPFileChecker jspFileChecker) {
-
-		try {
-			return jspFileChecker.findJSPTags("liferay-ui:journal-article");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		return jspFileChecker.findJSPTags("liferay-ui:journal-article");
 	}
 }

@@ -9,39 +9,31 @@ import blade.migrate.api.Problem;
 import java.io.File;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
-public class AllJSPProblemsTest {
+public class JournalArticleTagsTest {
 
 	private List<Problem> problems;
 
-	@Before
-	public void findProblems() throws Exception {
-		if (problems == null) {
-			ServiceReference<Migration> sr = context
-					.getServiceReference(Migration.class);
-
-			Migration m = context.getService(sr);
-
-			problems = m
-					.findProblems(new File(
-							"../blade.migrate.liferay70/projects/jsptests/"));
-
-			assertEquals(1, problems.size());
-		}
-	}
-
 	@Test
-	public void repositoryServiceUtilTest() throws Exception {
+	public void findProblems() throws Exception {
+		ServiceReference<Migration> sr = context
+				.getServiceReference(Migration.class);
+
+		Migration m = context.getService(sr);
+
+		problems = m.findProblems(new File("jsptests/journal-article-tags/"));
+
+		assertEquals(1, problems.size());
+
 		boolean found = false;
 
 		for (Problem problem : problems) {
-			if (problem.file.getName().endsWith("RepositoryServiceUtilTest.jsp")) {
-				if (problem.lineNumber == 9 && problem.startOffset == 104 && problem.endOffset == 171) {
+			if (problem.file.getName().endsWith("JournalArticleTagsTest.jsp")) {
+				if (problem.lineNumber == 4 && problem.startOffset == 164 && problem.endOffset == 324) {
 					found = true;
 				}
 			}
