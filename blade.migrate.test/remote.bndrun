@@ -1,6 +1,7 @@
 -runremote: liferay;shell=-1;jmx=attach
 
 -runbundles: \
+	blade.migrate.ide;version=latest,\
 	blade.migrate.provider;version=latest,\
 	blade.migrate.liferay70;version=latest
 
