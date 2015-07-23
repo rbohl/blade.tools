@@ -14,7 +14,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
-public class LogoSelectorTagDeclTest {
+public class LogoSelectorTagsTest {
 
 	@Test
 	public void findProblems() throws Exception {
@@ -30,7 +30,7 @@ public class LogoSelectorTagDeclTest {
 		boolean found = false;
 
 		for (Problem problem : problems) {
-			if (problem.file.getName().endsWith("LogoSelectorTagDeclTest.jsp")
+			if (problem.file.getName().endsWith("LogoSelectorTagsTest.jsp")
 					&& problem.lineNumber == 11 && problem.startOffset == 595
 					&& problem.endOffset == 637) {
 

@@ -20,7 +20,7 @@ import org.osgi.service.component.annotations.Component;
 	},
 	service = FileMigrator.class
 )
-public class LogoSelectorTagDecl extends JSPTagsFileMigrator {
+public class LogoSelectorTags extends JSPTagsFileMigrator {
 
 	@Override
 	protected List<SearchResult> searchJSPFile(File file,
