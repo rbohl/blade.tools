@@ -13,7 +13,7 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	property = {
 		"file.extensions=jsp,jspf",
-		"problem.title=Removed the liferay-ui:journal-article Tag",
+		"problem.title=Removed the liferay-ui:journal-article tag",
 		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-the-liferay-uijournal-article-tag",
 		"problem.summary=Removed the liferay-ui:journal-article Tag",
 		"problem.tickets=LPS-56383",
@@ -23,7 +23,9 @@ import org.osgi.service.component.annotations.Component;
 public class JournalArticleTags extends JSPTagsFileMigrator {
 
 	@Override
-	protected List<SearchResult> searchJSPFile(File file,JSPFileChecker jspFileChecker) {
-		return jspFileChecker.findJSPTags("liferay-ui:journal-article",null);
+	protected List<SearchResult> searchJSPFile(File file,
+			JSPFileChecker jspFileChecker) {
+
+		return jspFileChecker.findJSPTags("liferay-ui:journal-article", null);
 	}
 }
