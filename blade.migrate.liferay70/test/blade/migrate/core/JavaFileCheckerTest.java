@@ -35,7 +35,7 @@ public class JavaFileCheckerTest {
 
 		assertNotNull(searchResults);
 
-		assertEquals(3, searchResults.size());
+		assertEquals(4, searchResults.size());
 
 		SearchResult searchResult = searchResults.get(0);
 

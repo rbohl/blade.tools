@@ -286,9 +286,10 @@ public class JavaFileChecker {
 					type = expression.resolveTypeBinding();
 				}
 
-				if (((methodName.equals(methodNameValue)) || ("*".equals(methodName))) &&
+				if ( ((methodName.equals(methodNameValue)) || ("*".equals(methodName))) &&
 						// if typeHint is not null it must match the type hint and ignore the expression
-						((typeHint != null && type != null && type.getName().equals(typeHint))  ||
+						// not strictly check the type and will check equals later
+						( (typeHint != null && type != null && type.getName().endsWith(typeHint))  ||
 						// with no typeHint then expressions can be used to match Static invocation
 						 (typeHint == null && expression != null && expression.toString().equals(expressionValue)))) {
 
@@ -357,8 +358,12 @@ public class JavaFileChecker {
 						final int startLine = _ast.getLineNumber(startOffset);
 						final int endOffset = node.getStartPosition() + node.getLength();
 						final int endLine = _ast.getLineNumber(endOffset);
-
-						searchResults.add(createSearchResult(startOffset, endOffset, startLine, endLine, true));
+						boolean isFullMatch = true;
+						//endsWith but not equals
+						if( typeHint != null && type != null && type.getName().endsWith(typeHint) && !type.getName().equals(typeHint) ) {
+							isFullMatch = false;
+						}
+						searchResults.add(createSearchResult(startOffset, endOffset, startLine, endLine, isFullMatch));
 					}
 				}
 
