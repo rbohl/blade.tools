@@ -167,11 +167,9 @@ public class JSPFileChecker extends JavaFileChecker {
 			final NodeList nodeList = domDocument.getElementsByTagName(tagName);
 
 			for (int i = 0; i < nodeList.getLength(); i++) {
-				IDOMNode domNode = null;
+				final IDOMNode domNode = (IDOMNode) nodeList.item(i);
 
 				if (attrNames == null) {
-					domNode = (IDOMNode) nodeList.item(i);
-
 					int startOffset = domNode.getStartOffset();
 					int endOffset = domNode.getEndOffset();
 					int jspStartLine = structuredDocument.getLineOfOffset(startOffset) + 1;
@@ -181,10 +179,11 @@ public class JSPFileChecker extends JavaFileChecker {
 
 				} else {
 					for (String name : attrNames) {
-						domNode = (IDOMNode) nodeList.item(i).getAttributes().getNamedItem(name);
-						if (domNode != null) {
-							int startOffset = domNode.getStartOffset();
-							int endOffset = domNode.getEndOffset();
+						final IDOMNode attrNode = (IDOMNode) domNode.getAttributes().getNamedItem(name);
+
+						if (attrNode != null) {
+							int startOffset = attrNode.getStartOffset();
+							int endOffset = attrNode.getEndOffset();
 							int jspStartLine = structuredDocument.getLineOfOffset(startOffset) + 1;
 							int jspEndLine = structuredDocument.getLineOfOffset(endOffset) + 1;
 
