@@ -24,6 +24,6 @@ public class JournalArticleTags extends JSPTagsFileMigrator {
 
 	@Override
 	protected List<SearchResult> searchJSPFile(File file,JSPFileChecker jspFileChecker) {
-		return jspFileChecker.findJSPTags("liferay-ui:journal-article");
+		return jspFileChecker.findJSPTags("liferay-ui:journal-article",null);
 	}
 }

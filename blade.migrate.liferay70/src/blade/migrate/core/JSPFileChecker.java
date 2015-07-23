@@ -149,7 +149,7 @@ public class JSPFileChecker extends JavaFileChecker {
 		return _workspaceHelper;
 	}
 
-	public List<SearchResult> findJSPTags(String tagName) {
+	public List<SearchResult> findJSPTags(String tagName , String[] attrNames) {
 
 		final List<SearchResult> searchResults = new ArrayList<>();
 
@@ -167,14 +167,32 @@ public class JSPFileChecker extends JavaFileChecker {
 			final NodeList nodeList = domDocument.getElementsByTagName(tagName);
 
 			for (int i = 0; i < nodeList.getLength(); i++) {
-				IDOMNode domNode = (IDOMNode) nodeList.item(i);
+				IDOMNode domNode = null;
 
-				int startOffset = domNode.getStartOffset();
-				int endOffset = domNode.getEndOffset();
-				int jspStartLine = structuredDocument.getLineOfOffset(startOffset) + 1;
-				int jspEndLine = structuredDocument.getLineOfOffset(endOffset) + 1;
-				searchResults.add(super.createSearchResult(startOffset, endOffset,
-						jspStartLine, jspEndLine, true));
+				if (attrNames == null) {
+					domNode = (IDOMNode) nodeList.item(i);
+
+					int startOffset = domNode.getStartOffset();
+					int endOffset = domNode.getEndOffset();
+					int jspStartLine = structuredDocument.getLineOfOffset(startOffset) + 1;
+					int jspEndLine = structuredDocument.getLineOfOffset(endOffset) + 1;
+					searchResults.add(super.createSearchResult(
+							startOffset,endOffset, jspStartLine, jspEndLine, true));
+
+				} else {
+					for (String name : attrNames) {
+						domNode = (IDOMNode) nodeList.item(i).getAttributes().getNamedItem(name);
+						if (domNode != null) {
+							int startOffset = domNode.getStartOffset();
+							int endOffset = domNode.getEndOffset();
+							int jspStartLine = structuredDocument.getLineOfOffset(startOffset) + 1;
+							int jspEndLine = structuredDocument.getLineOfOffset(endOffset) + 1;
+
+							searchResults.add(super.createSearchResult(
+									startOffset,endOffset, jspStartLine, jspEndLine, true));
+						}
+					}
+				}
 			}
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();
