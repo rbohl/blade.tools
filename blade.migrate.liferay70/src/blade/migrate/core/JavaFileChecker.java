@@ -269,6 +269,7 @@ public class JavaFileChecker {
 	 * @param methodName     the method name
 	 * @return    search results
 	 */
+	@SuppressWarnings("unchecked")
 	public List<SearchResult> findMethodInvocations(
 		final String typeHint, final String expressionValue, final String methodName,
 		final String[] methodParamTypes) {
@@ -278,8 +279,9 @@ public class JavaFileChecker {
 
 			@Override
 			public boolean visit(MethodInvocation node) {
-				String methodNameValue = node.getName().toString();
-				Expression expression = node.getExpression();
+				final String methodNameValue = node.getName().toString();
+				final Expression expression = node.getExpression();
+
 				ITypeBinding type = null;
 
 				if (expression != null) {
@@ -293,34 +295,34 @@ public class JavaFileChecker {
 						// with no typeHint then expressions can be used to match Static invocation
 						 (typeHint == null && expression != null && expression.toString().equals(expressionValue)))) {
 
-					boolean match = false;
+					boolean argumentsMatch = false;
 
 					if (methodParamTypes != null) {
-						@SuppressWarnings("unchecked")
-						List<Expression>  argExpressions = (List<Expression>)node.arguments(); 
-						Expression[] args = new Expression[argExpressions.size()];
-						argExpressions.toArray(args);
-						if (argExpressions != null && args.length == methodParamTypes.length) {
+						Expression[] argExpressions = ((List<Expression>)node.arguments()).toArray(new Expression[0]);
+
+						if (argExpressions.length == methodParamTypes.length) {
 							//args number matched
 							boolean possibleMatch = true;
-							boolean typeUnmatched = false;
+							// assume all types will match until we find otherwise
+							boolean typeMatched = true;
 							boolean typeUnresolved = false;
 
-							for(int i = 0; i < args.length; i++) {
-								Expression arg = args[i];
+							for(int i = 0; i < argExpressions.length; i++) {
+								Expression arg = argExpressions[i];
 								ITypeBinding argType = arg.resolveTypeBinding();
-								if (argType != null ){
+
+								if (argType != null) {
 									//can resolve the type
 									 if( argType.getName().equals(methodParamTypes[i])) {
 										 //type matched
-											continue;
-									 }else{
+										continue;
+									 } else {
 										 //type unmatched
 										 possibleMatch = false;
-										 typeUnmatched = true;
+										 typeMatched = false;
 										 break;
 									 }
-								}else{
+								} else{
 									possibleMatch = false;
 									//there are two cases :
 									//typeUnresolved : means that  all resolved type is matched and there is unsolved type , need to set fullMatch false
@@ -331,7 +333,8 @@ public class JavaFileChecker {
 									typeUnresolved = true;
 								}
 							}
-							if( !typeUnmatched && typeUnresolved ){
+
+							if( typeMatched && typeUnresolved ){
 								final int startOffset = expression.getStartPosition();
 								final int startLine = _ast.getLineNumber(startOffset);
 								final int endOffset = node.getStartPosition() + node.getLength();
@@ -339,30 +342,29 @@ public class JavaFileChecker {
 								//can't resolve the type but  args number matched  ,  note that the last param is false
 								searchResults.add(createSearchResult(startOffset, endOffset, startLine, endLine, false));
 							}
+
 							if (possibleMatch) {
-								match = true;
+								argumentsMatch = true;
 							}
-						}
-						//args number mismatched
-						else{
-							match =false;
 						}
 					}
 					//any method args types is OK without setting methodParamTypes
 					else {
-						match = true;
+						argumentsMatch = true;
 					}
 
-					if (match) {
+					if (argumentsMatch) {
 						final int startOffset = expression.getStartPosition();
 						final int startLine = _ast.getLineNumber(startOffset);
 						final int endOffset = node.getStartPosition() + node.getLength();
 						final int endLine = _ast.getLineNumber(endOffset);
 						boolean isFullMatch = true;
+
 						//endsWith but not equals
 						if( typeHint != null && type != null && type.getName().endsWith(typeHint) && !type.getName().equals(typeHint) ) {
 							isFullMatch = false;
 						}
+
 						searchResults.add(createSearchResult(startOffset, endOffset, startLine, endLine, isFullMatch));
 					}
 				}
