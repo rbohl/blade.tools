@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="blade.main.feature"
+      label="Blade"
+      version="@master-version@"
+      provider-name="Liferay, Inc."
+>
+
+   <description url="">
+   </description>
+
+   <copyright>
+   </copyright>
+
+   <license url="">
+   </license>
+
+   <url>
+   </url>
+
+   <plugin
+         id="blade.migrate.provider"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   
+   <plugin
+         id="blade.migrate.liferay70"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="blade.migrate.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
