@@ -1,7 +1,6 @@
 package blade.migrate.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import blade.migrate.api.Migration;
 import blade.migrate.api.Problem;
