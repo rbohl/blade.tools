@@ -16,8 +16,6 @@ import org.osgi.framework.ServiceReference;
 
 public class JournalArticleTagsTest {
 
-	private List<Problem> problems;
-
 	@Test
 	public void findProblems() throws Exception {
 		ServiceReference<Migration> sr = context
@@ -25,7 +23,7 @@ public class JournalArticleTagsTest {
 
 		Migration m = context.getService(sr);
 
-		problems = m.findProblems(new File("jsptests/journal-article-tags/"));
+		List<Problem> problems = m.findProblems(new File("jsptests/journal-article-tags/"));
 
 		assertEquals(1, problems.size());
 
