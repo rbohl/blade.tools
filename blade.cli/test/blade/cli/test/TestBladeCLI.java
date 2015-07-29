@@ -115,17 +115,6 @@ public class TestBladeCLI {
 		String bndFileContent = new String(IO.read(bndFile));
 
 		contains(bndFileContent, ".*^Private-Package: gradle.test$.*");
-
-		File projectFile = IO.getFile("generated/test/gradle.test/.project");
-
-		assertTrue(projectFile.exists());
-
-		String projectFileContent = new String(IO.read(projectFile));
-
-		contains(projectFileContent, ".*<name>gradle.test</name>.*");
-
-		contains(projectFileContent,
-			".*<nature>org.springsource.ide.eclipse.gradle.core.nature</nature>.*");
 	}
 
 	@Test
@@ -176,6 +165,48 @@ public class TestBladeCLI {
 
 		contains(
 			bndFileContent, ".*com.liferay.portal.service;version=\"7.0.0\".*");
+	}
+
+	@Test
+	public void createBndtoolsServicePreAction() throws Exception {
+		String[] args = new String[] {
+			"-t", "create", "-b", "bndtools",
+			"-d", "generated/test",
+			"-p", "service",
+			"-c", "ServicePreAction",
+			"service.pre.action",
+			"com.liferay.portal.kernel.events.LifecycleAction"
+		};
+
+		new blade().run(args);
+
+		File bndFile =
+			IO.getFile("generated/test/service.pre.action/bnd.bnd");
+
+		assertTrue(bndFile.exists());
+
+		String bndFileContent = new String(IO.read(bndFile));
+
+		contains(
+			bndFileContent,
+			".*com.liferay.portal:portal-service;version='\\[7\\.0,8\\)'.*");
+
+		File serviceFile = IO.getFile(
+			"generated/test/service.pre.action/src/service/pre/action/ServicePreAction.java");
+
+		assertTrue(serviceFile.exists());
+
+		String serviceFileContent = new String(IO.read(serviceFile));
+
+		contains(serviceFileContent, "^package service.pre.action;.*");
+
+		contains(serviceFileContent,
+			".*^import com.liferay.portal.kernel.events.LifecycleAction;$.*");
+
+		contains(serviceFileContent, ".*service = LifecycleAction.class.*");
+
+		contains(serviceFileContent,
+			".*^public class ServicePreAction implements LifecycleAction \\{.*");
 	}
 
 	@Test
@@ -310,17 +341,6 @@ public class TestBladeCLI {
 		contains(pomFileContent, ".*<name>Foo</name>.*");
 
 		contains(pomFileContent, ".*<Private-Package>foo</Private-Package>.*");
-
-		File projectFile = IO.getFile("generated/test/foo/.project");
-
-		assertTrue(projectFile.exists());
-
-		String projectFileContent = new String(IO.read(projectFile));
-
-		contains(projectFileContent, ".*<name>foo</name>.*");
-
-		contains(projectFileContent,
-			".*<nature>org.eclipse.m2e.core.maven2Nature</nature>.*");
 	}
 
 	@Test
