@@ -1,7 +1,9 @@
-task createTemplateZip(type:Zip) {
+task createTemplatesZip(type:Zip) {
 	from "${projectDir}/templates"
 	baseName="templates"
 	destinationDir = new File("${projectDir}")
 }
 
-//jar.dependsOn createTemplateZip
+jar {
+	from createTemplatesZip
+}

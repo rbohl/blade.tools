@@ -12,6 +12,7 @@ import java.util.List;
 import aQute.bnd.osgi.Jar;
 import aQute.remote.util.JMXBundleDeployer;
 
+@SuppressWarnings("restriction")
 public class DeployCommand {
 
 	final private blade blade;
@@ -165,7 +166,7 @@ public class DeployCommand {
 				.toPath(), true, new Runnable() {
 			@Override
 			public void run() {
-				synchronized (blade) {
+				synchronized (bundleFile) {
 					deploy[0] = true;
 					bundleFile.notify();
 				}
