@@ -16,7 +16,8 @@ import org.junit.Test;
 public class AssetTagPropertiesTest {
 
 	final File testFile = new File("projects/filetests/MediaWikiImporter.java");
-	final File testFile2 = new File("projects/filetests/AssetTagPropertiesTestFile.java");
+	final File testFile2 = new File(
+			"projects/filetests/AssetTagPropertiesTestFile.java");
 	AssetTagProperties component;
 
 	@Before
@@ -28,14 +29,17 @@ public class AssetTagPropertiesTest {
 
 	@Test
 	public void assetTagPropertiesTest() throws Exception {
-		List<SearchResult> results = component.searchJavaFile(testFile, new JavaFileChecker(testFile));
+		List<SearchResult> results = component.searchJavaFile(testFile,
+				new JavaFileChecker(testFile));
 
 		assertNotNull(results);
 		assertEquals(2, results.size());
 	}
+
 	@Test
 	public void assetTagPropertiesAnotherTest() throws Exception {
-		List<SearchResult> results = component.searchJavaFile(testFile2, new JavaFileChecker(testFile2));
+		List<SearchResult> results = component.searchJavaFile(testFile2,
+				new JavaFileChecker(testFile2));
 
 		assertNotNull(results);
 		assertEquals(4, results.size());
