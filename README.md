@@ -1,6 +1,7 @@
 # Blade Tools
 
-[![Travis CI Build Status](https://travis-ci.org/gamerson/blade.tools.svg?branch=master)](https://travis-ci.org/gamerson/blade.tools)
+[![Build Status]([![Build Status](https://liferay-test-01.ci.cloudbees.com/job/blade.tools/2/badge/icon)](https://liferay-test-01.ci.cloudbees.com/job/blade.tools/2/))](https://liferay-test-01.ci.cloudbees.com/job/blade.tools/)
+[![Travis CI Build Status](https://travis-ci.org/gamerson/blade.tools.svg?branch=master)](https://travis-ci.org/gamerso
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gamerson/blade.tools?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Blade Tools is a set of modular developer tools for building Liferay 7.0 plugins, aka modules built with OSGi.  The idea is that instead of many of the tools that would normally be developed and released only as a part of Liferay IDE can now be built in a re-usable way (i.e. modular, just like Liferay 7.0 Core itself) and can be used outside or in conjunction with Liferay IDE, making these tools available for non-Liferay IDE or non-Eclipse users.
@@ -22,7 +23,17 @@ Install JPM (Windows)
 Visit the JPM4J [Windows installation](https://www.jpm4j.org/#!/md/windows) setup guide.
 ```
 
+### Download and install blade CLI from CI
+
+If you want to build the blade.cli.jar yourself skip this and go to the next section.
+
+Download the latest CI build of Blade CLI here.
+
+[blade.cli.jar](https://liferay-test-01.ci.cloudbees.com/job/blade.tools/lastSuccessfulBuild/artifact/blade.cli/generated/distributions/executable/blade.cli.jar)
+
 ### Build blade cli jar
+
+If you have already downloaded the blade.cli.jar from above you can skip this section.
 
 Clone this repo, and then from the command line execute following command:
 
@@ -32,8 +43,16 @@ $ gradle build export.blade.cli
 
 ### Install Blade Tools jar using JPM
 
+Install from downloaded jar
+
 ```
-$ jpm install -fl blade.cli/generated/distributions/executable/blade.cli.jar
+$ (sudo) jpm install -fl <downloads_dir>/blade.cli.jar
+```
+
+Install from newly built jar from source.
+
+```
+$ (sudo) jpm install -fl blade.cli/generated/distributions/executable/blade.cli.jar
 ```
 
 Now you should have the ```blade``` executable in your path. Try it by running:
@@ -81,6 +100,17 @@ $ telnet localhost 11311
 Then issue the command ```lb helloworld```
 
 ### Migrate
+
+## OSGi bundles (Eclipse plugins)
+
+The blade libraries are also available in just pure OSGi bundle form which can be run in any OSGi application include an Eclipse runtime.  So we have generated both a R5(OSGi) repository and p2(Eclipse) repository available for third-party builds.
+
+[Latest available CI Build - R5/p2 repository](https://liferay-test-01.ci.cloudbees.com/job/blade.tools/lastSuccessfulBuild/artifact/build/generated/p2/)
+
+## Release
+Blade Tools is continuously built and released on [CloudBees](https://https://liferay-test-01.ci.cloudbees.com/job/blade.tools/).
+
+[![Built on DEV@cloud](http://www.cloudbees.com/sites/default/files/Button-Built-on-CB-1.png)](http://www.cloudbees.com/foss/foss-dev.cb)
 
 ## License
 All source to this project is available under [Apache 2.0 License](/LICENSE.txt)
