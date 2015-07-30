@@ -8,15 +8,15 @@ import blade.migrate.core.JavaFileChecker;
 import blade.migrate.core.SearchResult;
 
 import java.io.File;
-
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
 public class WebContentArticlesStrucAndTemplTest {
 
 	final File testFile = new File(
-		"projects/filetests/WebContentArticlesStrucAndTemplTestFile.java");
+			"projects/filetests/WebContentArticlesStrucAndTemplTestFile.java");
 	WebContentArticlesStrucAndTempl component;
 
 	@Before
@@ -27,8 +27,8 @@ public class WebContentArticlesStrucAndTemplTest {
 
 	@Test
 	public void reservedUserIdExceptionJavaTest() throws Exception {
-		List<SearchResult> results = component.searchJavaFile(
-			testFile, new JavaFileChecker(testFile));
+		List<SearchResult> results = component.searchJavaFile(testFile,
+				new JavaFileChecker(testFile));
 
 		assertNotNull(results);
 		assertEquals(2, results.size());
