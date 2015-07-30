@@ -1,15 +1,15 @@
 package blade.migrate.liferay70;
 
+import blade.migrate.api.FileMigrator;
+import blade.migrate.core.JavaFileChecker;
+import blade.migrate.core.JavaFileMigrator;
+import blade.migrate.core.SearchResult;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
-
-import blade.migrate.api.FileMigrator;
-import blade.migrate.core.JavaFileChecker;
-import blade.migrate.core.JavaFileMigrator;
-import blade.migrate.core.SearchResult;
 
 @Component(
 	property = {
@@ -37,7 +37,9 @@ public class PortletsPackage extends JavaFileMigrator {
 		final List<SearchResult> searchResults = new ArrayList<>();
 
 		for (String packageName : packages) {
-			final SearchResult packageResult = javaFileChecker.findPackage(packageName);
+			final SearchResult packageResult = javaFileChecker
+					.findPackage(packageName);
+
 			if (packageResult != null) {
 				searchResults.add(packageResult);
 			}
