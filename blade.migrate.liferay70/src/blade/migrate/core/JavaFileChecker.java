@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
@@ -201,6 +202,37 @@ public class JavaFileChecker {
 
 		return null;
 	}
+
+	public SearchResult findPackage(final String packageName) {
+		final List<SearchResult> searchResults = new ArrayList<>();
+
+		_ast.accept(new ASTVisitor() {
+			@Override
+			public boolean visit(PackageDeclaration node) {
+				if (packageName.equals(node.getName().toString())) {
+					int startLine = _ast.getLineNumber(node.getName()
+						.getStartPosition());
+					int startOffset = node.getName().getStartPosition();
+					int endLine = _ast.getLineNumber(node.getName()
+						.getStartPosition() + node.getName().getLength());
+					int endOffset = node.getName().getStartPosition() +
+						node.getName().getLength();
+
+					searchResults.add(createSearchResult(startOffset,
+						endOffset, startLine, endLine, true));
+				}
+
+				return false;
+			};
+		});
+
+		if (0 != searchResults.size()) {
+			return searchResults.get(0);
+		}
+
+		return null;
+	}
+
 	public List<SearchResult> findMethodDeclaration(
 		final String name, final String[] params) {
 
