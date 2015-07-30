@@ -1,7 +1,6 @@
 # Blade Tools
 
 [![Build Status](https://liferay-test-01.ci.cloudbees.com/job/blade.tools/2/badge/icon)](https://liferay-test-01.ci.cloudbees.com/job/blade.tools/)
-[![Travis CI Build Status](https://travis-ci.org/gamerson/blade.tools.svg?branch=master)](https://travis-ci.org/gamerso
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gamerson/blade.tools?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Blade Tools is a set of modular developer tools for building Liferay 7.0 plugins, aka modules built with OSGi.  The idea is that instead of many of the tools that would normally be developed and released only as a part of Liferay IDE can now be built in a re-usable way (i.e. modular, just like Liferay 7.0 Core itself) and can be used outside or in conjunction with Liferay IDE, making these tools available for non-Liferay IDE or non-Eclipse users.
