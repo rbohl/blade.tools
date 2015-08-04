@@ -95,7 +95,7 @@ public class JSPFileChecker extends JavaFileChecker {
 			final int jspStartLine = structuredDocument
 					.getLineOfOffset(jspStartOffset) + 1;
 			final int jspEndLine = structuredDocument
-					.getLineOfOffset(jspEndOffset);
+					.getLineOfOffset(jspEndOffset) + 1;
 
 			return super.createSearchResult(jspStartOffset, jspEndOffset,
 					jspStartLine, jspEndLine, fullMatch);
