@@ -1,3 +1,5 @@
+Bundle-Version: 1.0.0.${tstamp}
+
 -buildpath: \
 	aQute.libg,\
 	biz.aQute.bndlib,\
@@ -12,18 +14,13 @@
 -includeresource: \
 	{templates.zip}
 
--sources: true
-
-Bundle-Version: 0.4.0.${tstamp}
-
-Export-Package: \
-	blade.cli
-
 Import-Package: \
 	 org.osgi.framework;version=1.5.0,\
+	 blade.migration.api,\
 	 *
 
 Private-Package: \
+	blade.cli.*,\
 	aQute.bnd.*,\
 	aQute.remote.util,\
 	org.apache.commons.lang3.*,\
@@ -31,9 +28,6 @@ Private-Package: \
 	aQute.lib.*;-split-package:=first,\
 	aQute.libg.*;-split-package:=first,\
 	aQute.service.reporter;split-package:=first,\
-	blade.cli.cmds,\
-	blade.cli.jmx,\
-	blade.cli.util,\
 	org.osgi.dto,\
 	org.osgi.framework.dto,\
 	org.osgi.resource,\

@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import aQute.lib.io.IO;
 
-public class TestBladeCLI {
+public class CreateCommandTests {
 
 	@BeforeClass
 	public static void copyTemplates() throws IOException {
