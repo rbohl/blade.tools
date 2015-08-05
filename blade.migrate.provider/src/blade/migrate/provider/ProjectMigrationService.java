@@ -123,23 +123,21 @@ public class ProjectMigrationService implements Migration {
 			e.printStackTrace();
 		}
 
-		if (args == null || args.length < 1 || (!(args[0] instanceof File))) {
-			throw new IllegalArgumentException("No output file specificed.");
-		}
-
 		OutputStream fos = null;
 
-		if (args.length > 0 && args[0] instanceof OutputStream) {
-			fos = (OutputStream) args[0];
-		}
-		else if (args.length > 0 && args[0] instanceof File) {
-			File outputFile = (File) args[0];
-			try {
-				outputFile.getParentFile().mkdirs();
-				outputFile.createNewFile();
-				fos = new FileOutputStream(outputFile);
-			} catch (IOException e) {
-				e.printStackTrace();
+		if (args != null && args.length > 0) {
+			if(args[0] instanceof File) {
+				File outputFile = (File) args[0];
+				try {
+					outputFile.getParentFile().mkdirs();
+					outputFile.createNewFile();
+					fos = new FileOutputStream(outputFile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			else if(args[0] instanceof OutputStream) {
+				fos = (OutputStream) args[0];
 			}
 		}
 
