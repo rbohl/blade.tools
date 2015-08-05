@@ -13,16 +13,53 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class ConsoleReporterTest {
+public class HtmlReporterTest {
 
 	@Test
 	public void reportLongFormatTest() throws Exception {
 		String expectString =
-				"   ______________________________________________________________________________\n" +
-				"   | Title| Summary| Url             | Type      | Ticket| File            | Line|\n" +
-				"   |=============================================================================|\n" +
-				"1. | test | summary| java/project/url| java      | 100   | file1.java      | 10  |\n" +
-				"2. | test1| summary| java/project/url| properties| 101   | file2.properties| 12  |\n";
+"<!doctype html>\n\n"+
+
+"<html class=\"no-js\" lang=\"\">\n" +
+"    <head>\n" +
+"        <meta charset=\"utf-8\">\n" +
+"        <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge\">\n" +
+"        <title></title>\n" +
+"        <meta name=\"description\" content=\"\">\n" +
+"        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+"    </head>\n" +
+"    <body>\n" +
+"    	<table>\n" +
+"    		<tr>\n" +
+"    			<th>Title</th>\n" +
+"    			<th>Summary</th>\n" +
+"    			<th>Url</th>\n" +
+"    			<th>Type</th>\n" +
+"    			<th>Ticket</th>\n" +
+"    			<th>File</th>\n" +
+"    			<th>Line</th>\n" +
+"    		</tr>\n" +
+"	    	<tr>\n" +
+"	    		<td>test</td>\n" +
+"	    		<td>summary</td>\n" +
+"	    		<td>java/project/url</td>\n" +
+"	    		<td>java</td>\n" +
+"	    		<td>100</td>\n" +
+"	    		<td>file1.java</td>\n" +
+"	    		<td>10</td>\n" +
+"	    	</tr>\n" +
+"	    	<tr>\n" +
+"	    		<td>test1</td>\n" +
+"	    		<td>summary</td>\n" +
+"	    		<td>java/project/url</td>\n" +
+"	    		<td>properties</td>\n" +
+"	    		<td>101</td>\n" +
+"	    		<td>file2.properties</td>\n" +
+"	    		<td>12</td>\n" +
+"	    	</tr>\n" +
+"    	</table>\n" +
+"    </body>\n" +
+"</html>\n";
 
 		Problem problem = new Problem();
 		problem.title = "test";
@@ -50,7 +87,7 @@ public class ConsoleReporterTest {
 		PrintStream printStream = new PrintStream(baos);
 		System.setOut(printStream);
 
-		ConsoleReporter reporter = new ConsoleReporter();
+		HtmlReporter reporter = new HtmlReporter();
 		reporter.beginReporting(Reporter.FORMAT_LONG, baos);
 
 		for (Problem p : problems) {
@@ -67,11 +104,39 @@ public class ConsoleReporterTest {
 	@Test
 	public void reportShortFormatTest() throws Exception {
 		String expectString =
-				"   ___________________________________________\n" +
-				"   | Title| Type      | File            | Line|\n" +
-				"   |==========================================|\n" +
-				"1. | test | java      | file1.java      | 10  |\n" +
-				"2. | test1| properties| file2.properties| 12  |\n";
+"<!doctype html>\n\n"+
+
+"<html class=\"no-js\" lang=\"\">\n" +
+"    <head>\n" +
+"        <meta charset=\"utf-8\">\n" +
+"        <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge\">\n" +
+"        <title></title>\n" +
+"        <meta name=\"description\" content=\"\">\n" +
+"        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+"    </head>\n" +
+"    <body>\n" +
+"    	<table>\n" +
+"    		<tr>\n" +
+"    			<th>Title</th>\n" +
+"    			<th>Type</th>\n" +
+"    			<th>File</th>\n" +
+"    			<th>Line</th>\n" +
+"    		</tr>\n" +
+"	    	<tr>\n" +
+"	    		<td>test</td>\n" +
+"	    		<td>java</td>\n" +
+"	    		<td>file1.java</td>\n" +
+"	    		<td>10</td>\n" +
+"	    	</tr>\n" +
+"	    	<tr>\n" +
+"	    		<td>test1</td>\n" +
+"	    		<td>properties</td>\n" +
+"	    		<td>file2.properties</td>\n" +
+"	    		<td>12</td>\n" +
+"	    	</tr>\n" +
+"    	</table>\n" +
+"    </body>\n" +
+"</html>\n";
 
 		Problem problem = new Problem();
 		problem.title = "test";
@@ -93,7 +158,7 @@ public class ConsoleReporterTest {
 		PrintStream printStream = new PrintStream(baos);
 		System.setOut(printStream);
 
-		ConsoleReporter reporter = new ConsoleReporter();
+		HtmlReporter reporter = new HtmlReporter();
 		reporter.beginReporting(Reporter.FORMAT_SHORT, baos);
 
 		for (Problem p : problems) {

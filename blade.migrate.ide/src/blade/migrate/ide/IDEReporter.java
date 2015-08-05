@@ -1,6 +1,10 @@
 package blade.migrate.ide;
 
+import blade.migrate.api.Problem;
+import blade.migrate.api.Reporter;
+
 import java.io.File;
+import java.io.OutputStream;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -11,18 +15,16 @@ import org.eclipse.core.runtime.CoreException;
 import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Component;
 
-import blade.migrate.api.Problem;
-import blade.migrate.api.Reporter;
-
 @Component(
 	property = {
-		Constants.SERVICE_RANKING + ":Integer=1"
+		Constants.SERVICE_RANKING + ":Integer=100",
+		"format:String=ide"
 	}
 )
 public class IDEReporter implements Reporter {
 
 	@Override
-	public void beginReporting(int format) {
+	public void beginReporting(int format, OutputStream output) {
 	}
 
 	@Override
