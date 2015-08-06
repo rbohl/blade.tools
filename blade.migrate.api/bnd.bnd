@@ -1,9 +1,7 @@
-Bundle-Version:0.1.0.${tstamp}
-
+Bundle-Version: 1.0.0.${tstamp}
 
 Export-Package:  \
 	blade.migrate.api;provide:=true
-
 
 Require-Capability: \
 	compile-only
