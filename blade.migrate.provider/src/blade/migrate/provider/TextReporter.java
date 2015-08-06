@@ -5,6 +5,7 @@ import blade.migrate.api.Reporter;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +17,11 @@ import dnl.utils.text.table.TextTable;
 @Component(
 	property = {
 		Constants.SERVICE_RANKING + ":Integer=0",
-		"format:String=console"
-	}
+		"format:String=text"
+	},
+	service = Reporter.class
 )
-public class ConsoleReporter implements Reporter {
+public class TextReporter extends ConsoleReporter {
 
 	private OutputStream _output;
 
@@ -57,7 +59,7 @@ public class ConsoleReporter implements Reporter {
 		TextTable tt = new TextTable(columnNames.toArray(new String[0]), data);
 		tt.setAddRowNumbering(true);
 		tt.setSort(0);
-		tt.printTable();
+		tt.printTable(new PrintStream(_output), 0);
 
 		this.columnNames.clear();
 		this.rowData.clear();

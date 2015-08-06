@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class ConsoleReporterTest {
+public class TestReporterTest {
 
 	@Test
 	public void reportLongFormatTest() throws Exception {
@@ -50,7 +50,7 @@ public class ConsoleReporterTest {
 		PrintStream printStream = new PrintStream(baos);
 		System.setOut(printStream);
 
-		ConsoleReporter reporter = new ConsoleReporter();
+		TextReporter reporter = new TextReporter();
 		reporter.beginReporting(Reporter.FORMAT_LONG, baos);
 
 		for (Problem p : problems) {
@@ -93,7 +93,7 @@ public class ConsoleReporterTest {
 		PrintStream printStream = new PrintStream(baos);
 		System.setOut(printStream);
 
-		ConsoleReporter reporter = new ConsoleReporter();
+		TextReporter reporter = new TextReporter();
 		reporter.beginReporting(Reporter.FORMAT_SHORT, baos);
 
 		for (Problem p : problems) {

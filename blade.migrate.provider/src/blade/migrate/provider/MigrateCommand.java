@@ -8,7 +8,6 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.felix.service.command.CommandProcessor;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -21,8 +20,9 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class MigrateCommand {
 
-	public void migrate(File projectDir) {
-		projectMigrationService.reportProblems(projectDir, Reporter.FORMAT_LONG);
+	public void migrate(File projectDir, String format, File outputFile) {
+		List<Problem> problems = projectMigrationService.findProblems(projectDir);
+		projectMigrationService.reportProblems(problems, Reporter.FORMAT_LONG, format, outputFile);
 	}
 
 	@Reference

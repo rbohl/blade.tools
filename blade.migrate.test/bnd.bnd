@@ -1,7 +1,6 @@
 Bundle-Version:1.0.0.${tstamp}
 
-Private-Package:  \
-	blade.migrate.test
+Private-Package: blade.migrate.test
 
 Test-Cases: ${test-cases}
 
