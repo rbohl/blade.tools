@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension
+			point="org.eclipse.ui.views">
+		<view
+        	allowMultiple="false"
+			class="blade.migrate.ide.MigrationView"
+			icon="icons/e16/liferay.png"
+			id="blade.migrate.ide.migration"
+			name="Liferay Plugin Migration"
+			restorable="true">
+      </view>
+   </extension>
+</plugin>
