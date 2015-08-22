@@ -44,13 +44,15 @@ public class IDEReporter implements Reporter {
 			IFile wsFile = files[0];
 
 			try {
-				IMarker marker = wsFile.createMarker( "com.liferay.ide.core.MigrationProblemMarker" );
+				IMarker marker = wsFile.createMarker( MigrationConstants.MIGRATION_MARKER_TYPE );
 				marker.setAttribute( IMarker.SEVERITY, IMarker.SEVERITY_ERROR );
 	            marker.setAttribute( IMarker.MESSAGE, problem.title );
 	            marker.setAttribute( IMarker.LINE_NUMBER, problem.lineNumber );
 	            marker.setAttribute( IMarker.LOCATION, problem.file.getName() );
 	            marker.setAttribute( IMarker.CHAR_START, problem.startOffset);
 	            marker.setAttribute( IMarker.CHAR_END, problem.endOffset);
+	            marker.setAttribute("summary", problem.summary);
+	            marker.setAttribute("ticket", problem.ticket);
 
 
 	            IMarker[] markers = wsFile.findMarkers("blade.migrate.ide.MigrationMarker", false, IResource.DEPTH_INFINITE);
