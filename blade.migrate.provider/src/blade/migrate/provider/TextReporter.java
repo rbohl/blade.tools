@@ -1,5 +1,6 @@
 package blade.migrate.provider;
 
+import blade.migrate.api.Migration;
 import blade.migrate.api.Problem;
 import blade.migrate.api.Reporter;
 
@@ -29,7 +30,7 @@ public class TextReporter extends ConsoleReporter {
 	public void beginReporting(int format, OutputStream output) {
 		_output = output;
 
-		if (format == FORMAT_SHORT) {
+		if (format == Migration.DETAIL_SHORT) {
 			columnNames.add("Title");
 			columnNames.add("Type");
 			columnNames.add("File");

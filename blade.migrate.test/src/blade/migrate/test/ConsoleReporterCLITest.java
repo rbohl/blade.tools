@@ -2,6 +2,7 @@ package blade.migrate.test;
 
 import static org.junit.Assert.assertEquals;
 
+import blade.migrate.api.Migration;
 import blade.migrate.api.Problem;
 import blade.migrate.api.Reporter;
 
@@ -33,7 +34,7 @@ public class ConsoleReporterCLITest {
 		ServiceReference<Reporter> sr = context
 			.getServiceReference(Reporter.class);
 		Reporter reporter = context.getService(sr);
-		reporter.beginReporting(Reporter.FORMAT_LONG, baos);
+		reporter.beginReporting(Migration.DETAIL_LONG, baos);
 		reporter.report(new Problem(
 				"foo", "http://liferay.com", "foo summary", "java", "LPS-5309", new File("Foo.java"), 10, 100, 110 ));
 		reporter.report(new Problem(
@@ -61,7 +62,7 @@ public class ConsoleReporterCLITest {
 		ServiceReference<Reporter> sr = context
 				.getServiceReference(Reporter.class);
 		Reporter reporter = context.getService(sr);
-		reporter.beginReporting(Reporter.FORMAT_SHORT, baos);
+		reporter.beginReporting(Migration.DETAIL_SHORT, baos);
 		reporter.report(new Problem(
 				"foo", "http://liferay.com", "foo summary", "java", "LPS-867", new File("Foo.java"), 10, 100, 110 ));
 		reporter.report(new Problem(

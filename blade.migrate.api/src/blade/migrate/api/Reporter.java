@@ -13,8 +13,4 @@ public interface Reporter {
 
 	public void report(Problem problem);
 
-	public int FORMAT_LONG = 1 << 2;
-
-	public int FORMAT_SHORT = 1 << 1;
-
 }
