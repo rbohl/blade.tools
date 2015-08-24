@@ -19,9 +19,14 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		Constants.SERVICE_RANKING + ":Integer=100",
 		"format:String=ide"
-	}
+	},
+	immediate = true
 )
 public class IDEReporter implements Reporter {
+
+	public IDEReporter() {
+
+	}
 
 	@Override
 	public void beginReporting(int format, OutputStream output) {

@@ -2,6 +2,7 @@ package blade.migrate.provider;
 
 import blade.migrate.api.FileMigrator;
 import blade.migrate.api.Migration;
+import blade.migrate.api.MigrationListener;
 import blade.migrate.api.Problem;
 import blade.migrate.api.ProgressMonitor;
 import blade.migrate.api.ProjectMigrator;
@@ -33,13 +34,19 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.util.tracker.ServiceTracker;
 
 @Component(immediate = true)
 public class ProjectMigrationService implements Migration {
 
+	private ServiceTracker<MigrationListener, MigrationListener> _migrationListenerTracker;
+
 	@Activate
 	public void activate(BundleContext context) {
 		this.context = context;
+
+		_migrationListenerTracker = new ServiceTracker<MigrationListener, MigrationListener>(context, MigrationListener.class, null);
+		_migrationListenerTracker.open();
 	}
 
 	@Reference(
@@ -72,7 +79,7 @@ public class ProjectMigrationService implements Migration {
 
 	@Override
 	public List<Problem> findProblems(File projectDir) {
-		this.progressMonitor.beginTask("Migrating directory " + projectDir, -1);
+		this.progressMonitor.beginTask("Searching for migration problems in " + projectDir, -1);
 		this.progressMonitor.done();
 
 		final List<Problem> problems = new ArrayList<>();
@@ -92,6 +99,17 @@ public class ProjectMigrationService implements Migration {
 		walkFiles(projectDir, problems);
 
 		this.progressMonitor.done();
+
+		final MigrationListener[] listeners = _migrationListenerTracker
+				.getServices(new MigrationListener[0]);
+
+		for (MigrationListener listener : listeners) {
+			try {
+				listener.problemsFound(problems);
+			} catch (Exception e) {
+				// ignore
+			}
+		}
 
 		return problems;
 	}
@@ -149,6 +167,8 @@ public class ProjectMigrationService implements Migration {
 			}
 
 			reporter.endReporting();
+
+
 		}
 	}
 

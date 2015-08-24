@@ -1,4 +1,4 @@
--includeresource: plugin.xml=_plugin.xml
+-includeresource: plugin.xml=_plugin.xml,icons=icons
 
 Bundle-Activator: blade.migrate.ide.Plugin
 Bundle-ActivationPolicy: lazy
@@ -6,7 +6,7 @@ Bundle-SymbolicName: blade.migrate.ide;singleton:=true
 Bundle-Version: 1.0.0.${tstamp}
 
 Private-Package: \
-	blade.migrate.ide
+	blade.migrate.ide.*
 
 -buildpath: \
 	osgi.core,\

@@ -1,4 +1,4 @@
-package blade.migrate.ide;
+package blade.migrate.ide.view;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;

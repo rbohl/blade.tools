@@ -1,4 +1,6 @@
-package blade.migrate.ide;
+package blade.migrate.ide.view;
+
+import blade.migrate.ide.MigrationConstants;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;

@@ -1,7 +1,7 @@
 package blade.migrate.ide;
 
-public class MigrationConstants {
+public interface MigrationConstants {
 
-	static final String MIGRATION_MARKER_TYPE = "blade.migrate.ide.MigrationProblemMarker";
+	String MIGRATION_MARKER_TYPE = "blade.migrate.ide.MigrationProblemMarker";
 
 }

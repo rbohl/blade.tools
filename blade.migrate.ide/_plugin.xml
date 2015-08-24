@@ -1,15 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+
+	<extension
+         id="MigrationProblemMarker"
+         name="Liferay Migration"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
 	<extension
 			point="org.eclipse.ui.views">
 		<view
         	allowMultiple="false"
-			class="blade.migrate.ide.MigrationView"
+			class="blade.migrate.ide.view.MigrationView"
 			icon="icons/e16/liferay.png"
 			id="blade.migrate.ide.migration"
 			name="Liferay Plugin Migration"
 			restorable="true">
       </view>
+   </extension>
+    <extension point="org.eclipse.ui.commands">
+      <command
+         id="blade.migrate.ide.migrateProject"
+         name="Migrate Project"
+         description="Start a migration task for the selected project"
+      />
+   </extension>
+   <extension point="org.eclipse.ui.commandImages">
+      <image
+         commandId="blade.migrate.ide.migrateProject"
+         icon="icons/migrate.gif"
+      />
+   </extension>
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+         commandId="blade.migrate.ide.migrateProject"
+         class="blade.migrate.ide.MigrateProjectHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="org.eclipse.core.resources.IProject" />
+               </iterate>
+            </with>
+         </enabledWhen>
+       </handler>
    </extension>
 </plugin>
