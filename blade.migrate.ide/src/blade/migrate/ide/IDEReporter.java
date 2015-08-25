@@ -1,5 +1,6 @@
 package blade.migrate.ide;
 
+import blade.migrate.api.MigrationConstants;
 import blade.migrate.api.Problem;
 import blade.migrate.api.Reporter;
 
@@ -34,13 +35,12 @@ public class IDEReporter implements Reporter {
 
 	@Override
 	public void report(Problem problem) {
-		File file = problem.file;
-
-		IWorkspaceRoot ws = ResourcesPlugin.getWorkspace().getRoot();
-		IFile[] files = ws.findFilesForLocationURI(file.toURI());
+		final File file = problem.file;
+		final IWorkspaceRoot ws = ResourcesPlugin.getWorkspace().getRoot();
+		final IFile[] files = ws.findFilesForLocationURI(file.toURI());
 
 		if( files != null && files.length > 0) {
-			IFile wsFile = files[0];
+			final IFile wsFile = files[0];
 
 			try {
 				IMarker marker = wsFile.createMarker( MigrationConstants.MIGRATION_MARKER_TYPE );

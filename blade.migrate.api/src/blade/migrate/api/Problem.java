@@ -2,8 +2,7 @@ package blade.migrate.api;
 
 import java.io.File;
 
-public class Problem
-{
+public class Problem {
 
 	public Problem() {
 	}
