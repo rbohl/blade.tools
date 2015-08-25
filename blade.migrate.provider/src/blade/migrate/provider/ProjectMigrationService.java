@@ -21,25 +21,19 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.util.tracker.ServiceTracker;
 
 @Component(immediate = true)
 public class ProjectMigrationService implements Migration {
 
-	private ServiceTracker<MigrationListener, MigrationListener> _migrationListenerTracker;
+
 
 	@Activate
 	public void activate(BundleContext context) {
@@ -47,45 +41,32 @@ public class ProjectMigrationService implements Migration {
 
 		_migrationListenerTracker = new ServiceTracker<MigrationListener, MigrationListener>(context, MigrationListener.class, null);
 		_migrationListenerTracker.open();
-	}
 
-	@Reference(
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	public void setProgressMonitor(ProgressMonitor progressMonitor) {
-		this.progressMonitor = progressMonitor;
-	}
+		_fileMigratorTracker = new ServiceTracker<FileMigrator, FileMigrator>(context, FileMigrator.class, null);
+		_fileMigratorTracker.open();
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "removeFileMigrator"
+		_projectMigratorTracker = new ServiceTracker<ProjectMigrator, ProjectMigrator>(context, ProjectMigrator.class, null);
+		_projectMigratorTracker.open();
 
-	)
-	public void addFileMigrator(ServiceReference<FileMigrator> fileMigrator) {
-		fileMigrators.add(fileMigrator);
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "removeProjectMigrator"
-	)
-	public void addProjectMigrator(ProjectMigrator projectMigrator) {
-		projectMigrators.add(projectMigrator);
+		_progressMonitorTracker = new ServiceTracker<ProgressMonitor, ProgressMonitor>(context, ProgressMonitor.class, null);
+		_progressMonitorTracker.open();
 	}
 
 	@Override
 	public List<Problem> findProblems(File projectDir) {
-		this.progressMonitor.beginTask("Searching for migration problems in " + projectDir, -1);
-		this.progressMonitor.done();
+		final ProgressMonitor monitor = _progressMonitorTracker.getService();
+
+		monitor.beginTask("Searching for migration problems in " + projectDir, -1);
+		monitor.done();
 
 		final List<Problem> problems = new ArrayList<>();
 
-		for (ProjectMigrator projectMigrator : projectMigrators) {
+		ServiceReference<ProjectMigrator>[] projectMigrators = _projectMigratorTracker.getServiceReferences();
+
+		if (projectMigrators != null && projectMigrators.length > 0) {
+		for (ServiceReference<ProjectMigrator> projectMigratorRef : projectMigrators) {
 			try {
+				ProjectMigrator projectMigrator = context.getService(projectMigratorRef);
 				List<Problem> migrationProblems = projectMigrator.analyze(projectDir);
 
 				problems.addAll(migrationProblems);
@@ -93,12 +74,13 @@ public class ProjectMigrationService implements Migration {
 				e.printStackTrace();
 			}
 		}
+		}
 
-		this.progressMonitor.beginTask("Analyzing files", -1);
+		monitor.beginTask("Analyzing files", -1);
 
 		walkFiles(projectDir, problems);
 
-		this.progressMonitor.done();
+		monitor.done();
 
 		final MigrationListener[] listeners = _migrationListenerTracker
 				.getServices(new MigrationListener[0]);
@@ -112,15 +94,6 @@ public class ProjectMigrationService implements Migration {
 		}
 
 		return problems;
-	}
-
-	public void removeFileMigrator(
-		ServiceReference<FileMigrator> fileMigrator) {
-		fileMigrators.remove(fileMigrator);
-	}
-
-	public void removeProjectMigrator(ProjectMigrator projectMigrator) {
-		projectMigrators.remove(projectMigrator);
 	}
 
 	@Override
@@ -173,6 +146,8 @@ public class ProjectMigrationService implements Migration {
 	}
 
 	private void walkFiles(final File dir, final List<Problem> problems) {
+		final ProgressMonitor monitor = _progressMonitorTracker.getService();
+
 		final FileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(
@@ -186,13 +161,16 @@ public class ProjectMigrationService implements Migration {
 					String extension = fileName.substring(
 						fileName.lastIndexOf('.')+1);
 
+					monitor.setTaskName("Analyzing file " + fileName);
+
+					ServiceReference<FileMigrator>[] fileMigrators = _fileMigratorTracker.getServiceReferences();
+
+					if(fileMigrators != null && fileMigrators.length > 0) {
 					for ( ServiceReference<FileMigrator> fm : fileMigrators ) {
 						List<String> fileExtensions = Arrays.asList(((String)fm.getProperty("file.extensions")).split(","));
 
 						if ( fileExtensions != null && fileExtensions.contains(extension) ) {
 							FileMigrator fmigrator = context.getService(fm);
-
-							progressMonitor.setTaskName("Analyzing file " + fileName);
 
 							List<Problem> fileProblems = fmigrator.analyzeFile(
 								file);
@@ -205,6 +183,7 @@ public class ProjectMigrationService implements Migration {
 
 							context.ungetService(fm);
 						}
+					}
 					}
 				}
 
@@ -223,8 +202,9 @@ public class ProjectMigrationService implements Migration {
 	}
 
 	private BundleContext context;
-	private Set<ServiceReference<FileMigrator>> fileMigrators = new HashSet<>();
-	private ProgressMonitor progressMonitor;
-	private Set<ProjectMigrator> projectMigrators = new HashSet<>();
+	private ServiceTracker<MigrationListener, MigrationListener> _migrationListenerTracker;
+	private ServiceTracker<FileMigrator, FileMigrator> _fileMigratorTracker;
+	private ServiceTracker<ProjectMigrator, ProjectMigrator> _projectMigratorTracker;
+	private ServiceTracker<ProgressMonitor, ProgressMonitor> _progressMonitorTracker;
 
 }
