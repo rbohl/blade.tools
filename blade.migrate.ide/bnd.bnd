@@ -1,5 +1,3 @@
--includeresource: plugin.xml=_plugin.xml,icons=icons
-
 Bundle-Activator: blade.migrate.ide.Plugin
 Bundle-ActivationPolicy: lazy
 Bundle-SymbolicName: blade.migrate.ide;singleton:=true

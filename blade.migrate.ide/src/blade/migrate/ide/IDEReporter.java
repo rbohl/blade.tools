@@ -24,10 +24,6 @@ import org.osgi.service.component.annotations.Component;
 )
 public class IDEReporter implements Reporter {
 
-	public IDEReporter() {
-
-	}
-
 	@Override
 	public void beginReporting(int format, OutputStream output) {
 	}
@@ -41,10 +37,8 @@ public class IDEReporter implements Reporter {
 		File file = problem.file;
 
 		IWorkspaceRoot ws = ResourcesPlugin.getWorkspace().getRoot();
-
-		System.out.println(file.toURI());
 		IFile[] files = ws.findFilesForLocationURI(file.toURI());
-/*		System.out.println(files);*/
+
 		if( files != null && files.length > 0) {
 			IFile wsFile = files[0];
 
