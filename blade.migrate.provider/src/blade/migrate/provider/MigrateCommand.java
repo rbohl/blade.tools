@@ -2,7 +2,6 @@ package blade.migrate.provider;
 
 import blade.migrate.api.Migration;
 import blade.migrate.api.Problem;
-import blade.migrate.api.Reporter;
 
 import java.io.File;
 import java.util.List;
@@ -22,7 +21,7 @@ public class MigrateCommand {
 
 	public void migrate(File projectDir, String format, File outputFile) {
 		List<Problem> problems = projectMigrationService.findProblems(projectDir);
-		projectMigrationService.reportProblems(problems, Reporter.FORMAT_LONG, format, outputFile);
+		projectMigrationService.reportProblems(problems, Migration.DETAIL_LONG, format, outputFile);
 	}
 
 	@Reference

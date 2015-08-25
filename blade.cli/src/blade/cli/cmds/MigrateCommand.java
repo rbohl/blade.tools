@@ -4,7 +4,6 @@ import blade.cli.MigrateOptions;
 import blade.cli.blade;
 import blade.migrate.api.Migration;
 import blade.migrate.api.Problem;
-import blade.migrate.api.Reporter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -77,10 +76,10 @@ public class MigrateCommand {
 		String formatValue = format != null ? format.toString() : "";
 
 		if (options.detailed()) {
-			migrationService.reportProblems(problems, Reporter.FORMAT_LONG, formatValue, fos);
+			migrationService.reportProblems(problems, Migration.DETAIL_LONG, formatValue, fos);
 		}
 		else {
-			migrationService.reportProblems(problems, Reporter.FORMAT_SHORT, formatValue, fos);
+			migrationService.reportProblems(problems, Migration.DETAIL_SHORT, formatValue, fos);
 		}
 	}
 

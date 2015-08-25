@@ -2,8 +2,8 @@ package blade.migrate.provider;
 
 import static org.junit.Assert.assertEquals;
 
+import blade.migrate.api.Migration;
 import blade.migrate.api.Problem;
-import blade.migrate.api.Reporter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -88,7 +88,7 @@ public class HtmlReporterTest {
 		System.setOut(printStream);
 
 		HtmlReporter reporter = new HtmlReporter();
-		reporter.beginReporting(Reporter.FORMAT_LONG, baos);
+		reporter.beginReporting(Migration.DETAIL_LONG, baos);
 
 		for (Problem p : problems) {
 			reporter.report(p);
@@ -159,7 +159,7 @@ public class HtmlReporterTest {
 		System.setOut(printStream);
 
 		HtmlReporter reporter = new HtmlReporter();
-		reporter.beginReporting(Reporter.FORMAT_SHORT, baos);
+		reporter.beginReporting(Migration.DETAIL_SHORT, baos);
 
 		for (Problem p : problems) {
 			reporter.report(p);
@@ -171,7 +171,7 @@ public class HtmlReporterTest {
 		printStream = new PrintStream(baos);
 		System.setOut(printStream);
 
-		reporter.beginReporting(Reporter.FORMAT_SHORT, baos);
+		reporter.beginReporting(Migration.DETAIL_SHORT, baos);
 
 		for (Problem p : problems) {
 			reporter.report(p);

@@ -9,7 +9,7 @@ Private-Package:  \
 -buildpath: \
 	osgi.core,\
 	osgi.cmpn,\
-	blade.migrate.provider,\
+	blade.migrate.api,\
 	biz.aQute.junit,\
 	org.eclipse.jdt.core,\
 	org.eclipse.core.runtime,\
@@ -26,3 +26,7 @@ Private-Package:  \
 	org.eclipse.jface,\
 	org.eclipse.jface.text,\
 	aQute.libg
+
+Import-Package: \
+	org.eclipse.core.runtime;version="[3.2,4)",\
+	*

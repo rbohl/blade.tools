@@ -19,11 +19,10 @@ Private-Package: \
 	org.apache.commons.lang,\
 	org.freemarker.freemarker
 
-Export-Package: \
-	blade.migrate.api
-
 Import-Package: \
+	blade.migrate.api,\
 	org.osgi.framework;version=1.5.0,\
+	org.osgi.util.tracker.*,\
 	javax.swing,\
 	javax.swing.table,\
 	org.w3c.dom.*

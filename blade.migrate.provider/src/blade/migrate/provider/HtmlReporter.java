@@ -1,5 +1,6 @@
 package blade.migrate.provider;
 
+import blade.migrate.api.Migration;
 import blade.migrate.api.Problem;
 import blade.migrate.api.Reporter;
 import blade.migrate.provider.templates.BladeTemplateLoader;
@@ -52,7 +53,7 @@ public class HtmlReporter implements Reporter {
 	public void endReporting() {
 		try {
 			Template template = null;
-			if(_detail == FORMAT_SHORT) {
+			if(_detail == Migration.DETAIL_SHORT) {
 				template = _cfg.getTemplate("html/reporter.ftl");
 			}
 			else {

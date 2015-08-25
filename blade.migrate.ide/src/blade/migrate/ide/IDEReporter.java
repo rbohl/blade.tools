@@ -1,5 +1,6 @@
 package blade.migrate.ide;
 
+import blade.migrate.api.MigrationConstants;
 import blade.migrate.api.Problem;
 import blade.migrate.api.Reporter;
 
@@ -19,7 +20,8 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		Constants.SERVICE_RANKING + ":Integer=100",
 		"format:String=ide"
-	}
+	},
+	immediate = true
 )
 public class IDEReporter implements Reporter {
 
@@ -33,24 +35,23 @@ public class IDEReporter implements Reporter {
 
 	@Override
 	public void report(Problem problem) {
-		File file = problem.file;
+		final File file = problem.file;
+		final IWorkspaceRoot ws = ResourcesPlugin.getWorkspace().getRoot();
+		final IFile[] files = ws.findFilesForLocationURI(file.toURI());
 
-		IWorkspaceRoot ws = ResourcesPlugin.getWorkspace().getRoot();
-
-		System.out.println(file.toURI());
-		IFile[] files = ws.findFilesForLocationURI(file.toURI());
-/*		System.out.println(files);*/
 		if( files != null && files.length > 0) {
-			IFile wsFile = files[0];
+			final IFile wsFile = files[0];
 
 			try {
-				IMarker marker = wsFile.createMarker( "com.liferay.ide.core.MigrationProblemMarker" );
+				IMarker marker = wsFile.createMarker( MigrationConstants.MIGRATION_MARKER_TYPE );
 				marker.setAttribute( IMarker.SEVERITY, IMarker.SEVERITY_ERROR );
 	            marker.setAttribute( IMarker.MESSAGE, problem.title );
 	            marker.setAttribute( IMarker.LINE_NUMBER, problem.lineNumber );
 	            marker.setAttribute( IMarker.LOCATION, problem.file.getName() );
 	            marker.setAttribute( IMarker.CHAR_START, problem.startOffset);
 	            marker.setAttribute( IMarker.CHAR_END, problem.endOffset);
+	            marker.setAttribute("summary", problem.summary);
+	            marker.setAttribute("ticket", problem.ticket);
 
 
 	            IMarker[] markers = wsFile.findMarkers("blade.migrate.ide.MigrationMarker", false, IResource.DEPTH_INFINITE);
