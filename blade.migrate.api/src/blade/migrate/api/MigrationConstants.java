@@ -1,4 +1,4 @@
-package blade.migrate.ide;
+package blade.migrate.api;
 
 public interface MigrationConstants {
 
