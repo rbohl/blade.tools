@@ -24,7 +24,7 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-   
+
    <plugin
          id="blade.migrate.liferay70"
          download-size="0"
@@ -34,6 +34,13 @@
 
    <plugin
          id="blade.migrate.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="biz.aQute.remote.launcher"
          download-size="0"
          install-size="0"
          version="0.0.0"

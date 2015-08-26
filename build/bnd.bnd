@@ -1,4 +1,4 @@
--nobundles: true
+-sub: *.bnd
 
 -releaserepo:
 

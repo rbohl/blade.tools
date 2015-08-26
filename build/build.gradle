@@ -135,13 +135,26 @@ task p2FeatureMain(type: Zip) {
   from             "$buildDir/features/main/blade"
   include          "feature.xml"
 
+}
+
+task p2Features {
+  dependsOn p2FeatureMain
+}
+
+
+task p2PluginsMain(type: Copy) {
+  dependsOn buildNeeded
+  from    zipTree("$buildDir/${project.name}.main.jar")
+  into    "$buildDir/plugins/main"
+  include "*.jar"
+
   doLast {
     copyProjectBundles(bnd('p2_main', '').split(/\s*,\s*/), "$buildDir/plugins/main")
   }
 }
 
-task p2Features {
-  dependsOn p2FeatureMain
+task p2Plugins {
+  dependsOn p2PluginsMain
 }
 
 /*
@@ -150,7 +163,7 @@ task p2Features {
 task p2 {
   description 'Generate the p2 repositories.'
   group       'release'
-  dependsOn p2Features
+  dependsOn p2Features, p2Plugins
 
   inputs.files file('p2.xml'),
                fileTree(buildDir)
