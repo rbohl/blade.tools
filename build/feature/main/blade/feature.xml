@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="blade.main.feature"
-      label="Blade"
+      id="blade.tools"
+      label="Blade Tools"
       version="@master-version@"
       provider-name="Liferay, Inc."
 >
@@ -38,5 +38,13 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="blade.migrate.api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 
 </feature>
