@@ -1,4 +1,5 @@
 Bundle-Version: 1.0.0.${tstamp}
+Bundle-SymbolicName: blade.migrate.api;singleton:=true
 
 Export-Package:  \
 	blade.migrate.api;provide:=true

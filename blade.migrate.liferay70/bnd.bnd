@@ -1,4 +1,5 @@
 Bundle-Version: 1.0.0.${tstamp}
+Bundle-SymbolicName: blade.migrate.liferay70;singleton:=true
 
 Private-Package:  \
 	blade.migrate.core,\

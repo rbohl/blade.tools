@@ -5,6 +5,7 @@
 -runfw: org.eclipse.osgi
 
 workspace.bundles: \
+	blade.migrate.api;version=latest,\
 	blade.migrate.ide;version=latest,\
 	blade.migrate.liferay70;version=latest,\
 	blade.migrate.provider;version=latest

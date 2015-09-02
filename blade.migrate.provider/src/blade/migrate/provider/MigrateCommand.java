@@ -19,6 +19,11 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class MigrateCommand {
 
+	public void migrate(File projectDir) {
+		List<Problem> problems = projectMigrationService.findProblems(projectDir);
+		projectMigrationService.reportProblems(problems, Migration.DETAIL_LONG, "console");
+	}
+
 	public void migrate(File projectDir, String format, File outputFile) {
 		List<Problem> problems = projectMigrationService.findProblems(projectDir);
 		projectMigrationService.reportProblems(problems, Migration.DETAIL_LONG, format, outputFile);

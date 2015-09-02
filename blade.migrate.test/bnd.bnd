@@ -17,6 +17,7 @@ Test-Cases: ${test-cases}
 	blade.migrate.api;version=latest,\
 	blade.migrate.provider;version=latest,\
 	blade.migrate.liferay70;version=latest,\
+	blade.migrate.ide;version=latest,\
 	org.apache.xerces,\
 	org.apache.xml.resolver,\
 	org.apache.xml.serializer,\
