@@ -28,30 +28,30 @@ If you want to build the blade.cli.jar yourself skip this and go to the next sec
 
 Download the latest CI build of Blade CLI here.
 
-[blade.cli.jar](https://liferay-test-01.ci.cloudbees.com/job/blade.tools/lastSuccessfulBuild/artifact/blade.cli/generated/distributions/executable/blade.cli.jar)
+[blade.jar](https://liferay-test-01.ci.cloudbees.com/job/blade.tools/lastSuccessfulBuild/artifact/blade.cli/generated/distributions/executable/blade.jar)
 
 ### Build blade cli jar
 
-If you have already downloaded the blade.cli.jar from above you can skip this section.
+If you have already downloaded the blade.jar from above you can skip this section.
 
 Clone this repo, and then from the command line execute following command:
 
 ```
-$ gradle build export.blade.cli
+$ ./gradlew build export.blade
 ```
 
 ### Install Blade Tools jar using JPM
 
-Install from downloaded jar
+Install from downloaded jar from above.
 
 ```
-$ (sudo) jpm install -fl <downloads_dir>/blade.cli.jar
+$ (sudo) jpm install -fl <downloads_dir>/blade.jar
 ```
 
-Install from newly built jar from source.
+OR Install from newly built jar if you buildt from source.
 
 ```
-$ (sudo) jpm install -fl blade.cli/generated/distributions/executable/blade.cli.jar
+$ (sudo) jpm install -fl blade.cli/generated/distributions/executable/blade.jar
 ```
 
 Now you should have the ```blade``` executable in your path. Try it by running:
@@ -67,7 +67,7 @@ Once you have the blade cli installed you can see the list of commands just type
 blade
 ```
 
-Or ```java -jar blade.cli.jar``` if not using JPM.
+Or ```java -jar blade.jar``` if not using JPM.
 
 Current available commands
 
