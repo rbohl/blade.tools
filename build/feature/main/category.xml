@@ -3,5 +3,5 @@
    <feature url="features/blade.feature_@master-version@" id="blade.main.feature" version="@master-version@">
       <category name="blade.category"/>
    </feature>
-   <category-def name="blade.category" label="Blade"/>
+   <category-def name="blade.category" label="Blade Tools"/>
 </site>

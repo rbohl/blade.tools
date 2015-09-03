@@ -18,8 +18,6 @@ import aQute.lib.io.IO;
 
 public class WorkspaceHelper {
 
-	public static final String PROJECT_FILES = "files";
-
 	private void addNaturesToProject( IProject proj, String[] natureIds, IProgressMonitor monitor )
 	        throws CoreException {
         IProjectDescription description = proj.getDescription();
