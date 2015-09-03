@@ -1,9 +1,0 @@
--runremote: liferay;shell=-1;jmx=attach
-
--runbundles: \
-	blade.migrate.provider;version=latest,\
-	blade.migrate.liferay70;version=latest,\
-	blade.migrate.ide;version=latest
-
--runpath: \
-	../cnf/cache/biz.aQute.remote.launcher/biz.aQute.remote.launcher-latest.jar;version=file

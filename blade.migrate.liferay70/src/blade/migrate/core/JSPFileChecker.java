@@ -1,5 +1,7 @@
 package blade.migrate.core;
 
+import blade.migrate.api.MigrationConstants;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -36,7 +38,7 @@ public class JSPFileChecker extends JavaFileChecker {
 
 		try {
 			final IFile jspFile = getWorkspaceHelper()
-					.createIFile(WorkspaceHelper.PROJECT_FILES, getFile());
+					.createIFile(MigrationConstants.MIGRATION_HELPER_PROJECT_NAME, getFile());
 
 			jspModel = (IDOMModel) StructuredModelManager.getModelManager()
 					.getModelForRead(jspFile);

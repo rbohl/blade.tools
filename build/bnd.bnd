@@ -5,7 +5,6 @@
 # Main p2 feature
 p2_main = \
     blade.migrate.api, \
-    blade.migrate.ide, \
     blade.migrate.liferay70, \
     blade.migrate.provider
 
