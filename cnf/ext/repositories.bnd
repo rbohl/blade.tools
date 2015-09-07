@@ -1,4 +1,4 @@
-bnd-release	=	https://bndtools.ci.cloudbees.com/job/bnd.master/693/artifact/dist/bundles/
+bnd-release	=	https://bndtools.ci.cloudbees.com/job/bnd.master/716/artifact/dist/bundles/
 
 -pluginpath:\
         ${build}/cache/biz.aQute.repository.jar;url=${bnd-release}/biz.aQute.repository/biz.aQute.repository-latest.jar,\
