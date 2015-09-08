@@ -35,7 +35,7 @@ public class CreateCommand {
 		this.blade = blade;
 		this.options = options;
 
-		List<String> args = options._();
+		List<String> args = options._arguments();
 
 		if (args.size() < 1) {
 			// Default command
@@ -49,7 +49,7 @@ public class CreateCommand {
 	private void createFromTemplate() throws Exception {
 		File base = blade.getBase();
 
-		String name = options._().get(0);
+		String name = options._arguments().get(0);
 
 		File dir = options.dir();
 
@@ -114,7 +114,7 @@ public class CreateCommand {
 		subs.put("_CLASSNAME_", classname);
 
 		if (Type.service.equals(type)) {
-			String service = options._().get(1);
+			String service = options._arguments().get(1);
 
 			if (service.isEmpty()) {
 				blade.error(

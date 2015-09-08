@@ -5,7 +5,6 @@ import blade.cli.blade;
 import blade.cli.jmx.IDEConnector;
 
 import java.io.File;
-
 import java.util.Collections;
 import java.util.Formatter;
 import java.util.List;
@@ -19,7 +18,7 @@ public class OpenCommand {
 		this.blade = blade;
 		this.options = options;
 
-		List<String> args = options._();
+		List<String> args = options._arguments();
 
 		if (args.size() == 0) {
 
@@ -37,7 +36,7 @@ public class OpenCommand {
 	}
 
 	private void execute() throws Exception {
-		File fileName = new File(options._().get(0));
+		File fileName = new File(options._arguments().get(0));
 
 		if (!fileName.exists()) {
 			addError("open", "Unable to find specified file " +

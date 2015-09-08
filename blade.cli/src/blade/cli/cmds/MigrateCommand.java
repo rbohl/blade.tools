@@ -26,7 +26,7 @@ public class MigrateCommand {
 		this.blade = blade;
 		this.options = options;
 
-		List<String> args = options._();
+		List<String> args = options._arguments();
 
 		if (args.size() == 0) {
 
@@ -44,7 +44,7 @@ public class MigrateCommand {
 	}
 
 	private void execute() throws Exception {
-		File projectDir = new File(options._().get(0));
+		File projectDir = new File(options._arguments().get(0));
 
 		if (!projectDir.exists()) {
 			addError("migrate", "projectDir does not exist");
@@ -58,8 +58,8 @@ public class MigrateCommand {
 
 		FileOutputStream fos = null;
 
-		if (options._().size() > 1) {
-			File file = new File(options._().get(1));
+		if (options._arguments().size() > 1) {
+			File file = new File(options._arguments().get(1));
 
 			if (!file.exists()) {
 				file.createNewFile();
