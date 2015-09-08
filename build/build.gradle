@@ -121,9 +121,13 @@ task p2FeaturesTree(type: Copy) {
                        bnd('base-version-qualifier'),
                        new Date(),
                        bnd('Git-SHA'))
+  def bundleVersion = String.format('%s.%s',bnd('base-version'),bnd('tstamp'))
   from    'feature'
   into    "$buildDir/features"
-  filter(ReplaceTokens, tokens: ['master-version' : masterVersion])
+  filter(ReplaceTokens, tokens: [
+    'master-version' : masterVersion,
+    'bundle-version' : bundleVersion
+  ])
   include '**/category.xml'
   include '**/feature.xml'
 }
