@@ -2,18 +2,21 @@ package blade.cli.cmds;
 
 import blade.cli.DeployOptions;
 import blade.cli.blade;
+import blade.cli.jmx.JMXBundleDeployer;
 import blade.cli.util.FileWatcher;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.Formatter;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import aQute.bnd.osgi.Jar;
-import aQute.remote.util.JMXBundleDeployer;
 
-@SuppressWarnings("restriction")
 public class DeployCommand {
+
+	private final static Pattern BSN_GUESS = Pattern.compile("\\b\\d+(?:\\.\\d+)*\\b");
 
 	final private blade blade;
 	final private DeployOptions options;
@@ -23,7 +26,7 @@ public class DeployCommand {
 		this.blade = blade;
 		this.options = options;
 
-		List<String> args = options._();
+		List<String> args = options._arguments();
 
 		if (args.size() == 0) {
 
@@ -41,9 +44,9 @@ public class DeployCommand {
 	}
 
 	private void deploy(JMXBundleDeployer bundleDeployer, String bsn,
-			File bundleFile) throws Exception {
+			String bundleUrl) throws Exception {
 
-		final long bundleId = bundleDeployer.deploy(bsn, bundleFile);
+		final long bundleId = bundleDeployer.deploy(bsn, bundleUrl);
 		blade.out().println("Installed or updated bundle " + bundleId);
 
 		if (bundleId <= 0) {
@@ -53,10 +56,10 @@ public class DeployCommand {
 	}
 
 	private void execute() throws Exception {
-		int numOfFiles = options._().size();
+		int numOfFiles = options._arguments().size();
 
 		for (int i = 0; i < numOfFiles; i++) {
-			String bundlePath = options._().get(i);
+			String bundlePath = options._arguments().get(i);
 
 			File bundleFile = new File(bundlePath);
 
@@ -71,19 +74,24 @@ public class DeployCommand {
 					bsn = jar.getBsn();
 				}
 
+				if (bsn == null && bundleFile.getName().toLowerCase().endsWith(".war")) {
+					bsn = guessBsnFromWar(bundleFile);
+				}
+
 				if (bsn == null) {
 					addError("Deploy", "Unable to determine bsn for file " +
 						bundleFile.getAbsolutePath());
 				}
-				else {
-					final JMXBundleDeployer bundleDeployer = getBundleDeployer();
 
-					if (bundleDeployer != null) {
-						deploy(bundleDeployer, bsn, bundleFile);
+				final JMXBundleDeployer bundleDeployer = getBundleDeployer();
 
-						if (options.watch()) {
-							watch(bundleDeployer, bsn, bundleFile);
-						}
+				String bundleUrl = getBundleUrl(bundleFile);
+
+				if (bundleDeployer != null && bundleUrl != null) {
+					deploy(bundleDeployer, bsn, bundleUrl);
+
+					if (options.watch()) {
+						watch(bundleDeployer, bsn, bundleFile);
 					}
 				}
 			}
@@ -92,6 +100,26 @@ public class DeployCommand {
 						bundleFile.getAbsolutePath());
 			}
 		}
+	}
+
+	private String guessBsnFromWar(File bundleFile) {
+		return BSN_GUESS.matcher(bundleFile.getName()).replaceAll("")
+				.replaceAll("\\.war$", "").replaceAll("-$", "");
+	}
+
+	private String getBundleUrl(File bundleFile) throws MalformedURLException {
+		String bundleUrl = null;
+
+		if (bundleFile.toPath().toString().toLowerCase().endsWith(".war")) {
+			bundleUrl = "webbundle:"
+					+ bundleFile.toURI().toURL().toExternalForm()
+					+ "?Web-ContextPath=/" + guessBsnFromWar(bundleFile);
+		}
+		else {
+			bundleUrl = bundleFile.toURI().toURL().toExternalForm();
+		}
+
+		return bundleUrl;
 	}
 
 	private JMXBundleDeployer getBundleDeployer() {
@@ -152,8 +180,10 @@ public class DeployCommand {
 						deploy[0] = false;
 
 						try {
+							String bundleUrl = getBundleUrl(bundleFile);
+
 							long bundleId = bundleDeployer.deploy(
-								bsn, bundleFile);
+								bsn, bundleUrl);
 							blade.out().println("Installed or updated bundle " + bundleId);
 						} catch (Exception e) {
 						}
