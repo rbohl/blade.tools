@@ -100,18 +100,9 @@ public class CreateCommand {
 
 		String classname = options.classname();
 
-		String unNormalizedPortletFqn =
-			name.toLowerCase().replaceAll("-", ".") + "_" + classname;
-
-		subs.put(
-			"_portlet_fqn_",
-			unNormalizedPortletFqn.toLowerCase().replaceAll(".", "_"));
-
 		if (classname == null) {
 			classname = WordUtils.capitalize(name);
 		}
-
-		subs.put("_CLASSNAME_", classname);
 
 		if (Type.service.equals(type)) {
 			String service = options._arguments().get(1);
@@ -129,14 +120,23 @@ public class CreateCommand {
 				"_SERVICE_SHORT_",
 				service.substring(service.lastIndexOf('.') + 1));
 		}
+		
 		else if (Type.portlet.equals(type) || Type.jspportlet.equals(type)) {
 
-			if (!classname.matches(".*Portlet$") ||
-				!classname.matches("^Portlet.*")) {
-
-				subs.put("_CLASSNAME_", classname + "Portlet");
+			if (!classname.contains("Portlet")) {
+				
+				classname += "Portlet";
 			}
 		}
+		
+		subs.put("_CLASSNAME_", classname);
+		
+		String unNormalizedPortletFqn =
+				name.toLowerCase().replaceAll("-", ".") + "_" + classname;
+
+		subs.put(
+			"_portlet_fqn_",
+			unNormalizedPortletFqn.replaceAll("\\.", "_"));
 
 		copy(build, type, workDir, in, glob, true, subs);
 	}
