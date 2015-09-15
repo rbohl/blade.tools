@@ -32,7 +32,8 @@ public interface CreateOptions extends Options {
 			+ "the new project.")
 	public IDE ide();
 
-	@Description("The type of Liferay module to create. ")
+	@Description("The type of Liferay module to create. "
+            + "Valid values are service, jspportlet, or portlet.")
 	public Type projectType();
 
 	@Description("The version of Liferay to create the module for, "
