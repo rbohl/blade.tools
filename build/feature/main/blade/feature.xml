@@ -22,21 +22,21 @@
          id="blade.migrate.api"
          download-size="0"
          install-size="0"
-         version="@bundle-version@"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="blade.migrate.provider"
          download-size="0"
          install-size="0"
-         version="@bundle-version@"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="blade.migrate.liferay70"
          download-size="0"
          install-size="0"
-         version="@bundle-version@"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>
