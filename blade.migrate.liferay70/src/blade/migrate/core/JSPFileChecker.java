@@ -151,7 +151,15 @@ public class JSPFileChecker extends JavaFileChecker {
 		return _workspaceHelper;
 	}
 
-	public List<SearchResult> findJSPTags(String tagName , String[] attrNames , String[] attrValue) {
+	public List<SearchResult> findJSPTags(String tagName , String[] attrNames , String[] attrValues) {
+
+		if (tagName == null || tagName.isEmpty()) {
+			throw new IllegalArgumentException("tagName can not be null or empty");
+		}
+
+		if ((attrNames != null && attrValues != null) && attrNames.length != attrValues.length) {
+			throw new IllegalArgumentException("If attrValues is specified it must match the attrNames array in lengh");
+		}
 
 		final List<SearchResult> searchResults = new ArrayList<>();
 
