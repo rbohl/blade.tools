@@ -25,7 +25,7 @@ public class ReplacedReservedUserEmailAddressExceptionTest {
 	}
 
 	@Test
-	public void ChangesUserServicesAnalyzeTest() throws Exception {
+	public void changesUserServicesAnalyzeTest() throws Exception {
 		List<SearchResult> results = component.searchJavaFile(testFile,
 				new JavaFileChecker(testFile));
 

@@ -15,7 +15,7 @@ import org.osgi.service.component.annotations.Component;
 		"file.extensions=java",
 		"problem.title=Created a New getType Method That is Implemented in DLProcessor",
 		"problem.summary=The DLProcessor interface has a new method getType().",
-		"problem.tickets= LPS-53574",
+		"problem.tickets=LPS-53574",
 		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#created-a-new-gettype-method-that-is-implemented-in-dlprocessor"
 	},
 	service = FileMigrator.class
