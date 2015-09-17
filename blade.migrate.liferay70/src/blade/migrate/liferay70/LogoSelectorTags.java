@@ -27,6 +27,6 @@ public class LogoSelectorTags extends JSPTagsFileMigrator {
 			JSPFileChecker jspFileChecker) {
 
 		return jspFileChecker.findJSPTags("liferay-ui:logo-selector",
-				new String[] { "editLogoURL" });
+				new String[] { "editLogoURL" } , null);
 	}
 }

@@ -54,14 +54,15 @@ public class WorkspaceHelper {
 	private IJavaProject getJavaProject(String projectName) throws CoreException {
 		IProject javaProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 
-		if (javaProject.exists()) {
-			javaProject.open(new NullProgressMonitor());
-			return JavaCore.create(javaProject);
-		}
-
 		IProgressMonitor monitor = new NullProgressMonitor();
 
-		javaProject.create(monitor);
+		if (!javaProject.exists()) {
+			IProjectDescription description = ResourcesPlugin.getWorkspace().newProjectDescription(projectName);
+			javaProject.create(monitor);
+			javaProject.open(monitor);
+			javaProject.setDescription(description, monitor);
+		}
+
 		javaProject.open(monitor);
 		addNaturesToProject(javaProject, new String[] { JavaCore.NATURE_ID }, monitor);
 

@@ -151,16 +151,25 @@ public class JSPFileChecker extends JavaFileChecker {
 		return _workspaceHelper;
 	}
 
-	public List<SearchResult> findJSPTags(String tagName , String[] attrNames) {
+	public List<SearchResult> findJSPTags(String tagName , String[] attrNames , String[] attrValues) {
+
+		if (tagName == null || tagName.isEmpty()) {
+			throw new IllegalArgumentException("tagName can not be null or empty");
+		}
+
+		if ((attrNames != null && attrValues != null) && attrNames.length != attrValues.length) {
+			throw new IllegalArgumentException("If attrValues is specified it must match the attrNames array in lengh");
+		}
 
 		final List<SearchResult> searchResults = new ArrayList<>();
 
 		final IFile jspFile = getTranslation(getFile())._jspFile;
 
-		try {
-			final IDOMModel jspModel = (IDOMModel) StructuredModelManager
-					.getModelManager().getModelForRead(jspFile);
+		IDOMModel jspModel = null;
 
+		try {
+			jspModel = (IDOMModel) StructuredModelManager
+				.getModelManager().getModelForRead(jspFile);
 			final IDOMDocument domDocument = jspModel.getDocument();
 
 			final IStructuredDocument structuredDocument = domDocument
@@ -177,26 +186,35 @@ public class JSPFileChecker extends JavaFileChecker {
 					int jspStartLine = structuredDocument.getLineOfOffset(startOffset) + 1;
 					int jspEndLine = structuredDocument.getLineOfOffset(endOffset) + 1;
 					searchResults.add(super.createSearchResult(
-							startOffset,endOffset, jspStartLine, jspEndLine, true));
+							startOffset,endOffset, jspStartLine,jspEndLine, true));
 
 				} else {
-					for (String name : attrNames) {
-						final IDOMNode attrNode = (IDOMNode) domNode.getAttributes().getNamedItem(name);
+					for (int j = 0; j < attrNames.length; j++) {
+						final IDOMNode attrNode = (IDOMNode) domNode
+								.getAttributes().getNamedItem(attrNames[j]);
 
 						if (attrNode != null) {
+							if (attrValues != null && !(attrValues[j].equals(attrNode.getNodeValue()))) {
+								continue;
+							}
+
 							int startOffset = attrNode.getStartOffset();
 							int endOffset = attrNode.getEndOffset();
 							int jspStartLine = structuredDocument.getLineOfOffset(startOffset) + 1;
 							int jspEndLine = structuredDocument.getLineOfOffset(endOffset) + 1;
 
 							searchResults.add(super.createSearchResult(
-									startOffset,endOffset, jspStartLine, jspEndLine, true));
+									startOffset, endOffset, jspStartLine,jspEndLine, true));
 						}
 					}
 				}
 			}
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();
+		} finally {
+			if (jspModel != null) {
+				jspModel.releaseFromRead();
+			}
 		}
 
 		return searchResults;

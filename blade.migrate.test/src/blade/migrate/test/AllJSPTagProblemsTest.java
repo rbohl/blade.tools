@@ -13,18 +13,16 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
-public class AllProblemsTest {
+public class AllJSPTagProblemsTest {
 
 	@Test
 	public void allProblems() throws Exception {
 		ServiceReference<Migration> sr = context
 			.getServiceReference(Migration.class);
 		Migration m = context.getService(sr);
-		List<Problem> problems = m
-				.findProblems(new File(
-						"../blade.migrate.liferay70/projects/"));
+		List<Problem> problems = m.findProblems(new File("jsptests/"));
 
-		final int expectedSize = 178;
+		final int expectedSize = 22;
 		final int size = problems.size();
 
 		if (size != expectedSize) {
