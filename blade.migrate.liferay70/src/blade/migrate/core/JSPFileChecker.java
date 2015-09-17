@@ -194,9 +194,7 @@ public class JSPFileChecker extends JavaFileChecker {
 								.getAttributes().getNamedItem(attrNames[j]);
 
 						if (attrNode != null) {
-							System.out.println("attrNode = " + attrNode.getNodeName() + " attrValue = " + (attrValues!=null?attrValues[j] : ""));
 							if (attrValues != null && !(attrValues[j].equals(attrNode.getNodeValue()))) {
-								System.out.println("skipping " + attrNode.getNodeValue());
 								continue;
 							}
 
