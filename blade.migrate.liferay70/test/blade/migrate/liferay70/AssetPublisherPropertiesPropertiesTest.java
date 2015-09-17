@@ -4,13 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import blade.migrate.api.Problem;
+
 import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import blade.migrate.api.Problem;
 
 public class AssetPublisherPropertiesPropertiesTest {
 	final File file =
@@ -25,7 +25,7 @@ public class AssetPublisherPropertiesPropertiesTest {
 	}
 
 	@Test
-	public void AssetPublisherPropertiesAnalyzeTest() throws Exception {
+	public void assetPublisherPropertiesAnalyzeTest() throws Exception {
 		List<Problem> problems = component.analyzeFile(file);
 
 		assertNotNull(problems);
@@ -33,7 +33,7 @@ public class AssetPublisherPropertiesPropertiesTest {
 	}
 
 	@Test
-	public void AssetPublisherAnalyzeTest2() throws Exception {
+	public void assetPublisherAnalyzeTest2() throws Exception {
 		List<Problem> problems = component.analyzeFile(file);
 		problems = component.analyzeFile(file);
 

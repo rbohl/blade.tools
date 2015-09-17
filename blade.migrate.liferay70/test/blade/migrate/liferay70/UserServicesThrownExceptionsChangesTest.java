@@ -25,7 +25,7 @@ public class UserServicesThrownExceptionsChangesTest {
 	}
 
 	@Test
-	public void ChangesUserServicesAnalyzeTest() throws Exception {
+	public void userServicesThrownExceptionsChanges() throws Exception {
 		List<SearchResult> results = component.searchJavaFile(testFile,
 				new JavaFileChecker(testFile));
 
@@ -34,7 +34,7 @@ public class UserServicesThrownExceptionsChangesTest {
 	}
 
 	@Test
-	public void ChangesUserServicesAnalyzeTestTwice() throws Exception {
+	public void userServicesThrownExceptionsChangesTestTwice() throws Exception {
 		List<SearchResult> results = component.searchJavaFile(testFile,
 				new JavaFileChecker(testFile));
 

@@ -4,13 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import blade.migrate.api.Problem;
+
 import java.io.File;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import blade.migrate.api.Problem;
 
 public class BreadcrumbPropertiesTest {
 	final File file = new File(
@@ -25,7 +25,7 @@ public class BreadcrumbPropertiesTest {
 	}
 
 	@Test
-	public void BreadcrumbPropertiesAnalyzeTest() throws Exception {
+	public void breadcrumbPropertiesAnalyzeTest() throws Exception {
 		List<Problem> problems = component.analyzeFile(file);
 
 		assertNotNull(problems);
@@ -33,7 +33,7 @@ public class BreadcrumbPropertiesTest {
 	}
 
 	@Test
-	public void BreadcrumbPropertiesAnalyzeTest2() throws Exception {
+	public void breadcrumbPropertiesAnalyzeTest2() throws Exception {
 		List<Problem> problems = component.analyzeFile(file);
 		problems = component.analyzeFile(file);
 

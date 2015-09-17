@@ -25,7 +25,7 @@ public class DDMStructureLocalServiceInvocationTest {
 	}
 
     @Test
-    public void DDMTemplateAnalyzeTest() throws Exception {
+    public void ddmTemplateAnalyzeTest() throws Exception {
     	List<SearchResult> results = component.searchJavaFile(testFile,
 				new JavaFileChecker(testFile));
 
