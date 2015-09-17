@@ -165,10 +165,11 @@ public class JSPFileChecker extends JavaFileChecker {
 
 		final IFile jspFile = getTranslation(getFile())._jspFile;
 
-		try {
-			final IDOMModel jspModel = (IDOMModel) StructuredModelManager
-					.getModelManager().getModelForRead(jspFile);
+		IDOMModel jspModel = null;
 
+		try {
+			jspModel = (IDOMModel) StructuredModelManager
+				.getModelManager().getModelForRead(jspFile);
 			final IDOMDocument domDocument = jspModel.getDocument();
 
 			final IStructuredDocument structuredDocument = domDocument
@@ -193,9 +194,10 @@ public class JSPFileChecker extends JavaFileChecker {
 								.getAttributes().getNamedItem(attrNames[j]);
 
 						if (attrNode != null) {
-							if (attrValue != null) {
-								if (!(attrValue[j].equals(attrNode.getNodeValue())))
-									continue;
+							System.out.println("attrNode = " + attrNode.getNodeName() + " attrValue = " + (attrValues!=null?attrValues[j] : ""));
+							if (attrValues != null && !(attrValues[j].equals(attrNode.getNodeValue()))) {
+								System.out.println("skipping " + attrNode.getNodeValue());
+								continue;
 							}
 
 							int startOffset = attrNode.getStartOffset();
@@ -211,6 +213,10 @@ public class JSPFileChecker extends JavaFileChecker {
 			}
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();
+		} finally {
+			if (jspModel != null) {
+				jspModel.releaseFromRead();
+			}
 		}
 
 		return searchResults;
