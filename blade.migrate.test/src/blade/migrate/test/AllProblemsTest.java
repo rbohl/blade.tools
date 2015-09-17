@@ -24,7 +24,14 @@ public class AllProblemsTest {
 				.findProblems(new File(
 						"../blade.migrate.liferay70/projects/"));
 
-		assertEquals(190, problems.size());
+		final int expectedSize = 178;
+		final int size = problems.size();
+
+		if (size != expectedSize) {
+			System.err.println("All problems size is " + size + ", expected size is " + expectedSize);
+		}
+
+		assertEquals(expectedSize, size);
 	}
 
 	private final BundleContext context = FrameworkUtil.getBundle(
