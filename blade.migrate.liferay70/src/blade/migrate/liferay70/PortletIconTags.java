@@ -47,7 +47,7 @@ public class PortletIconTags extends JSPTagsFileMigrator {
 
 		for (String jspTag : jspTags) {
 			final List<SearchResult> jspTagResults = jspFileChecker
-					.findJSPTags(jspTag, null);
+					.findJSPTags(jspTag, null, null);
 
 			if (jspTagResults.size() != 0) {
 				searchResults.addAll(jspTagResults);

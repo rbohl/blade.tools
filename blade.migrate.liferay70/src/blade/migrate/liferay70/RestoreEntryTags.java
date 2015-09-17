@@ -26,6 +26,6 @@ public class RestoreEntryTags extends JSPTagsFileMigrator {
 	protected List<SearchResult> searchJSPFile(File file,
 			JSPFileChecker jspFileChecker) {
 
-		return jspFileChecker.findJSPTags("liferay-ui:restore-entry", null);
+		return jspFileChecker.findJSPTags("liferay-ui:restore-entry", null, null);
 	}
 }
