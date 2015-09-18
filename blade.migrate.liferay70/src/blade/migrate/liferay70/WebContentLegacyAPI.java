@@ -6,7 +6,6 @@ import blade.migrate.core.JavaFileMigrator;
 import blade.migrate.core.SearchResult;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -23,7 +22,7 @@ import org.osgi.service.component.annotations.Component;
 )
 public class WebContentLegacyAPI extends JavaFileMigrator {
 
-	private static final String[] PREFIXES =  {
+	private static final String[] SERVICE_API_PREFIXES =  {
 		"com.liferay.portlet.journal.service.JournalArticle",
 		"com.liferay.portlet.journal.service.JournalArticleImage",
 		"com.liferay.portlet.journal.service.JournalArticleResource",
@@ -35,46 +34,8 @@ public class WebContentLegacyAPI extends JavaFileMigrator {
 		"com.liferay.portlet.journal.service.JournalTemplate",
 	};
 
-	private static final String[] SUFFIXES =  {
-		"LocalService",
-		"LocalServiceUtil",
-		"LocalServiceWrapper",
-		"Service",
-		"ServiceUtil",
-		"ServiceWrapper",
-	};
-
 	@Override
 	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
-		final List<SearchResult> results = new ArrayList<>();
-
-		for (String prefix : PREFIXES) {
-			searchForServices(results, javaFileChecker, prefix);
-		}
-
-		return results;
-	}
-
-	private void searchForServices(List<SearchResult> results,
-			JavaFileChecker javaFileChecker, String serviceFQNPrefix) {
-
-		for (String suffix : SUFFIXES) {
-			searchForService(results, javaFileChecker, serviceFQNPrefix + suffix);
-		}
-	}
-
-	private void searchForService(List<SearchResult> results,
-			JavaFileChecker javaFileChecker, String serviceFQN) {
-
-		SearchResult importResult = javaFileChecker.findImport(serviceFQN);
-
-		if (importResult != null) {
-			results.add(importResult);
-		}
-
-		String serviceExpression = serviceFQN.substring(serviceFQN.lastIndexOf('.') + 1, serviceFQN.length());
-		results.addAll(javaFileChecker.findMethodInvocations(null, serviceExpression, "*", null));
-
-		results.addAll(javaFileChecker.findMethodInvocations(serviceFQN, null, "*", null));
+		return javaFileChecker.findServiceAPIs(SERVICE_API_PREFIXES);
 	}
 }

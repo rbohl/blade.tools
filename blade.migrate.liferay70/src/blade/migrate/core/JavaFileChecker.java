@@ -25,9 +25,26 @@ import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
- * Parses a java file and provides some  methods for finding search results
+ * Parses a java file and provides some methods for finding search results
  */
 public class JavaFileChecker {
+
+	private static final String[] SERVICE_API_SUFFIXES =  {
+		"LocalService",
+		"LocalServiceUtil",
+		"LocalServiceWrapper",
+		"Service",
+		"ServiceUtil",
+		"ServiceWrapper",
+	};
+
+	private static final Map<File, WeakReference<CompilationUnit>> _map = new WeakHashMap<>();
+
+	private final CompilationUnit _ast;
+
+	private final File _file;
+
+	private final FileHelper _fileHelper;
 
 	/**
 	 * initialize the Checker
@@ -85,18 +102,11 @@ public class JavaFileChecker {
 		return (CompilationUnit)parser.createAST(null);
 	}
 
-	protected File getFile() {
-		return _file;
-	}
+	protected SearchResult createSearchResult(int startOffset, int endOffset,
+			int startLine, int endLine, boolean fullMatch) {
 
-	protected char[] getJavaSource() {
-		try {
-			return _fileHelper.readFile(_file).toCharArray();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return new SearchResult(_file, startOffset, endOffset, startLine,
+				endLine, fullMatch);
 	}
 
 	public List<SearchResult> findCatchExceptions(final String[] exceptions) {
@@ -171,7 +181,6 @@ public class JavaFileChecker {
 
 		return searchResults;
 	}
-
 	public SearchResult findImport(final String importName) {
 		final List<SearchResult> searchResults = new ArrayList<>();
 
@@ -180,36 +189,6 @@ public class JavaFileChecker {
 			@Override
 			public boolean visit(ImportDeclaration node) {
 				if (importName.equals(node.getName().toString())) {
-					int startLine = _ast.getLineNumber(node.getName()
-						.getStartPosition());
-					int startOffset = node.getName().getStartPosition();
-					int endLine = _ast.getLineNumber(node.getName()
-						.getStartPosition() + node.getName().getLength());
-					int endOffset = node.getName().getStartPosition() +
-						node.getName().getLength();
-
-					searchResults.add(createSearchResult(startOffset,
-						endOffset, startLine, endLine, true));
-				}
-
-				return false;
-			};
-		});
-
-		if (0 != searchResults.size()) {
-			return searchResults.get(0);
-		}
-
-		return null;
-	}
-
-	public SearchResult findPackage(final String packageName) {
-		final List<SearchResult> searchResults = new ArrayList<>();
-
-		_ast.accept(new ASTVisitor() {
-			@Override
-			public boolean visit(PackageDeclaration node) {
-				if (packageName.equals(node.getName().toString())) {
 					int startLine = _ast.getLineNumber(node.getName()
 						.getStartPosition());
 					int startOffset = node.getName().getStartPosition();
@@ -293,6 +272,7 @@ public class JavaFileChecker {
 
 		return searchResults;
 	}
+
 	/**
 	 * find the method invocations for a particular method on a given type or expression
 	 *
@@ -408,11 +388,34 @@ public class JavaFileChecker {
 		return searchResults;
 	}
 
-	protected SearchResult createSearchResult(int startOffset, int endOffset,
-			int startLine, int endLine, boolean fullMatch) {
+	public SearchResult findPackage(final String packageName) {
+		final List<SearchResult> searchResults = new ArrayList<>();
 
-		return new SearchResult(_file, startOffset, endOffset, startLine,
-				endLine, fullMatch);
+		_ast.accept(new ASTVisitor() {
+			@Override
+			public boolean visit(PackageDeclaration node) {
+				if (packageName.equals(node.getName().toString())) {
+					int startLine = _ast.getLineNumber(node.getName()
+						.getStartPosition());
+					int startOffset = node.getName().getStartPosition();
+					int endLine = _ast.getLineNumber(node.getName()
+						.getStartPosition() + node.getName().getLength());
+					int endOffset = node.getName().getStartPosition() +
+						node.getName().getLength();
+
+					searchResults.add(createSearchResult(startOffset,
+						endOffset, startLine, endLine, true));
+				}
+
+				return false;
+			};
+		});
+
+		if (0 != searchResults.size()) {
+			return searchResults.get(0);
+		}
+
+		return null;
 	}
 
 	public List<SearchResult> findQualifiedName(final String exception) {
@@ -441,6 +444,33 @@ public class JavaFileChecker {
 				return retVal;
 			}
 		});
+
+		return searchResults;
+	}
+
+
+	public List<SearchResult> findServiceAPIs(final String[] serviceFQNPrefixes) {
+		final List<SearchResult> searchResults = new ArrayList<>();
+
+		for (String prefix : serviceFQNPrefixes) {
+			for (String suffix : SERVICE_API_SUFFIXES) {
+				String serviceFQN = prefix + suffix;
+				SearchResult importResult = findImport(serviceFQN);
+
+				if (importResult != null) {
+					searchResults.add(importResult);
+				}
+
+				String service = serviceFQN.substring(
+						serviceFQN.lastIndexOf('.') + 1, serviceFQN.length());
+
+				searchResults.addAll(
+						findMethodInvocations(null, service, "*", null));
+
+				searchResults.addAll(
+						findMethodInvocations(service, null, "*", null));
+			}
+		}
 
 		return searchResults;
 	}
@@ -481,11 +511,17 @@ public class JavaFileChecker {
 
 		return searchResults;
 	}
+	protected File getFile() {
+		return _file;
+	}
+	protected char[] getJavaSource() {
+		try {
+			return _fileHelper.readFile(_file).toCharArray();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-	private static Map<File, WeakReference<CompilationUnit>> _map = new WeakHashMap<>();
-
-	private final CompilationUnit _ast;
-	private final File _file;
-	private final FileHelper _fileHelper;
+		return null;
+	}
 
 }
