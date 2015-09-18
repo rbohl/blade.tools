@@ -46,35 +46,7 @@ public class WebContentLegacyAPI extends JavaFileMigrator {
 
 	@Override
 	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
-		final List<SearchResult> results = new ArrayList<>();
 
-		for (String prefix : PREFIXES) {
-			searchForServices(results, javaFileChecker, prefix);
-		}
-
-		return results;
-	}
-
-	private void searchForServices(List<SearchResult> results,
-			JavaFileChecker javaFileChecker, String serviceFQNPrefix) {
-
-		for (String suffix : SUFFIXES) {
-			searchForService(results, javaFileChecker, serviceFQNPrefix + suffix);
-		}
-	}
-
-	private void searchForService(List<SearchResult> results,
-			JavaFileChecker javaFileChecker, String serviceFQN) {
-
-		SearchResult importResult = javaFileChecker.findImport(serviceFQN);
-
-		if (importResult != null) {
-			results.add(importResult);
-		}
-
-		String serviceExpression = serviceFQN.substring(serviceFQN.lastIndexOf('.') + 1, serviceFQN.length());
-		results.addAll(javaFileChecker.findMethodInvocations(null, serviceExpression, "*", null));
-
-		results.addAll(javaFileChecker.findMethodInvocations(serviceFQN, null, "*", null));
+		return javaFileChecker.findMigratorService(PREFIXES, SUFFIXES);
 	}
 }

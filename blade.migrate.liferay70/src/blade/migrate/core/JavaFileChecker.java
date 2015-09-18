@@ -482,6 +482,29 @@ public class JavaFileChecker {
 		return searchResults;
 	}
 
+	public List<SearchResult> findMigratorService(final String[] prefixes, final String[] suffixes){
+		final List<SearchResult> searchResults = new ArrayList<>();
+
+		for (String prefix : prefixes) {
+			for (String suffix : suffixes) {
+				String serviceFQN = prefix + suffix;
+				SearchResult importResult = findImport(serviceFQN);
+
+				if (importResult != null) {
+					searchResults.add(importResult);
+				}
+
+				String serviceExpression = serviceFQN.substring(serviceFQN.lastIndexOf('.') + 1, serviceFQN.length());
+				searchResults.addAll(findMethodInvocations(null, serviceExpression, "*", null));
+
+				searchResults.addAll(findMethodInvocations(serviceExpression, null, "*", null));
+			}
+		}
+
+		return searchResults;
+	}
+
+
 	private static Map<File, WeakReference<CompilationUnit>> _map = new WeakHashMap<>();
 
 	private final CompilationUnit _ast;
