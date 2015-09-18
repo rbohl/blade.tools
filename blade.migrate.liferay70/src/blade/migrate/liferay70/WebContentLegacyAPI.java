@@ -6,7 +6,6 @@ import blade.migrate.core.JavaFileMigrator;
 import blade.migrate.core.SearchResult;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -23,7 +22,7 @@ import org.osgi.service.component.annotations.Component;
 )
 public class WebContentLegacyAPI extends JavaFileMigrator {
 
-	private static final String[] PREFIXES =  {
+	private static final String[] SERVICE_API_PREFIXES =  {
 		"com.liferay.portlet.journal.service.JournalArticle",
 		"com.liferay.portlet.journal.service.JournalArticleImage",
 		"com.liferay.portlet.journal.service.JournalArticleResource",
@@ -35,18 +34,8 @@ public class WebContentLegacyAPI extends JavaFileMigrator {
 		"com.liferay.portlet.journal.service.JournalTemplate",
 	};
 
-	private static final String[] SUFFIXES =  {
-		"LocalService",
-		"LocalServiceUtil",
-		"LocalServiceWrapper",
-		"Service",
-		"ServiceUtil",
-		"ServiceWrapper",
-	};
-
 	@Override
 	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
-
-		return javaFileChecker.findMigratorService(PREFIXES, SUFFIXES);
+		return javaFileChecker.findServiceAPIs(SERVICE_API_PREFIXES);
 	}
 }

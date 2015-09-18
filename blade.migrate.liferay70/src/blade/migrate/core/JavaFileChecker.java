@@ -29,6 +29,15 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
  */
 public class JavaFileChecker {
 
+	private static final String[] SERVICE_API_SUFFIXES =  {
+		"LocalService",
+		"LocalServiceUtil",
+		"LocalServiceWrapper",
+		"Service",
+		"ServiceUtil",
+		"ServiceWrapper",
+	};
+
 	/**
 	 * initialize the Checker
 	 * @param file java file
@@ -482,11 +491,11 @@ public class JavaFileChecker {
 		return searchResults;
 	}
 
-	public List<SearchResult> findMigratorService(final String[] prefixes, final String[] suffixes){
+	public List<SearchResult> findServiceAPIs(final String[] serviceFQNPrefixes) {
 		final List<SearchResult> searchResults = new ArrayList<>();
 
-		for (String prefix : prefixes) {
-			for (String suffix : suffixes) {
+		for (String prefix : serviceFQNPrefixes) {
+			for (String suffix : SERVICE_API_SUFFIXES) {
 				String serviceFQN = prefix + suffix;
 				SearchResult importResult = findImport(serviceFQN);
 
@@ -494,10 +503,14 @@ public class JavaFileChecker {
 					searchResults.add(importResult);
 				}
 
-				String serviceExpression = serviceFQN.substring(serviceFQN.lastIndexOf('.') + 1, serviceFQN.length());
-				searchResults.addAll(findMethodInvocations(null, serviceExpression, "*", null));
+				String service = serviceFQN.substring(
+						serviceFQN.lastIndexOf('.') + 1, serviceFQN.length());
 
-				searchResults.addAll(findMethodInvocations(serviceExpression, null, "*", null));
+				searchResults.addAll(
+						findMethodInvocations(null, service, "*", null));
+
+				searchResults.addAll(
+						findMethodInvocations(service, null, "*", null));
 			}
 		}
 
