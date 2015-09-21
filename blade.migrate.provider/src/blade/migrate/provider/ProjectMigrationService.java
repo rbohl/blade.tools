@@ -57,23 +57,22 @@ public class ProjectMigrationService implements Migration {
 		final ProgressMonitor monitor = _progressMonitorTracker.getService();
 
 		monitor.beginTask("Searching for migration problems in " + projectDir, -1);
-		monitor.done();
 
 		final List<Problem> problems = new ArrayList<>();
 
 		ServiceReference<ProjectMigrator>[] projectMigrators = _projectMigratorTracker.getServiceReferences();
 
 		if (projectMigrators != null && projectMigrators.length > 0) {
-		for (ServiceReference<ProjectMigrator> projectMigratorRef : projectMigrators) {
-			try {
-				ProjectMigrator projectMigrator = context.getService(projectMigratorRef);
-				List<Problem> migrationProblems = projectMigrator.analyze(projectDir);
+			for (ServiceReference<ProjectMigrator> projectMigratorRef : projectMigrators) {
+				try {
+					ProjectMigrator projectMigrator = context.getService(projectMigratorRef);
+					List<Problem> migrationProblems = projectMigrator.analyze(projectDir);
 
-				problems.addAll(migrationProblems);
-			} catch (Exception e) {
-				e.printStackTrace();
+					problems.addAll(migrationProblems);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}
 		}
 
 		monitor.beginTask("Analyzing files", -1);
