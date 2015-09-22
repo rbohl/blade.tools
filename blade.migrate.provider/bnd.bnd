@@ -1,12 +1,3 @@
-Bundle-Version: 1.0.0.${tstamp}
-Bundle-SymbolicName: blade.migrate.provider;singleton:=true
-
-Private-Package: \
-	blade.migrate.provider.*,\
-	dnl.utils.text.table.*,\
-	org.apache.commons.lang.*,\
-	freemarker.*
-
 -buildpath: \
 	osgi.core,\
 	osgi.cmpn,\
@@ -20,6 +11,10 @@ Private-Package: \
 	org.apache.commons.lang,\
 	org.freemarker.freemarker
 
+Bundle-ActivationPolicy: lazy
+Bundle-SymbolicName: blade.migrate.provider;singleton:=true
+Bundle-Version: 1.0.0.${tstamp}
+
 Import-Package: \
 	blade.migrate.api,\
 	org.osgi.framework;version=1.5.0,\
@@ -27,3 +22,9 @@ Import-Package: \
 	javax.swing,\
 	javax.swing.table,\
 	org.w3c.dom.*
+
+Private-Package: \
+	blade.migrate.provider.*,\
+	dnl.utils.text.table.*,\
+	org.apache.commons.lang.*,\
+	freemarker.*
