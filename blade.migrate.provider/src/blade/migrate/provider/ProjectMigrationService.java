@@ -33,8 +33,6 @@ import org.osgi.util.tracker.ServiceTracker;
 @Component(immediate = true)
 public class ProjectMigrationService implements Migration {
 
-
-
 	@Activate
 	public void activate(BundleContext context) {
 		this.context = context;
@@ -139,8 +137,6 @@ public class ProjectMigrationService implements Migration {
 			}
 
 			reporter.endReporting();
-
-
 		}
 	}
 
