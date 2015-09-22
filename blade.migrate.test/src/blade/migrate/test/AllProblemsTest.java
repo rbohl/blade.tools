@@ -24,7 +24,7 @@ public class AllProblemsTest {
 				.findProblems(new File(
 						"../blade.migrate.liferay70/projects/"));
 
-		final int expectedSize = 193;
+		final int expectedSize = 196;
 		final int size = problems.size();
 
 		if (size != expectedSize) {
