@@ -161,24 +161,31 @@ public class ProjectMigrationService implements Migration {
 					ServiceReference<FileMigrator>[] fileMigrators = _fileMigratorTracker.getServiceReferences();
 
 					if(fileMigrators != null && fileMigrators.length > 0) {
-					for ( ServiceReference<FileMigrator> fm : fileMigrators ) {
-						List<String> fileExtensions = Arrays.asList(((String)fm.getProperty("file.extensions")).split(","));
+						for (ServiceReference<FileMigrator> fm : fileMigrators) {
+								final List<String> fileExtensions = Arrays.asList(
+										((String) fm.getProperty("file.extensions"))
+												.split(","));
 
-						if ( fileExtensions != null && fileExtensions.contains(extension) ) {
-							FileMigrator fmigrator = context.getService(fm);
+							if (fileExtensions != null && fileExtensions.contains(extension)) {
+								final FileMigrator fmigrator = context.getService(fm);
 
-							List<Problem> fileProblems = fmigrator.analyzeFile(
-								file);
+								try {
+									final List<Problem> fileProblems = fmigrator.analyzeFile(
+										file);
 
-							if ( fileProblems != null &&
-								fileProblems.size() > 0) {
+									if ( fileProblems != null &&
+										fileProblems.size() > 0) {
 
-								problems.addAll(fileProblems);
+										problems.addAll(fileProblems);
+									}
+								}
+								catch (Exception e) {
+									e.printStackTrace();
+								}
+
+								context.ungetService(fm);
 							}
-
-							context.ungetService(fm);
 						}
-					}
 					}
 				}
 

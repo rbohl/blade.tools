@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -37,8 +38,9 @@ public class JSPFileChecker extends JavaFileChecker {
 		IDOMModel jspModel = null;
 
 		try {
-			final IFile jspFile = getWorkspaceHelper()
-					.createIFile(MigrationConstants.MIGRATION_HELPER_PROJECT_NAME, getFile());
+			// try to find the file in the current workspace, if it can't find it then fall back to copy
+
+			final IFile jspFile = getFileFromWorkspace(getFile());
 
 			jspModel = (IDOMModel) StructuredModelManager.getModelManager()
 					.getModelForRead(jspFile);
@@ -47,7 +49,7 @@ public class JSPFileChecker extends JavaFileChecker {
 					.getDocumentElement();
 
 			final IProgressMonitor npm = new NullProgressMonitor();
-			final JSPTranslator translator = new JSPTranslator();
+			final JSPTranslator translator = new JSPTranslatorPrime();
 
 			if (domNode != null) {
 				translator.reset((IDOMNode) domDocument.getDocumentElement(),
@@ -74,6 +76,41 @@ public class JSPFileChecker extends JavaFileChecker {
 		}
 
 		return null;
+	}
+
+	private IFile getFileFromWorkspace(File file)
+			throws CoreException, IOException {
+		IFile retval = null;
+
+		// first try to find this file in the current workspace
+		final IFile[] files = ResourcesPlugin.getWorkspace().getRoot()
+				.findFilesForLocationURI(file.toURI());
+
+		// if there are multiple files in this workspace use the shortest path
+		if (files != null && files.length == 1) {
+			retval = files[0];
+		} else if (files != null && files.length > 0) {
+			for (IFile ifile : files) {
+				if (retval == null) {
+					retval = ifile;
+				} else {
+					// prefer the path that is shortest (to avoid a nested
+					// version)
+					if (ifile.getLocation().segmentCount() <
+							retval.getLocation().segmentCount()) {
+						retval = ifile;
+					}
+				}
+			}
+		}
+
+		if (retval == null) {
+			retval = getWorkspaceHelper().createIFile(
+					MigrationConstants.MIGRATION_HELPER_PROJECT_NAME,
+					getFile());
+		}
+
+		return retval;
 	}
 
 	@Override
@@ -232,6 +269,17 @@ public class JSPFileChecker extends JavaFileChecker {
 			super(javaProject, translator);
 
 			_jspFile = jspFile;
+		}
+	}
+
+	private class JSPTranslatorPrime extends JSPTranslator {
+		@Override
+		protected void handleIncludeFile(String filename) {
+			try {
+				super.handleIncludeFile(filename);
+			} catch (Exception e) {
+				// suppress errors in handling include files
+			}
 		}
 	}
 
