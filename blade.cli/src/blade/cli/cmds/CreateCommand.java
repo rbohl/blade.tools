@@ -121,7 +121,7 @@ public class CreateCommand {
 				service.substring(service.lastIndexOf('.') + 1));
 		}
 		
-		if (Type.serviceWrapper.equals(type)) {
+		if (Type.servicewrapper.equals(type)) {
 			String service = options._arguments().get(1);
 
 			if (service.isEmpty()) {
