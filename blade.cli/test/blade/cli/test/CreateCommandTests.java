@@ -168,6 +168,69 @@ public class CreateCommandTests {
 	}
 
 	@Test
+	public void createGradleServiceWrapper() throws Exception {
+		String[] args = new String[] {
+			"-t", "create", "-b", "gradle",
+			"-d", "generated/test",
+			"-p", "servicewrapper",
+			"serviceoverride",
+			"com.liferay.portal.service.UserLocalServiceWrapper"
+		};
+
+		new blade().run(args);
+
+		File buildFile =
+			IO.getFile("generated/test/serviceoverride/build.gradle");
+
+		assertTrue(buildFile.exists());
+		
+
+		String buildFileContent = new String(IO.read(buildFile));
+
+		contains(
+			buildFileContent,
+			".*compile 'com.liferay.portal:portal-service:7.0.0-SNAPSHOT'.*");
+
+        contains(
+                buildFileContent, 
+                ".*classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:3.0.0'.*");
+
+		File serviceWrapperFile = IO.getFile(
+			"generated/test/serviceoverride/src/main/java/serviceoverride/Serviceoverride.java");
+
+		assertTrue(serviceWrapperFile.exists());
+
+
+		String serviceWrapperFileContent = new String(IO.read(serviceWrapperFile));
+
+		contains(serviceWrapperFileContent, "^package serviceoverride;.*");
+
+		contains(serviceWrapperFileContent,
+			".*^import com.liferay.portal.service.UserLocalServiceWrapper;$.*");
+
+		contains(serviceWrapperFileContent, ".*service = ServiceWrapper.class.*");
+
+		contains(serviceWrapperFileContent,
+			".*^public class Serviceoverride extends UserLocalServiceWrapper \\{.*");
+
+		contains(serviceWrapperFileContent,
+			".*public Serviceoverride\\(\\) \\{.*");
+
+
+		File bndFile = IO.getFile("generated/test/serviceoverride/bnd.bnd");
+
+		assertTrue(bndFile.exists());
+
+		String bndFileContent = new String(IO.read(bndFile));
+
+		contains(
+			bndFileContent, ".*Private-Package\\: serviceoverride.*");
+
+		contains(
+			bndFileContent, ".*com.liferay.portal.service;version=\'\\[7.0\\,7.1\\)\'.*");
+
+	}
+	@Test
 	public void createBndtoolsServicePreAction() throws Exception {
 		String[] args = new String[] {
 			"-t", "create", "-b", "bndtools",
@@ -402,6 +465,73 @@ public class CreateCommandTests {
 		contains(
 			serviceFileContent,
 			".*^public class LoginPreAction implements LifecycleAction \\{.*");
+	}
+
+	@Test
+	public void createMavenServiceWrapper() throws Exception {
+		String[] args = new String[] {
+			"-t", "create", "-d",
+			"generated/test",
+			"-b", "maven",
+			"-p", "servicewrapper",
+			"serviceoverride",
+			"com.liferay.portal.service.UserLocalServiceWrapper"
+		};
+
+		new blade().run(args);
+
+		assertTrue(IO.getFile("generated/test/serviceoverride").exists());
+
+		assertTrue(
+			IO.getFile("generated/test/serviceoverride/pom.xml").exists());
+
+		File serviceWrapperFile = IO.getFile(
+			"generated/test/serviceoverride/src/main/java/serviceoverride/Serviceoverride.java");
+
+		assertTrue(serviceWrapperFile.exists());
+
+		String serviceWrapperFileContent = new String(IO.read(serviceWrapperFile));
+
+		contains(serviceWrapperFileContent, "^package serviceoverride;.*");
+
+		contains(serviceWrapperFileContent,
+			".*^import com.liferay.portal.service.UserLocalServiceWrapper;$.*");
+
+		contains(serviceWrapperFileContent,
+			".*^public class Serviceoverride extends UserLocalServiceWrapper \\{.*");
+
+		contains(serviceWrapperFileContent,
+			".*public Serviceoverride\\(\\) \\{.*");
+
+	}
+
+	@Test
+	public void createMavenServiceWrapperClassname() throws Exception {
+		String[] args = new String[] {
+			"-t", "create", "-d", "generated/test", "-c",
+			"UserLocalServiceOverride",
+			"-p",
+			"servicewrapper",
+			"serviceoverride",
+			"com.liferay.portal.service.UserLocalServiceWrapper"
+		};
+
+		new blade().run(args);
+
+		File serviceWrapperFile = IO.getFile(
+			"generated/test/serviceoverride/src/main/java/serviceoverride/UserLocalServiceOverride.java");
+
+		assertTrue(serviceWrapperFile.exists());
+
+		String serviceWrapperFileContent = new String(IO.read(serviceWrapperFile));
+
+		contains(
+			serviceWrapperFileContent,
+			".*^public class UserLocalServiceOverride extends UserLocalServiceWrapper \\{.*");
+
+		contains(serviceWrapperFileContent,
+			".*public UserLocalServiceOverride\\(\\) \\{.*");
+
 	}
 
 	@Before
