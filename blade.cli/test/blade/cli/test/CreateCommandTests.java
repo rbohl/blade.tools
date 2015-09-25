@@ -200,7 +200,6 @@ public class CreateCommandTests {
 
 		assertTrue(serviceWrapperFile.exists());
 
-
 		String serviceWrapperFileContent = new String(IO.read(serviceWrapperFile));
 
 		contains(serviceWrapperFileContent, "^package serviceoverride;.*");
@@ -215,7 +214,6 @@ public class CreateCommandTests {
 
 		contains(serviceWrapperFileContent,
 			".*public Serviceoverride\\(\\) \\{.*");
-
 
 		File bndFile = IO.getFile("generated/test/serviceoverride/bnd.bnd");
 
