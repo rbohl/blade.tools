@@ -1,6 +1,7 @@
 package _package_;
 
 import _SERVICE_FULL_;
+
 import com.liferay.portal.service.ServiceWrapper;
 
 import org.osgi.service.component.annotations.Component;
