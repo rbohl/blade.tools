@@ -45,15 +45,10 @@ public class ProjectMigrationService implements Migration {
 
 		_projectMigratorTracker = new ServiceTracker<ProjectMigrator, ProjectMigrator>(context, ProjectMigrator.class, null);
 		_projectMigratorTracker.open();
-
-		_progressMonitorTracker = new ServiceTracker<ProgressMonitor, ProgressMonitor>(context, ProgressMonitor.class, null);
-		_progressMonitorTracker.open();
 	}
 
 	@Override
-	public List<Problem> findProblems(File projectDir) {
-		final ProgressMonitor monitor = _progressMonitorTracker.getService();
-
+	public List<Problem> findProblems(final File projectDir, final ProgressMonitor monitor) {
 		monitor.beginTask("Searching for migration problems in " + projectDir, -1);
 
 		final List<Problem> problems = new ArrayList<>();
@@ -62,20 +57,22 @@ public class ProjectMigrationService implements Migration {
 
 		if (projectMigrators != null && projectMigrators.length > 0) {
 			for (ServiceReference<ProjectMigrator> projectMigratorRef : projectMigrators) {
-				try {
-					ProjectMigrator projectMigrator = context.getService(projectMigratorRef);
-					List<Problem> migrationProblems = projectMigrator.analyze(projectDir);
+				if (!monitor.isCanceled()) {
+					try {
+						ProjectMigrator projectMigrator = context.getService(projectMigratorRef);
+						List<Problem> migrationProblems = projectMigrator.analyze(projectDir);
 
-					problems.addAll(migrationProblems);
-				} catch (Exception e) {
-					e.printStackTrace();
+						problems.addAll(migrationProblems);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
 
 		monitor.beginTask("Analyzing files", -1);
 
-		walkFiles(projectDir, problems);
+		walkFiles(projectDir, problems, monitor);
 
 		monitor.done();
 
@@ -140,14 +137,16 @@ public class ProjectMigrationService implements Migration {
 		}
 	}
 
-	private void walkFiles(final File dir, final List<Problem> problems) {
-		final ProgressMonitor monitor = _progressMonitorTracker.getService();
-
+	private void walkFiles(final File dir, final List<Problem> problems, final ProgressMonitor monitor) {
 		final FileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(
 					Path path, BasicFileAttributes attrs)
 				throws IOException {
+				if (monitor.isCanceled()) {
+					return FileVisitResult.TERMINATE;
+				}
+
 				File file = path.toFile();
 
 				if (file.isFile())
@@ -162,9 +161,13 @@ public class ProjectMigrationService implements Migration {
 
 					if(fileMigrators != null && fileMigrators.length > 0) {
 						for (ServiceReference<FileMigrator> fm : fileMigrators) {
-								final List<String> fileExtensions = Arrays.asList(
-										((String) fm.getProperty("file.extensions"))
-												.split(","));
+							if (monitor.isCanceled()) {
+								return FileVisitResult.TERMINATE;
+							}
+
+							final List<String> fileExtensions = Arrays.asList(
+									((String) fm.getProperty("file.extensions"))
+											.split(","));
 
 							if (fileExtensions != null && fileExtensions.contains(extension)) {
 								final FileMigrator fmigrator = context.getService(fm);
@@ -207,6 +210,5 @@ public class ProjectMigrationService implements Migration {
 	private ServiceTracker<MigrationListener, MigrationListener> _migrationListenerTracker;
 	private ServiceTracker<FileMigrator, FileMigrator> _fileMigratorTracker;
 	private ServiceTracker<ProjectMigrator, ProjectMigrator> _projectMigratorTracker;
-	private ServiceTracker<ProgressMonitor, ProgressMonitor> _progressMonitorTracker;
 
 }

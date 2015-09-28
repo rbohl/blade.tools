@@ -3,6 +3,7 @@ package blade.migrate.test;
 import static org.junit.Assert.assertEquals;
 
 import blade.migrate.api.Migration;
+import blade.migrate.api.NullProgressMonitor;
 import blade.migrate.api.Problem;
 
 import java.io.File;
@@ -22,7 +23,7 @@ public class PortletIconTagsTest {
 
 		Migration m = context.getService(sr);
 
-		List<Problem> problems = m.findProblems(new File("jsptests/portlet-icon/"));
+		List<Problem> problems = m.findProblems(new File("jsptests/portlet-icon/"), new NullProgressMonitor());
 
 		assertEquals(13, problems.size());
 

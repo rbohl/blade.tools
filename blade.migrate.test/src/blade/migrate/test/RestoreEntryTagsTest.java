@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import blade.migrate.api.Migration;
+import blade.migrate.api.NullProgressMonitor;
 import blade.migrate.api.Problem;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class RestoreEntryTagsTest {
 
 		Migration m = context.getService(sr);
 
-		List<Problem> problems = m.findProblems(new File("jsptests/restore-entry/"));
+		List<Problem> problems = m.findProblems(new File("jsptests/restore-entry/"), new NullProgressMonitor());
 
 		assertEquals(1, problems.size());
 

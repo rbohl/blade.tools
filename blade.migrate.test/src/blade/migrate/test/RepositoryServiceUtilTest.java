@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import blade.migrate.api.Migration;
+import blade.migrate.api.NullProgressMonitor;
 import blade.migrate.api.Problem;
 
 import java.io.File;
@@ -25,7 +26,7 @@ public class RepositoryServiceUtilTest {
 
 		List<Problem> problems = m
 				.findProblems(new File(
-						"jsptests/repository-service-util"));
+						"jsptests/repository-service-util"), new NullProgressMonitor());
 
 		assertEquals(1, problems.size());
 

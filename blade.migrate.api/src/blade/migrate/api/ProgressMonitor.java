@@ -9,6 +9,8 @@ public interface ProgressMonitor {
 
 	public void done();
 
+	public boolean isCanceled();
+
 	public void setTaskName(String taskName);
 
 	public void worked(int work);

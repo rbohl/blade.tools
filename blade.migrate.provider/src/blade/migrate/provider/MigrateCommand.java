@@ -1,7 +1,9 @@
 package blade.migrate.provider;
 
 import blade.migrate.api.Migration;
+import blade.migrate.api.NullProgressMonitor;
 import blade.migrate.api.Problem;
+import blade.migrate.api.ProgressMonitor;
 
 import java.io.File;
 import java.util.List;
@@ -20,12 +22,12 @@ import org.osgi.service.component.annotations.Reference;
 public class MigrateCommand {
 
 	public void migrate(File projectDir) {
-		List<Problem> problems = projectMigrationService.findProblems(projectDir);
+		List<Problem> problems = projectMigrationService.findProblems(projectDir, npm);
 		projectMigrationService.reportProblems(problems, Migration.DETAIL_LONG, "console");
 	}
 
 	public void migrate(File projectDir, String format, File outputFile) {
-		List<Problem> problems = projectMigrationService.findProblems(projectDir);
+		List<Problem> problems = projectMigrationService.findProblems(projectDir, npm);
 		projectMigrationService.reportProblems(problems, Migration.DETAIL_LONG, format, outputFile);
 	}
 
@@ -35,5 +37,6 @@ public class MigrateCommand {
 	}
 
 	private volatile Migration projectMigrationService;
+	private final ProgressMonitor npm = new NullProgressMonitor();
 
 }

@@ -18,6 +18,11 @@ public class ConsoleProgressMonitor implements ProgressMonitor {
 	}
 
 	@Override
+	public boolean isCanceled() {
+		return false;
+	}
+
+	@Override
 	public void setTaskName(String taskName) {
 		System.out.print("\033[K");
 		System.out.print(taskName + "\r");

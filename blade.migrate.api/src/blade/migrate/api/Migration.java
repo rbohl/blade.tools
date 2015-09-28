@@ -12,7 +12,7 @@ public interface Migration {
 
 	int DETAIL_SHORT = 1 << 1;
 
-	public List<Problem> findProblems(File projectDir);
+	public List<Problem> findProblems(File projectDir, ProgressMonitor monitor);
 
 	public void reportProblems(List<Problem> problems, int detail, String format, Object... args);
 
