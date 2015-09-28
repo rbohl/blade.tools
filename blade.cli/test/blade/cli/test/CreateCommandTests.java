@@ -3,8 +3,6 @@ package blade.cli.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import blade.cli.blade;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -14,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import aQute.lib.io.IO;
+import blade.cli.blade;
 
 public class CreateCommandTests {
 
@@ -26,8 +25,7 @@ public class CreateCommandTests {
 	public void createGradleJSPPortletProject() throws Exception {
 		String[] args = new String[] {
 			"-t", "create",
-			"-d",
-			"generated/test",
+			"-d", "generated/test",
 			"-p", "jspportlet",
 			"foo",
 		};
@@ -77,11 +75,9 @@ public class CreateCommandTests {
 	public void createGradlePortletProject() throws Exception {
 		String[] args = new String[] {
 			"-t", "create",
-			"-b",
-			"gradle", "-d",
-			"generated/test",
-			"-c",
-			"Foo",
+			"-b", "gradle",
+			"-d", "generated/test",
+			"-c", "Foo",
 			"-p", "portlet",
 			"gradle.test",
 		};
@@ -120,7 +116,8 @@ public class CreateCommandTests {
 	@Test
 	public void createGradleServicePreAction() throws Exception {
 		String[] args = new String[] {
-			"-t", "create", "-b", "gradle",
+			"-t", "create",
+			"-b", "gradle",
 			"-d", "generated/test",
 			"-p", "service",
 			"servicepreaction",
@@ -170,7 +167,8 @@ public class CreateCommandTests {
 	@Test
 	public void createGradleServiceWrapper() throws Exception {
 		String[] args = new String[] {
-			"-t", "create", "-b", "gradle",
+			"-t", "create",
+			"-b", "gradle",
 			"-d", "generated/test",
 			"-p", "servicewrapper",
 			"serviceoverride",
@@ -183,7 +181,7 @@ public class CreateCommandTests {
 			IO.getFile("generated/test/serviceoverride/build.gradle");
 
 		assertTrue(buildFile.exists());
-		
+
 
 		String buildFileContent = new String(IO.read(buildFile));
 
@@ -192,7 +190,7 @@ public class CreateCommandTests {
 			".*compile 'com.liferay.portal:portal-service:7.0.0-SNAPSHOT'.*");
 
         contains(
-                buildFileContent, 
+                buildFileContent,
                 ".*classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:3.0.0'.*");
 
 		File serviceWrapperFile = IO.getFile(
@@ -231,7 +229,8 @@ public class CreateCommandTests {
 	@Test
 	public void createBndtoolsServicePreAction() throws Exception {
 		String[] args = new String[] {
-			"-t", "create", "-b", "bndtools",
+			"-t", "create",
+			"-b", "bndtools",
 			"-d", "generated/test",
 			"-p", "service",
 			"-c", "ServicePreAction",
@@ -273,7 +272,8 @@ public class CreateCommandTests {
 	@Test
 	public void createMavenJSPPortletProject() throws Exception {
 		String[] args = new String[] {
-			"-t", "create", "-d", "generated/test",
+			"-t", "create",
+			"-d", "generated/test",
 			"-b", "maven",
 			"-p", "jspportlet",
 			"foo",
@@ -360,8 +360,7 @@ public class CreateCommandTests {
 	@Test
 	public void createMavenPortletProject() throws Exception {
 		String[] args = new String[] {
-			"-t",
-			"create",
+			"-t", "create",
 			"-d", "generated/test",
 			"-b", "maven",
 			"foo",
@@ -407,8 +406,8 @@ public class CreateCommandTests {
 	@Test
 	public void createMavenServicePreAction() throws Exception {
 		String[] args = new String[] {
-			"-t", "create", "-d",
-			"generated/test",
+			"-t", "create",
+			"-d", "generated/test",
 			"-b", "maven",
 			"-p", "service",
 			"servicepreaction",
@@ -443,10 +442,10 @@ public class CreateCommandTests {
 	@Test
 	public void createMavenServicePreActionClassname() throws Exception {
 		String[] args = new String[] {
-			"-t", "create", "-d", "generated/test", "-c",
-			"LoginPreAction",
-			"-p",
-			"service",
+			"-t", "create",
+			"-d", "generated/test",
+			"-c", "LoginPreAction",
+			"-p", "service",
 			"loginpre",
 			"com.liferay.portal.kernel.events.LifecycleAction"
 		};
@@ -468,8 +467,8 @@ public class CreateCommandTests {
 	@Test
 	public void createMavenServiceWrapper() throws Exception {
 		String[] args = new String[] {
-			"-t", "create", "-d",
-			"generated/test",
+			"-t", "create",
+			"-d", "generated/test",
 			"-b", "maven",
 			"-p", "servicewrapper",
 			"serviceoverride",
@@ -506,10 +505,11 @@ public class CreateCommandTests {
 	@Test
 	public void createMavenServiceWrapperClassname() throws Exception {
 		String[] args = new String[] {
-			"-t", "create", "-d", "generated/test", "-c",
-			"UserLocalServiceOverride",
-			"-p",
-			"servicewrapper",
+			"-t", "create",
+			"-b", "maven",
+			"-d", "generated/test",
+			"-c", "UserLocalServiceOverride",
+			"-p", "servicewrapper",
 			"serviceoverride",
 			"com.liferay.portal.service.UserLocalServiceWrapper"
 		};
