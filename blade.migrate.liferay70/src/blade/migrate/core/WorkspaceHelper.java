@@ -1,5 +1,7 @@
 package blade.migrate.core;
 
+import aQute.lib.io.IO;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +15,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-
-import aQute.lib.io.IO;
 
 public class WorkspaceHelper {
 

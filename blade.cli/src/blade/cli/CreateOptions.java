@@ -1,5 +1,9 @@
 package blade.cli;
 
+import aQute.lib.getopt.Arguments;
+import aQute.lib.getopt.Description;
+import aQute.lib.getopt.Options;
+
 import blade.cli.cmds.Build;
 import blade.cli.cmds.IDE;
 import blade.cli.cmds.Type;
@@ -7,10 +11,6 @@ import blade.cli.cmds.Type;
 import java.io.File;
 
 import org.osgi.framework.Version;
-
-import aQute.lib.getopt.Arguments;
-import aQute.lib.getopt.Description;
-import aQute.lib.getopt.Options;
 
 @Arguments(arg = {"name", "[service]"})
 @Description("Creates a new Liferay module project.")

@@ -1,14 +1,14 @@
 package blade.migrate.liferay70;
 
-import java.io.File;
-import java.util.List;
-
-import org.osgi.service.component.annotations.Component;
-
 import blade.migrate.api.FileMigrator;
 import blade.migrate.core.JavaFileChecker;
 import blade.migrate.core.JavaFileMigrator;
 import blade.migrate.core.SearchResult;
+
+import java.io.File;
+import java.util.List;
+
+import org.osgi.service.component.annotations.Component;
 
 @Component(
 	property = {

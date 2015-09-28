@@ -2,7 +2,6 @@ package blade.cli;
 
 import aQute.bnd.annotation.component.Component;
 import aQute.bnd.annotation.component.Reference;
-
 import aQute.lib.consoleapp.AbstractConsoleApp;
 import aQute.lib.getopt.Description;
 
@@ -13,7 +12,6 @@ import blade.cli.cmds.OpenCommand;
 
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-
 import java.util.Map;
 
 /**

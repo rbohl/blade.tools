@@ -1,6 +1,11 @@
 
 package blade.cli.cmds;
 
+import aQute.bnd.osgi.Jar;
+import aQute.bnd.osgi.Processor;
+import aQute.bnd.osgi.Resource;
+import aQute.lib.io.IO;
+
 import blade.cli.CreateOptions;
 import blade.cli.blade;
 
@@ -16,11 +21,6 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.text.WordUtils;
-
-import aQute.bnd.osgi.Jar;
-import aQute.bnd.osgi.Processor;
-import aQute.bnd.osgi.Resource;
-import aQute.lib.io.IO;
 
 public class CreateCommand {
 
