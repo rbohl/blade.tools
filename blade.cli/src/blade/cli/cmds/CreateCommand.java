@@ -121,6 +121,23 @@ public class CreateCommand {
 				service.substring(service.lastIndexOf('.') + 1));
 		}
 		
+		if (Type.servicewrapper.equals(type)) {
+			String service = options._arguments().get(1);
+
+			if (service.isEmpty()) {
+				blade.error(
+					"if type is service, the fully qualified name of service " +
+						"must be specified after the service argument.");
+				printHelp();
+				return;
+			}
+
+			subs.put("_SERVICE_FULL_", service);
+			subs.put(
+				"_SERVICE_SHORT_",
+				service.substring(service.lastIndexOf('.') + 1));
+		}
+
 		else if (Type.portlet.equals(type) || Type.jspportlet.equals(type)) {
 
 			if (!classname.contains("Portlet")) {
