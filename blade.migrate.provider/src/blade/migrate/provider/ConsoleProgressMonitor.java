@@ -1,8 +1,8 @@
 package blade.migrate.provider;
 
-import org.osgi.service.component.annotations.Component;
-
 import blade.migrate.api.ProgressMonitor;
+
+import org.osgi.service.component.annotations.Component;
 
 @Component
 public class ConsoleProgressMonitor implements ProgressMonitor {
@@ -15,6 +15,11 @@ public class ConsoleProgressMonitor implements ProgressMonitor {
 	@Override
 	public void done() {
 		System.out.println();
+	}
+
+	@Override
+	public boolean isCanceled() {
+		return false;
 	}
 
 	@Override

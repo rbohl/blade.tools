@@ -1,10 +1,10 @@
 package blade.migrate.liferay70;
 
+import blade.migrate.api.FileMigrator;
+
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
-
-import blade.migrate.api.FileMigrator;
 
 @Component(
 	property = {

@@ -3,6 +3,7 @@ package blade.cli.cmds;
 import blade.cli.MigrateOptions;
 import blade.cli.blade;
 import blade.migrate.api.Migration;
+import blade.migrate.api.NullProgressMonitor;
 import blade.migrate.api.Problem;
 
 import java.io.File;
@@ -71,7 +72,7 @@ public class MigrateCommand {
 		ServiceReference<Migration> migrationSR = context.getServiceReference(Migration.class);
 		Migration migrationService = context.getService(migrationSR);
 
-		List<Problem> problems = migrationService.findProblems(projectDir);
+		List<Problem> problems = migrationService.findProblems(projectDir, new NullProgressMonitor());
 
 		String formatValue = format != null ? format.toString() : "";
 

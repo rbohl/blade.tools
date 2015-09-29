@@ -1,5 +1,7 @@
 package blade.cli.cmds;
 
+import aQute.bnd.osgi.Jar;
+
 import blade.cli.DeployOptions;
 import blade.cli.blade;
 import blade.cli.jmx.JMXBundleDeployer;
@@ -11,8 +13,6 @@ import java.util.Collections;
 import java.util.Formatter;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import aQute.bnd.osgi.Jar;
 
 public class DeployCommand {
 

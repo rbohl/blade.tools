@@ -3,6 +3,10 @@ package blade.cli.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import aQute.lib.io.IO;
+
+import blade.cli.blade;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -10,9 +14,6 @@ import java.util.regex.Pattern;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import aQute.lib.io.IO;
-import blade.cli.blade;
 
 public class CreateCommandTests {
 

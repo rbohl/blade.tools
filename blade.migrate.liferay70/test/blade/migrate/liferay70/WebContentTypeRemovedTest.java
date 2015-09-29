@@ -8,7 +8,6 @@ import blade.migrate.core.JavaFileChecker;
 import blade.migrate.core.SearchResult;
 
 import java.io.File;
-
 import java.util.List;
 
 import org.junit.Before;

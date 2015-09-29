@@ -1,10 +1,10 @@
 package blade.cli;
 
-import blade.cli.cmds.Format;
-
 import aQute.lib.getopt.Arguments;
 import aQute.lib.getopt.Description;
 import aQute.lib.getopt.Options;
+
+import blade.cli.cmds.Format;
 
 @Arguments(arg = {"projectDir", "[reportFile]"})
 @Description("Migrates a plugin project to Liferay 7")
