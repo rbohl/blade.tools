@@ -126,7 +126,9 @@ public class CreateCommand {
 
 			if (service.isEmpty()) {
 				blade.error(
-					"if type is service, the fully qualified name of service " +
+					"if type is servicewrapper, the fully qualified name of a ServiceWrapper " +
+						"must be specified after the service argument.");
+                System.out.println("if type is servicewrapper, the fully qualified name of a ServiceWrapper " +
 						"must be specified after the service argument.");
 				printHelp();
 				return;
