@@ -106,7 +106,7 @@ public class JSPFileChecker extends JavaFileChecker {
 
 		if (retval == null) {
 			retval = getWorkspaceHelper().createIFile(
-					MigrationConstants.MIGRATION_HELPER_PROJECT_NAME,
+					MigrationConstants.HELPER_PROJECT_NAME,
 					getFile());
 		}
 

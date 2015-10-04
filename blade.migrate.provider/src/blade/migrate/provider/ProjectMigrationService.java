@@ -173,7 +173,7 @@ public class ProjectMigrationService implements Migration {
 								final FileMigrator fmigrator = context.getService(fm);
 
 								try {
-									final List<Problem> fileProblems = fmigrator.analyzeFile(
+									final List<Problem> fileProblems = fmigrator.analyze(
 										file);
 
 									if ( fileProblems != null &&

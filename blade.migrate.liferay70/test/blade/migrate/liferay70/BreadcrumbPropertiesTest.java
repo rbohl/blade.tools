@@ -26,7 +26,7 @@ public class BreadcrumbPropertiesTest {
 
 	@Test
 	public void breadcrumbPropertiesAnalyzeTest() throws Exception {
-		List<Problem> problems = component.analyzeFile(file);
+		List<Problem> problems = component.analyze(file);
 
 		assertNotNull(problems);
 		assertEquals(2, problems.size());
@@ -34,8 +34,8 @@ public class BreadcrumbPropertiesTest {
 
 	@Test
 	public void breadcrumbPropertiesAnalyzeTest2() throws Exception {
-		List<Problem> problems = component.analyzeFile(file);
-		problems = component.analyzeFile(file);
+		List<Problem> problems = component.analyze(file);
+		problems = component.analyze(file);
 
 		assertNotNull(problems);
 		assertEquals(2, problems.size());

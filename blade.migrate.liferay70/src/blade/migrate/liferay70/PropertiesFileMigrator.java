@@ -2,6 +2,7 @@ package blade.migrate.liferay70;
 
 import blade.migrate.api.FileMigrator;
 import blade.migrate.api.Problem;
+import blade.migrate.core.MarkdownParser;
 import blade.migrate.core.PropertiesFileChecker;
 import blade.migrate.core.SearchResult;
 
@@ -21,6 +22,7 @@ public abstract class PropertiesFileMigrator implements FileMigrator {
 	private String _problemSummary;
 	private String _problemType;
 	private String _problemTickets;
+	private String _sectionKey;
 	final List<String> _properties = new ArrayList<String>();
 
 	@Activate
@@ -30,11 +32,12 @@ public abstract class PropertiesFileMigrator implements FileMigrator {
 		final Dictionary<String, Object> properties =
 			this._context.getProperties();
 
-		this._problemTitle = (String)properties.get("problem.title");
-		this._problemUrl = (String)properties.get("problem.url");
-		this._problemSummary = (String)properties.get("problem.summary");
-		this._problemType = (String)properties.get("file.extensions");
-		this._problemTickets = (String)properties.get("problem.tickets");
+		_problemTitle = (String)properties.get("problem.title");
+		_problemUrl = (String)properties.get("problem.url");
+		_problemSummary = (String)properties.get("problem.summary");
+		_problemType = (String)properties.get("file.extensions");
+		_problemTickets = (String)properties.get("problem.tickets");
+		_sectionKey = (String)properties.get("problem.sectionKey");
 
 		addPropertiesToSearch(this._properties);
 	}
@@ -42,7 +45,7 @@ public abstract class PropertiesFileMigrator implements FileMigrator {
 	protected abstract void addPropertiesToSearch(List<String> _properties);
 
 	@Override
-	public List<Problem> analyzeFile(File file) {
+	public List<Problem> analyze(File file) {
 		final List<Problem> problems = new ArrayList<>();
 
 		PropertiesFileChecker propertiesFileChecker =
@@ -53,12 +56,14 @@ public abstract class PropertiesFileMigrator implements FileMigrator {
 				propertiesFileChecker.findProperties(key);
 
 			if (results != null) {
+				String sectionHtml = MarkdownParser.getSection("BREAKING_CHANGES.markdown", _sectionKey);
+
 				for (SearchResult searchResult : results) {
 					problems.add(new Problem(
 						this._problemTitle, this._problemUrl, this._problemSummary,
 						this._problemType, this._problemTickets, file,
 						searchResult.startLine, searchResult.startOffset,
-						searchResult.endOffset));
+						searchResult.endOffset, sectionHtml, searchResult.autoCorrectContext));
 				}
 			}
 		}

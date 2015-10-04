@@ -36,9 +36,9 @@ public class ConsoleReporterCLITest {
 		Reporter reporter = context.getService(sr);
 		reporter.beginReporting(Migration.DETAIL_LONG, baos);
 		reporter.report(new Problem(
-				"foo", "http://liferay.com", "foo summary", "java", "LPS-5309", new File("Foo.java"), 10, 100, 110 ));
+				"foo", "http://liferay.com", "foo summary", "java", "LPS-5309", new File("Foo.java"), 10, 100, 110, null, null));
 		reporter.report(new Problem(
-				"bar", "http://liferay.com", "bar summary", "jsp", "LPS-867", new File("Bar.java"), 20, 200, 220 ));
+				"bar", "http://liferay.com", "bar summary", "jsp", "LPS-867", new File("Bar.java"), 20, 200, 220, null, null));
 		reporter.endReporting();
 
 		String realString = baos.toString().replace("\r", "");
@@ -64,9 +64,9 @@ public class ConsoleReporterCLITest {
 		Reporter reporter = context.getService(sr);
 		reporter.beginReporting(Migration.DETAIL_SHORT, baos);
 		reporter.report(new Problem(
-				"foo", "http://liferay.com", "foo summary", "java", "LPS-867", new File("Foo.java"), 10, 100, 110 ));
+				"foo", "http://liferay.com", "foo summary", "java", "LPS-867", new File("Foo.java"), 10, 100, 110, null, null));
 		reporter.report(new Problem(
-				"bar", "http://liferay.com", "bar summary", "jsp", "LPS-5309", new File("Bar.java"), 20, 200, 220 ));
+				"bar", "http://liferay.com", "bar summary", "jsp", "LPS-5309", new File("Bar.java"), 20, 200, 220, null, null));
 		reporter.endReporting();
 
 		String realString = baos.toString().replace("\r", "");

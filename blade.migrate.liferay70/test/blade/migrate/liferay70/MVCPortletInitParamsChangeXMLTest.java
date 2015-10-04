@@ -25,7 +25,7 @@ public class MVCPortletInitParamsChangeXMLTest {
 
 	@Test
 	public void testMVCPortletChangeXMLTest() throws Exception {
-		List<Problem> problems = component.analyzeFile(testFile);
+		List<Problem> problems = component.analyze(testFile);
 
 		assertNotNull(problems);
 		assertEquals(5, problems.size());

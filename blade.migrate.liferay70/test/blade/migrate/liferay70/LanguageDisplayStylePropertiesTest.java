@@ -25,7 +25,7 @@ public class LanguageDisplayStylePropertiesTest {
 
 	@Test
 	public void emailSignaturePropertiesAnalyzeTest() throws Exception {
-		List<Problem> problems = component.analyzeFile(file);
+		List<Problem> problems = component.analyze(file);
 
 		assertNotNull(problems);
 		assertEquals(2, problems.size());
@@ -33,8 +33,8 @@ public class LanguageDisplayStylePropertiesTest {
 
 	@Test
 	public void emailSignaturePropertiesAnalyzeTest2() throws Exception {
-		List<Problem> problems = component.analyzeFile(file);
-		problems = component.analyzeFile(file);
+		List<Problem> problems = component.analyze(file);
+		problems = component.analyze(file);
 
 		assertNotNull(problems);
 		assertEquals(2, problems.size());
