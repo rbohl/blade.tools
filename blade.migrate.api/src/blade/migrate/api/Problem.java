@@ -9,7 +9,8 @@ public class Problem {
 
 	public Problem( String title, String url,
 			String summary, String type, String ticket, File file,
-			int lineNumber, int startOffset, int endOffset) {
+			int lineNumber, int startOffset, int endOffset,
+			String html, String autoCorrectContext) {
 
 		this.title = title;
 		this.url = url;
@@ -20,6 +21,8 @@ public class Problem {
 		this.lineNumber = lineNumber;
 		this.startOffset = startOffset;
 		this.endOffset = endOffset;
+		this.html = html;
+		this.autoCorrectContext = autoCorrectContext;
 	}
 
 	public File file;
@@ -32,7 +35,8 @@ public class Problem {
 	public String url;
 	public int endOffset;
 	public int startOffset;
-
+	public String html;
+	public String autoCorrectContext;
 
 	public String getTitle() {
 		return title;
@@ -114,6 +118,14 @@ public class Problem {
 		this.title = title;
 	}
 
+	public String getAutoCorrectContext() {
+		return autoCorrectContext;
+	}
+
+	public void setAutoCorrectContext(String autoCorrectContext) {
+		this.autoCorrectContext = autoCorrectContext;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -161,10 +173,12 @@ public class Problem {
 				return false;
 		} else if (!url.equals(other.url))
 			return false;
+		if (autoCorrectContext == null) {
+			if (other.autoCorrectContext != null)
+				return false;
+		} else if (!autoCorrectContext.equals(other.autoCorrectContext))
+			return false;
 		return true;
 	}
-
-
-
 
 }

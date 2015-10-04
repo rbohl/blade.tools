@@ -10,6 +10,7 @@ public class SearchResult {
 	public final boolean fullMatch;
 	public final int startLine;
 	public final int startOffset;
+	public String autoCorrectContext;
 
 	public SearchResult(File file, int startOffset, int endOffset,
 			int startLine, int endLine, boolean fullMatch) {

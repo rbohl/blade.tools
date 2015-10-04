@@ -6,8 +6,8 @@ import java.util.List;
 import org.osgi.annotation.versioning.ProviderType;
 
 @ProviderType
-public interface FileMigrator {
+public interface AutoMigrator {
 
-	public List<Problem> analyze(File file);
+	public void correctProblems(File file, List<Problem> problems) throws AutoMigrateException;
 
 }

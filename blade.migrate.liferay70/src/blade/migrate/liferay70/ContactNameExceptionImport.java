@@ -1,13 +1,7 @@
 package blade.migrate.liferay70;
 
 import blade.migrate.api.FileMigrator;
-import blade.migrate.core.JavaFileChecker;
-import blade.migrate.core.JavaFileMigrator;
-import blade.migrate.core.SearchResult;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import blade.migrate.core.ImportStatementMigrator;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -17,32 +11,27 @@ import org.osgi.service.component.annotations.Component;
 		"problem.title=Moved the Contact Name Exception Classes to Inner Classes of ContactNameException",
 		"problem.summary=The use of classes ContactFirstNameException, ContactFullNameException, and ContactLastNameException has been moved to inner classes in a new class called ContactNameException.",
 		"problem.tickets=LPS-55364",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#moved-the-contact-name-exception-classes-to-inner-classes-of-contactnameexception"
+		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#moved-the-contact-name-exception-classes-to-inner-classes-of-contactnameexception",
+		"auto.correct=imports"
 	},
 	service = FileMigrator.class
 )
-public class ContactNameExceptionImport extends JavaFileMigrator {
+public class ContactNameExceptionImport extends ImportStatementMigrator {
 
-	private final static String[] imports = new String[] {
+	private final static String[] IMPORTS = new String[] {
 		"com.liferay.portal.ContactFirstNameException",
 		"com.liferay.portal.ContactFullNameException",
 		"com.liferay.portal.ContactLastNameException"
 	};
 
-	@Override
-	protected List<SearchResult> searchJavaFile(File file, JavaFileChecker javaFileChecker) {
-		final List<SearchResult> searchResults = new ArrayList<>();
+	private final static String[] IMPORTS_FIXED = new String[] {
+		"com.liferay.portal.ContactFirstNameException",
+		"com.liferay.portal.ContactFullNameException",
+		"com.liferay.portal.ContactLastNameException"
+	};
 
-		for (String importName : imports) {
-			final SearchResult importResult = javaFileChecker.findImport(importName);
-
-			if (importResult != null) {
-				searchResults.add(importResult);
-			}
-		}
-
-		return searchResults;
-
+	public ContactNameExceptionImport() {
+		super(IMPORTS, IMPORTS_FIXED);
 	}
 
 }

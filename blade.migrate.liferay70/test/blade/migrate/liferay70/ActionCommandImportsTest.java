@@ -19,12 +19,12 @@ public class ActionCommandImportsTest {
 			"projects/actioncommand-demo-portlet/docroot/WEB-INF/src/com/liferay/demo/portlet/action/SayHelloActionCommand.java");
 	final File sayHelloActionCommandFile2 = new File(
 			"projects/actioncommand-demo-portlet/docroot/WEB-INF/src/com/liferay/demo/portlet/action/SayHelloActionCommand2.java");
-	ActionCommandImports component;
+	MVCPortletActionCommandImports component;
 
 	@Before
 	public void beforeTest() {
 		assertTrue(sayHelloActionCommandFile.exists());
-		component = new ActionCommandImports();
+		component = new MVCPortletActionCommandImports();
 	}
 
 	@Test

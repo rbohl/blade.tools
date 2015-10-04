@@ -2,15 +2,9 @@ package blade.migrate.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
 
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CatchClause;
@@ -38,8 +32,6 @@ public class JavaFileChecker {
 		"ServiceWrapper",
 	};
 
-	private static final Map<File, WeakReference<CompilationUnit>> _map = new WeakHashMap<>();
-
 	private final CompilationUnit _ast;
 
 	private final File _file;
@@ -55,51 +47,10 @@ public class JavaFileChecker {
 		_fileHelper = new FileHelper();
 
 		try {
-			synchronized (_map) {
-				WeakReference<CompilationUnit> astRef = _map.get(file);
-
-				if (astRef == null || astRef.get() == null) {
-					final CompilationUnit newAst = createJavaClassVisitor();
-
-					_map.put(file, new WeakReference<CompilationUnit>(newAst));
-
-					_ast = newAst;
-				}
-				else {
-					_ast = astRef.get();
-				}
-			}
+			_ast = CUCache.getCU(file, getJavaSource());
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private CompilationUnit createJavaClassVisitor() {
-		ASTParser parser = ASTParser.newParser(AST.JLS8);
-
-		Map<String, String> options = JavaCore.getOptions();
-
-		JavaCore.setComplianceOptions(JavaCore.VERSION_1_6, options);
-
-		parser.setCompilerOptions(options);
-
-		//setUnitName for resolve bindings
-		String unitName = _file.getName();
-		parser.setUnitName(unitName);
-
-		String[] sources = { "" };
-		String[] classpath = { "" };
-		//setEnvironment for resolve bindings even if the args is empty
-		parser.setEnvironment(classpath, sources, new String[] { "UTF-8" }, true);
-
-		parser.setResolveBindings(true);
-		parser.setStatementsRecovery(true);
-		parser.setBindingsRecovery(true);
-		parser.setSource(getJavaSource());
-		parser.setIgnoreMethodBodies(false);
-
-		return (CompilationUnit)parser.createAST(null);
 	}
 
 	protected SearchResult createSearchResult(int startOffset, int endOffset,
@@ -110,7 +61,6 @@ public class JavaFileChecker {
 	}
 
 	public List<SearchResult> findCatchExceptions(final String[] exceptions) {
-
 		final List<SearchResult> searchResults = new ArrayList<>();
 
 		_ast.accept(new ASTVisitor() {
@@ -140,7 +90,6 @@ public class JavaFileChecker {
 		});
 
 		return searchResults;
-
 	}
 
 	public List<SearchResult> findImplementsInterface(final String interfaceName){
@@ -181,6 +130,7 @@ public class JavaFileChecker {
 
 		return searchResults;
 	}
+
 	public SearchResult findImport(final String importName) {
 		final List<SearchResult> searchResults = new ArrayList<>();
 
@@ -448,7 +398,6 @@ public class JavaFileChecker {
 		return searchResults;
 	}
 
-
 	public List<SearchResult> findServiceAPIs(final String[] serviceFQNPrefixes) {
 		final List<SearchResult> searchResults = new ArrayList<>();
 
@@ -511,9 +460,11 @@ public class JavaFileChecker {
 
 		return searchResults;
 	}
+
 	protected File getFile() {
 		return _file;
 	}
+
 	protected char[] getJavaSource() {
 		try {
 			return _fileHelper.readFile(_file).toCharArray();

@@ -22,21 +22,24 @@ public abstract class JSPTagsFileMigrator implements FileMigrator {
 		_problemSummary = (String)properties.get("problem.summary");
 		_problemType = (String)properties.get("file.extensions");
 		_problemTickets = (String)properties.get("problem.tickets");
+		_sectionKey = (String)properties.get("problem.sectionKey");
 	}
 
 	@Override
-	public List<Problem> analyzeFile(File file) {
+	public List<Problem> analyze(File file) {
 		final List<Problem> problems = new ArrayList<>();
 
 		final List<SearchResult> searchResults = searchJSPFile(file,
 				new JSPFileChecker(file));
 
 		if (searchResults != null) {
+			String sectionHtml = MarkdownParser.getSection("BREAKING_CHANGES.markdown", _sectionKey);
+
 			for (SearchResult searchResult : searchResults) {
 				Problem problem = new Problem(_problemTitle, _problemUrl,
 						_problemSummary, _problemType, _problemTickets, file,
 						searchResult.startLine, searchResult.startOffset,
-						searchResult.endOffset);
+						searchResult.endOffset, sectionHtml, searchResult.autoCorrectContext);
 				problems.add(problem);
 			}
 		}
@@ -51,5 +54,6 @@ public abstract class JSPTagsFileMigrator implements FileMigrator {
 	private String _problemTitle;
 	private String _problemType;
 	private String _problemUrl;
+	private String _sectionKey;
 
 }

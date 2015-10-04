@@ -32,7 +32,7 @@ public class SDKProjectMigrator implements ProjectMigrator {
 					"In order to migrate this project to 7.0, it needs to be copied to a 7.0 plugins SDK under the appropriate directory.",
 					"project",
 					"",
-					projectDir, -1, -1, -1));
+					projectDir, -1, -1, -1, null, null));
 		}
 
 		return retval;

@@ -21,13 +21,13 @@ public abstract class JavaFileMigrator implements FileMigrator {
 	String problemSummary;
 	String problemTickets;
 	List<String> _fileExtentions;
+	String _sectionKey;
 
 	@Activate
 	public void activate(ComponentContext ctx) {
 		this.context = ctx;
 
-		final Dictionary<String, Object> properties =
-			this.context.getProperties();
+		final Dictionary<String, Object> properties = this.context.getProperties();
 
 		_fileExtentions = Arrays.asList(((String)properties.get("file.extensions")).split(","));
 
@@ -35,21 +35,25 @@ public abstract class JavaFileMigrator implements FileMigrator {
 		this.problemUrl = (String)properties.get("problem.url");
 		this.problemSummary = (String)properties.get("problem.summary");
 		this.problemTickets = (String)properties.get("problem.tickets");
+		_sectionKey = (String)properties.get("problem.sectionKey");
 	}
 
 	@Override
-	public List<Problem> analyzeFile(File file) {
+	public List<Problem> analyze(File file) {
 		final List<Problem> problems = new ArrayList<>();
 
 		final List<SearchResult> searchResults = searchJavaFile(file, createJavaFileChecker(file));
 
 		if (searchResults != null) {
+			String sectionHtml = MarkdownParser.getSection("BREAKING_CHANGES.markdown", _sectionKey);
+
 			for (SearchResult searchResult : searchResults) {
 				String fileExtension = new Path(file.getAbsolutePath()).getFileExtension();
 
 				problems.add(new Problem(this.problemTitle, this.problemUrl, this.problemSummary,
 					fileExtension, this.problemTickets, file, searchResult.startLine,
-					searchResult.startOffset, searchResult.endOffset));
+					searchResult.startOffset, searchResult.endOffset, sectionHtml,
+					searchResult.autoCorrectContext));
 			}
 		}
 

@@ -1,9 +1,13 @@
 package blade.migrate.core;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -52,7 +56,7 @@ public class FileHelper {
 
 		return files;
 	}
-	
+
 	public String readFile(File file)
 		throws FileNotFoundException, IOException {
 
@@ -74,6 +78,31 @@ public class FileHelper {
 		}
 
 		return returnValue;
+	}
+
+	public int writeFile(File file, String contents) throws IOException {
+		int retval = -1;
+
+		try (FileOutputStream stream = new FileOutputStream(file);
+			 BufferedOutputStream out = new BufferedOutputStream( stream );
+			 BufferedInputStream bin = new BufferedInputStream(new ByteArrayInputStream(contents.getBytes()))) {
+
+			byte[] buffer = new byte[1024];
+
+	        int bytesRead = 0;
+	        int bytesTotal = 0;
+
+	        // Keep reading from the file while there is any content
+	        // when the end of the stream has been reached, -1 is returned
+			while ((bytesRead = bin.read(buffer)) != -1) {
+				out.write(buffer, 0, bytesRead);
+				bytesTotal += bytesRead;
+			}
+
+			retval = bytesTotal;
+		}
+
+		return retval;
 	}
 
 }
