@@ -143,6 +143,7 @@ public class ProjectMigrationService implements Migration {
 			public FileVisitResult visitFile(
 					Path path, BasicFileAttributes attrs)
 				throws IOException {
+
 				if (monitor.isCanceled()) {
 					return FileVisitResult.TERMINATE;
 				}

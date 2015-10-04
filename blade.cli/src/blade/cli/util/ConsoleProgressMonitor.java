@@ -1,4 +1,4 @@
-package blade.migrate.provider;
+package blade.cli.util;
 
 import blade.migrate.api.ProgressMonitor;
 
