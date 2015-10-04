@@ -28,7 +28,6 @@ public class SDKProjectMigrator implements ProjectMigrator {
 
 			retval.add(new Problem(
 					"Project not located in to 7.0 plugins SDK",
-					"",
 					"In order to migrate this project to 7.0, it needs to be copied to a 7.0 plugins SDK under the appropriate directory.",
 					"project",
 					"",

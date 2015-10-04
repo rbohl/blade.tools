@@ -18,11 +18,10 @@ public abstract class JSPTagsFileMigrator implements FileMigrator {
 		final Dictionary<String, Object> properties = ctx.getProperties();
 
 		_problemTitle = (String)properties.get("problem.title");
-		_problemUrl = (String)properties.get("problem.url");
 		_problemSummary = (String)properties.get("problem.summary");
 		_problemType = (String)properties.get("file.extensions");
 		_problemTickets = (String)properties.get("problem.tickets");
-		_sectionKey = (String)properties.get("problem.sectionKey");
+		_sectionKey = (String)properties.get("problem.section");
 	}
 
 	@Override
@@ -36,7 +35,7 @@ public abstract class JSPTagsFileMigrator implements FileMigrator {
 			String sectionHtml = MarkdownParser.getSection("BREAKING_CHANGES.markdown", _sectionKey);
 
 			for (SearchResult searchResult : searchResults) {
-				Problem problem = new Problem(_problemTitle, _problemUrl,
+				Problem problem = new Problem(_problemTitle,
 						_problemSummary, _problemType, _problemTickets, file,
 						searchResult.startLine, searchResult.startOffset,
 						searchResult.endOffset, sectionHtml, searchResult.autoCorrectContext);
@@ -53,7 +52,6 @@ public abstract class JSPTagsFileMigrator implements FileMigrator {
 	private String _problemTickets;
 	private String _problemTitle;
 	private String _problemType;
-	private String _problemUrl;
 	private String _sectionKey;
 
 }

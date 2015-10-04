@@ -20,11 +20,11 @@ public class ConsoleReporterCLITest {
 	@Test
 	public void reportLongFormatTest() throws Exception {
 		String expectString =
-				"   ________________________________________________________________________\n" +
-				"   | Title| Summary    | Url               | Type| Ticket  | File    | Line|\n" +
-				"   |=======================================================================|\n" +
-				"1. | bar  | bar summary| http://liferay.com| jsp | LPS-867 | Bar.java| 20  |\n" +
-				"2. | foo  | foo summary| http://liferay.com| java| LPS-5309| Foo.java| 10  |\n";
+				"   ____________________________________________________\n" +
+				"   | Title| Summary    | Type| Ticket  | File    | Line|\n" +
+				"   |===================================================|\n" +
+				"1. | bar  | bar summary| jsp | LPS-867 | Bar.java| 20  |\n" +
+				"2. | foo  | foo summary| java| LPS-5309| Foo.java| 10  |\n";
 
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -36,9 +36,9 @@ public class ConsoleReporterCLITest {
 		Reporter reporter = context.getService(sr);
 		reporter.beginReporting(Migration.DETAIL_LONG, baos);
 		reporter.report(new Problem(
-				"foo", "http://liferay.com", "foo summary", "java", "LPS-5309", new File("Foo.java"), 10, 100, 110, null, null));
+				"foo", "foo summary", "java", "LPS-5309", new File("Foo.java"), 10, 100, 110, null, null));
 		reporter.report(new Problem(
-				"bar", "http://liferay.com", "bar summary", "jsp", "LPS-867", new File("Bar.java"), 20, 200, 220, null, null));
+				"bar", "bar summary", "jsp", "LPS-867", new File("Bar.java"), 20, 200, 220, null, null));
 		reporter.endReporting();
 
 		String realString = baos.toString().replace("\r", "");
@@ -64,9 +64,9 @@ public class ConsoleReporterCLITest {
 		Reporter reporter = context.getService(sr);
 		reporter.beginReporting(Migration.DETAIL_SHORT, baos);
 		reporter.report(new Problem(
-				"foo", "http://liferay.com", "foo summary", "java", "LPS-867", new File("Foo.java"), 10, 100, 110, null, null));
+				"foo", "foo summary", "java", "LPS-867", new File("Foo.java"), 10, 100, 110, null, null));
 		reporter.report(new Problem(
-				"bar", "http://liferay.com", "bar summary", "jsp", "LPS-5309", new File("Bar.java"), 20, 200, 220, null, null));
+				"bar", "bar summary", "jsp", "LPS-5309", new File("Bar.java"), 20, 200, 220, null, null));
 		reporter.endReporting();
 
 		String realString = baos.toString().replace("\r", "");

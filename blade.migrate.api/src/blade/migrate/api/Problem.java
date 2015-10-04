@@ -7,13 +7,12 @@ public class Problem {
 	public Problem() {
 	}
 
-	public Problem( String title, String url,
-			String summary, String type, String ticket, File file,
+	public Problem( String title, String summary, String type,
+			String ticket, File file,
 			int lineNumber, int startOffset, int endOffset,
 			String html, String autoCorrectContext) {
 
 		this.title = title;
-		this.url = url;
 		this.summary = summary;
 		this.type = type;
 		this.ticket = ticket;
@@ -32,7 +31,6 @@ public class Problem {
 	public String ticket;
 	public String title;
 	public String type;
-	public String url;
 	public int endOffset;
 	public int startOffset;
 	public String html;
@@ -88,14 +86,6 @@ public class Problem {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 	public int getEndOffset() {
@@ -167,11 +157,6 @@ public class Problem {
 			if (other.type != null)
 				return false;
 		} else if (!type.equals(other.type))
-			return false;
-		if (url == null) {
-			if (other.url != null)
-				return false;
-		} else if (!url.equals(other.url))
 			return false;
 		if (autoCorrectContext == null) {
 			if (other.autoCorrectContext != null)

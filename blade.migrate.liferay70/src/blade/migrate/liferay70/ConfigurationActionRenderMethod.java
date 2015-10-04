@@ -17,7 +17,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.summary=Removed render Method from ConfigurationAction API",
 		"problem.tickets=LPS-56300",
 		"problem.title=ConfigurationAction render method",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-render-method-from-configurationaction-api"
+		"problem.section=#removed-render-method-from-configurationaction-api"
 	},
 	service = FileMigrator.class
 )

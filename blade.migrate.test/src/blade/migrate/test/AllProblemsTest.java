@@ -1,6 +1,8 @@
 package blade.migrate.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import blade.migrate.api.Migration;
 import blade.migrate.api.NullProgressMonitor;
@@ -33,6 +35,11 @@ public class AllProblemsTest {
 		}
 
 		assertEquals(expectedSize, size);
+
+		for (Problem problem : problems) {
+			assertNotNull(problem.html);
+			assertTrue("problem.title=" + problem.title + ", problem.file=" + problem.file, problem.html.length() > 0);
+		}
 	}
 
 	private final BundleContext context = FrameworkUtil.getBundle(

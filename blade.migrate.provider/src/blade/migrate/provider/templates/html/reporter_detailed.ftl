@@ -13,7 +13,6 @@
     		<tr>
     			<th>Title</th>
     			<th>Summary</th>
-    			<th>Url</th>
     			<th>Type</th>
     			<th>Ticket</th>
     			<th>File</th>
@@ -23,7 +22,6 @@
 	    	<tr>
 	    		<td>${problem.title}</td>
 	    		<td>${problem.summary}</td>
-	    		<td>${problem.url}</td>
 	    		<td>${problem.type}</td>
 	    		<td>${problem.ticket}</td>
 	    		<td>${problem.file}</td>

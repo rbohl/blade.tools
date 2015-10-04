@@ -16,10 +16,9 @@ import org.osgi.service.component.annotations.Activate;
 public abstract class JavaFileMigrator implements FileMigrator {
 
 	ComponentContext context;
-	String problemTitle;
-	String problemUrl;
-	String problemSummary;
-	String problemTickets;
+	String _problemTitle;
+	String _problemSummary;
+	String _problemTickets;
 	List<String> _fileExtentions;
 	String _sectionKey;
 
@@ -31,11 +30,10 @@ public abstract class JavaFileMigrator implements FileMigrator {
 
 		_fileExtentions = Arrays.asList(((String)properties.get("file.extensions")).split(","));
 
-		this.problemTitle = (String)properties.get("problem.title");
-		this.problemUrl = (String)properties.get("problem.url");
-		this.problemSummary = (String)properties.get("problem.summary");
-		this.problemTickets = (String)properties.get("problem.tickets");
-		_sectionKey = (String)properties.get("problem.sectionKey");
+		_problemTitle = (String)properties.get("problem.title");
+		_problemSummary = (String)properties.get("problem.summary");
+		_problemTickets = (String)properties.get("problem.tickets");
+		_sectionKey = (String)properties.get("problem.section");
 	}
 
 	@Override
@@ -50,8 +48,8 @@ public abstract class JavaFileMigrator implements FileMigrator {
 			for (SearchResult searchResult : searchResults) {
 				String fileExtension = new Path(file.getAbsolutePath()).getFileExtension();
 
-				problems.add(new Problem(this.problemTitle, this.problemUrl, this.problemSummary,
-					fileExtension, this.problemTickets, file, searchResult.startLine,
+				problems.add(new Problem(_problemTitle, _problemSummary,
+					fileExtension, _problemTickets, file, searchResult.startLine,
 					searchResult.startOffset, searchResult.endOffset, sectionHtml,
 					searchResult.autoCorrectContext));
 			}

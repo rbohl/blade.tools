@@ -18,7 +18,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.summary=The method render has been removed from the interfaces AssetRenderer and WorkflowHandler.",
 		"problem.tickets=LPS-56705",
 		"problem.title=Removed render Method from AssetRenderer API and WorkflowHandler API",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-render-method-from-assetrenderer-api-and-workflowhandler-api"
+		"problem.section=#removed-render-method-from-assetrenderer-api-and-workflowhandler-api"
 	},
 	service = FileMigrator.class
 )

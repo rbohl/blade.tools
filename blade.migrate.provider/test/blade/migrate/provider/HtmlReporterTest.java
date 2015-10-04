@@ -33,7 +33,6 @@ public class HtmlReporterTest {
 "    		<tr>\n" +
 "    			<th>Title</th>\n" +
 "    			<th>Summary</th>\n" +
-"    			<th>Url</th>\n" +
 "    			<th>Type</th>\n" +
 "    			<th>Ticket</th>\n" +
 "    			<th>File</th>\n" +
@@ -42,7 +41,6 @@ public class HtmlReporterTest {
 "	    	<tr>\n" +
 "	    		<td>test</td>\n" +
 "	    		<td>summary</td>\n" +
-"	    		<td>java/project/url</td>\n" +
 "	    		<td>java</td>\n" +
 "	    		<td>100</td>\n" +
 "	    		<td>file1.java</td>\n" +
@@ -51,7 +49,6 @@ public class HtmlReporterTest {
 "	    	<tr>\n" +
 "	    		<td>test1</td>\n" +
 "	    		<td>summary</td>\n" +
-"	    		<td>java/project/url</td>\n" +
 "	    		<td>properties</td>\n" +
 "	    		<td>101</td>\n" +
 "	    		<td>file2.properties</td>\n" +
@@ -64,7 +61,6 @@ public class HtmlReporterTest {
 		Problem problem = new Problem();
 		problem.title = "test";
 		problem.summary = "summary";
-		problem.url = "java/project/url";
 		problem.ticket = "100";
 		problem.type = "java";
 		problem.file = new File("file1.java");
@@ -73,7 +69,6 @@ public class HtmlReporterTest {
 		Problem problem1 = new Problem();
 		problem1.title = "test1";
 		problem1.summary = "summary";
-		problem1.url = "java/project/url";
 		problem1.ticket = "101";
 		problem1.type = "properties";
 		problem1.file = new File("file2.properties");

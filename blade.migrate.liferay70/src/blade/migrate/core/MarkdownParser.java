@@ -70,7 +70,7 @@ public class MarkdownParser {
 				sb.append(node.toString());
 			}
 
-			retval.put(h3.text(), sb.toString());
+			retval.put(a.attr("href"), sb.toString());
 		}
 
 		return retval;
