@@ -15,7 +15,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=java,jsp,jspf",
 		"problem.title=Removed Trash Logic from DLAppHelperLocalService Methods",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-trash-logic-from-dlapphelperlocalservice-methods",
+		"problem.section=#removed-trash-logic-from-dlapphelperlocalservice-methods",
 		"problem.summary=Removed Trash Logic from DLAppHelperLocalService Methods",
 		"problem.tickets=LPS-47508",
 	},

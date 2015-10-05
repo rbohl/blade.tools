@@ -19,7 +19,7 @@ public class CUCache {
 			WeakReference<CompilationUnit> astRef = _map.get(file);
 
 			if (astRef == null || astRef.get() == null) {
-				final CompilationUnit newAst = createJavaClassVisitor(file.getName(), javaSource);
+				final CompilationUnit newAst = createCompilationUnit(file.getName(), javaSource);
 
 				_map.put(file, new WeakReference<CompilationUnit>(newAst));
 
@@ -38,7 +38,7 @@ public class CUCache {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static CompilationUnit createJavaClassVisitor(String unitName, char[] javaSource) {
+	private static CompilationUnit createCompilationUnit(String unitName, char[] javaSource) {
 		ASTParser parser = ASTParser.newParser(AST.JLS8);
 
 		Map<String, String> options = JavaCore.getOptions();

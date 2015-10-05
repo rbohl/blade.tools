@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=jsp,jspf",
 		"problem.title=Changed the Usage of the liferay-ui:restore-entry Tag",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-the-usage-of-the-liferay-uirestore-entry-tag",
+		"problem.section=#changed-the-usage-of-the-liferay-uirestore-entry-tag",
 		"problem.summary=Changed the Usage of the liferay-ui:restore-entry Tag",
 		"problem.tickets=LPS-54106",
 	},

@@ -15,7 +15,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=jsp,jspf",
 		"problem.title=Removed the Tags that Start with portlet:icon-",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-the-tags-that-start-with-portleticon-",
+		"problem.section=#removed-the-tags-that-start-with-portleticon-",
 		"problem.summary=Removed the Tags that Start with portlet:icon-",
 		"problem.tickets=LPS-54620",
 	},

@@ -16,7 +16,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.summary=Removed get and format Methods that Used PortletConfig Parameters",
 		"problem.tickets=LPS-44342",
 		"problem.title=PortletConfig get/format methods",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-get-and-format-methods-that-used-portletconfig-parameters"
+		"problem.section=#removed-get-and-format-methods-that-used-portletconfig-parameters"
 	},
 	service = FileMigrator.class
 )

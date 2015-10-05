@@ -16,7 +16,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.summary=Replaced Method getFacetQuery with getFacetBooleanFilter in Indexer",
 		"problem.tickets=LPS-56064",
 		"problem.title=Indexer API Changes",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#replaced-method-getpermissionquery-with-getpermissionfilter-in-searchpermissionchecker-and-getfacetquery-with-getfacetbooleanfilter-in-indexer"
+		"problem.section=#replaced-method-getpermissionquery-with-getpermissionfilter-in-searchpermissionchecker-and-getfacetquery-with-getfacetbooleanfilter-in-indexer"
 	},
 	service = FileMigrator.class
 )

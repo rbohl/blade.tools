@@ -4,6 +4,7 @@ import blade.migrate.api.AutoMigrateException;
 import blade.migrate.api.AutoMigrator;
 import blade.migrate.api.Problem;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,8 +12,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.rewrite.ImportRewrite;
 import org.eclipse.jdt.internal.core.util.Util;
@@ -48,23 +56,31 @@ public abstract class ImportStatementMigrator extends JavaFileMigrator implement
 		}
 
 		if (importsToRewrite.size() > 0) {
-			String source = null;
-			CompilationUnit cu = null;
+			ICompilationUnit source = null;
 			final FileHelper fileHelper = new FileHelper();
+			final IFile javaFile;
 
 			try {
-				source = fileHelper.readFile(file);
-				cu = CUCache.getCU(file, source.toCharArray());
+				javaFile = WorkspaceUtil.getFileFromWorkspace(file, new WorkspaceHelper());
+			} catch (CoreException | IOException e1) {
+				throw new AutoMigrateException("Unable to get java file as IFile, is project a java project?", e1);
+			}
+
+			try {
+				source = JavaCore.createCompilationUnitFrom(javaFile);
 			}
 			catch (Exception e) {
 				throw new AutoMigrateException("Could not get compilation unit for file: " + file.getName(), e);
 			}
 
-			if (source == null || cu == null) {
-				throw new AutoMigrateException("Compilation unit is null for " + file.getName());
-			}
+			final ImportRewrite importRewrite;
 
-			final ImportRewrite importRewrite = ImportRewrite.create(cu, true);
+			try {
+				importRewrite = ImportRewrite.create(source, true);
+			} catch (JavaModelException e1) {
+				e1.printStackTrace();
+				throw new AutoMigrateException("Unable to create import rewrite action: " + file.getName(), e1);
+			}
 
 			for (String importToRewrite : importsToRewrite) {
 				importRewrite.removeImport(importToRewrite);
@@ -77,11 +93,10 @@ public abstract class ImportStatementMigrator extends JavaFileMigrator implement
 			if (importRewrite.hasRecordedChanges()) {
 				try {
 					final TextEdit textEdit = importRewrite.rewriteImports(new NullProgressMonitor());
-					final String newSource = Util.editedString(source, textEdit);
+					final String newSource = Util.editedString(source.getSource(), textEdit);
 
+					javaFile.setContents(new ByteArrayInputStream(newSource.getBytes()), IResource.FORCE, null);
 					fileHelper.writeFile(file, newSource);
-
-					CUCache.unget(file);
 				} catch (CoreException | IOException e) {
 					throw new AutoMigrateException("Auto correct failed to rewrite imports", e);
 				}

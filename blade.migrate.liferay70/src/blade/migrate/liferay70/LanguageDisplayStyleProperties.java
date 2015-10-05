@@ -12,7 +12,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.title=Language Display Style Properties",
 		"problem.summary=Replaced the Language Portlet's Display Styles with ADTs",
 		"problem.tickets=LPS-54419",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#replaced-the-language-portlets-display-styles-with-adts",
+		"problem.section=#replaced-the-language-portlets-display-styles-with-adts",
 	},
 	service = FileMigrator.class
 )

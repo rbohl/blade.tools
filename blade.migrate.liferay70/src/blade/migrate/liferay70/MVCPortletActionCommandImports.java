@@ -12,7 +12,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.summary=The classes from package com.liferay.util.bridges.mvc in util-bridges.jar were moved to a new package com.liferay.portal.kernel.portlet.bridges.mvc in portal-service.jar.",
 		"problem.tickets=LPS-50156",
 		"problem.title=Moved MVCPortlet, ActionCommand and ActionCommandCache from util-bridges.jar to portal-service.jar",
-		"problem.key=#changed-the-assetrenderer-and-indexer-apis-to-include-the-portletrequest-and-portletresponse-parameters",
+		"problem.section=#changed-the-assetrenderer-and-indexer-apis-to-include-the-portletrequest-and-portletresponse-parameters",
 		"auto.correct=import"
 	},
 	service = {

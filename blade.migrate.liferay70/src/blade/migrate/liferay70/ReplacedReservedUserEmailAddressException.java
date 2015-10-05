@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=java",
 		"problem.title=Replaced the ReservedUserEmailAddressException with UserEmailAddressException",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#replaced-the-reserveduseremailaddressexception-with-useremailaddressexception-inner-classes-in-user-services",
+		"problem.section=#replaced-the-reserveduseremailaddressexception-with-useremailaddressexception-inner-classes-in-user-services",
 		"problem.summary=Replaced the ReservedUserEmailAddressException with UserEmailAddressException Inner Classes in User Services",
 		"problem.tickets=LPS-53279",
 	},

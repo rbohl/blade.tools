@@ -15,7 +15,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.summary=Changed the Indexer API to Include the PortletRequest and PortletResponse Parameters",
 		"problem.tickets=LPS-44639,LPS-44894",
 		"problem.title=Indexer API Changes",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-the-assetrenderer-and-indexer-apis-to-include-the-portletrequest-and-portletresponse-parameters"
+		"problem.section=#changed-the-assetrenderer-and-indexer-apis-to-include-the-portletrequest-and-portletresponse-parameters"
 	},
 	service = FileMigrator.class
 )

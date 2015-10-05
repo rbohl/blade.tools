@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=jsp,jspf",
 		"problem.title=liferay-ui:logo-selector Tag Parameter Changes",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#the-liferay-uilogo-selector-tag-requires-parameter-changes",
+		"problem.section=#the-liferay-uilogo-selector-tag-requires-parameter-changes",
 		"problem.summary=Removed the editLogoURL of liferay-ui:logo-selector Tag",
 		"problem.tickets=LPS-42645",
 	},

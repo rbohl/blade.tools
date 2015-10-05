@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=jsp,jspf",
 		"problem.title=Removed the liferay-ui:journal-article tag",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-the-liferay-uijournal-article-tag",
+		"problem.section=#removed-the-liferay-uijournal-article-tag",
 		"problem.summary=Removed the liferay-ui:journal-article Tag",
 		"problem.tickets=LPS-56383",
 	},

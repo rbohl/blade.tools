@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=java",
 		"problem.title=Replaced the ReservedUserScreenNameException with UserScreenNameException.MustNotBeReserved in UserLocalService",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#replaced-the-reserveduserscreennameexception-with-userscreennameexceptionmustnotbereserved-in-userlocalservice",
+		"problem.section=#replaced-the-reserveduserscreennameexception-with-userscreennameexceptionmustnotbereserved-in-userlocalservice",
 		"problem.summary=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#replaced-the-reserveduserscreennameexception-with-userscreennameexceptionmustnotbereserved-in-userlocalservice",
 		"problem.tickets=LPS-53113",
 	},

@@ -15,7 +15,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=java,jsp,jspf",
 		"problem.title=Methods removed in SearchResult API",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-mbmessages-and-fileentrytuples-attributes-from-app-view-search-entry-tag",
+		"problem.section=#removed-mbmessages-and-fileentrytuples-attributes-from-app-view-search-entry-tag",
 		"problem.summary=Removed getMbMessages , getFileEntryTuples and addMbMessage Methods from SearchResult Class",
 		"problem.tickets=LPS-55886",
 	},

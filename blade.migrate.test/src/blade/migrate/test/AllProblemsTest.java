@@ -37,7 +37,7 @@ public class AllProblemsTest {
 		assertEquals(expectedSize, size);
 
 		for (Problem problem : problems) {
-			assertNotNull(problem.html);
+			assertNotNull("problem.title=" + problem.title + ", problem.file=" + problem.file, problem.html);
 			assertTrue("problem.title=" + problem.title + ", problem.file=" + problem.file, problem.html.length() > 0);
 		}
 	}
