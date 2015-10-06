@@ -16,7 +16,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.summary=All Mobile Device Rules APIs previously exposed as Liferay Portal API in 6.2 have been move out from portal-service into separate OSGi modules",
 		"problem.tickets=LPS-57519",
 		"problem.title=Mobile Device Rules APIs migrated to OSGi module",
-		"problem.url="
+		"problem.section=#legacy"
 	},
 	service = FileMigrator.class
 )

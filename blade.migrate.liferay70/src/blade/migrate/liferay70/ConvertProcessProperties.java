@@ -15,7 +15,7 @@ import org.osgi.service.component.annotations.Component;
                 + " The convert.processes key was removed from portal.properties. "
                 + "Consequentially, ConvertProcess implementations must register as OSGi components.",
 		"problem.tickets=LPS-50604",
-		"problem.section=#convert-process-classes-are-no-longer-specified-via-the-convertprocesses-portal-property-but-are-contributed-as-osgi-modules"
+		"problem.section=#convert-process-classes-are-no-longer-specified-via-the-convert"
 	},
 	service = FileMigrator.class
 )

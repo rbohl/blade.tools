@@ -16,7 +16,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.summary=All Web Content APIs previously exposed as Liferay Portal API in 6.2 have been move out from portal-service into separate OSGi modules",
 		"problem.tickets=LPS-54838",
 		"problem.title=Web Content APIs migrated to OSGi module",
-		"problem.url="
+		"problem.section=#legacy"
 	},
 	service = FileMigrator.class
 )

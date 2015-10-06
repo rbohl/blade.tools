@@ -21,7 +21,7 @@ public abstract class PropertiesFileMigrator implements FileMigrator {
 	private String _problemSummary;
 	private String _problemType;
 	private String _problemTickets;
-	private String _sectionKey;
+	private String _sectionKey = "";
 	final List<String> _properties = new ArrayList<String>();
 
 	@Activate

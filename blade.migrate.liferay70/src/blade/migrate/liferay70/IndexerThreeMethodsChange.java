@@ -20,7 +20,7 @@ import org.osgi.service.component.annotations.Component;
 			" Indexer.getQueryString(SearchContext, Query) has been removed, in favor of calling SearchEngineUtil." +
 			"getQueryString(SearchContext, Query)",
 		"problem.tickets=LPS-55928",
-		"problem.section=#moved-indexeraddrelatedentryfields-and-indexerreindexddmstructures-and-removed-indexergetquerystring"
+		"problem.section=#moved-indexer"
 	},
 	service = FileMigrator.class
 )

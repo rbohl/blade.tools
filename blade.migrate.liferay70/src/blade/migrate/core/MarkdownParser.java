@@ -4,7 +4,6 @@ import aQute.lib.io.IO;
 
 import com.liferay.markdown.converter.factory.MarkdownConverterFactoryUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,10 +80,15 @@ public class MarkdownParser {
 	public static String getSection(String fileName, String sectionKey) {
 		String retval = null;
 
-		final Map<String, String> sections = parse(fileName);
+		if (sectionKey.equals("#legacy")) {
+			retval = "#legacy";
+		}
+		else {
+			final Map<String, String> sections = parse(fileName);
 
-		if (sections != null) {
-			retval = sections.get(sectionKey);
+			if (sections != null) {
+				retval = sections.get(sectionKey);
+			}
 		}
 
 		return retval;

@@ -59,6 +59,6 @@ public abstract class XMLFileMigrator implements FileMigrator {
 	private String _problemTickets;
 	private String _problemTitle;
 	private String _problemType;
-	private String _sectionKey;
+	private String _sectionKey = "";
 
 }

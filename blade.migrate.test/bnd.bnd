@@ -1,14 +1,20 @@
 Bundle-Version:1.0.0.${tstamp}
 
-Private-Package: blade.migrate.test
+Private-Package: \
+	blade.migrate.test
+
+Conditional-Package: \
+	aQute.lib.*,\
+	aQute.libg.*
 
 Test-Cases: ${test-cases}
 
--buildpath:  \
+-buildpath: \
 	osgi.core,\
 	osgi.cmpn,\
 	blade.migrate.api;version=project,\
-	biz.aQute.junit
+	biz.aQute.junit,\
+	aQute.libg
 
 -testpath: \
 	biz.aQute.junit
