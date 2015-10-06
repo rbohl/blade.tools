@@ -11,7 +11,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.title=Breadcrumb Portlet's Display Styles Changes",
 		"problem.summary=Replaced the Breadcrumb Portlet's Display Styles with ADTs",
 		"problem.tickets=LPS-53577",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#replaced-the-breadcrumb-portlets-display-styles-with-adts",
+		"problem.section=#replaced-the-breadcrumb-portlet",
 	},
 	service = FileMigrator.class
 )

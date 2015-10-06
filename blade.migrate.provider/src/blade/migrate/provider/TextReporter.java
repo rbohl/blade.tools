@@ -39,7 +39,6 @@ public class TextReporter extends ConsoleReporter {
 		else {
 			columnNames.add("Title");
 			columnNames.add("Summary");
-			columnNames.add("Url");
 			columnNames.add("Type");
 			columnNames.add("Ticket");
 			columnNames.add("File");
@@ -83,7 +82,7 @@ public class TextReporter extends ConsoleReporter {
 				});
 		} else {
 			rowData.add(new Object[] { problem.title, problem.summary,
-					problem.url, problem.type, problem.ticket,
+					problem.type, problem.ticket,
 					problem.file.getName(), problem.lineNumber
 				});
 		}

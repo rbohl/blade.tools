@@ -16,7 +16,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.title=Replaced ReservedUserIdException with UserIdException Inner Classes",
 		"problem.summary=The ReservedUserIdException has been deprecated and replaced with UserIdException.MustNotBeReserved.",
 		"problem.tickets=LPS-53487",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#replaced-reserveduseridexception-with-useridexception-inner-classes"
+		"problem.section=#replaced-reserveduseridexception-with-useridexception-inner-classes"
 	},
 	service = FileMigrator.class
 )

@@ -15,7 +15,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=java,jsp,jspf",
 		"problem.title=Added Required Parameter resourceClassNameId for DDM Template Search Operations",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#added-required-parameter-resourceclassnameid-for-ddm-template-search-operations",
+		"problem.section=#added-required-parameter-resourceclassnameid-for-ddm-template-search-operations",
 		"problem.summary=Added Required Parameter resourceClassNameId for DDM Template Search Operations",
 		"problem.type=java,jsp",
 		"problem.tickets=LPS-52990",

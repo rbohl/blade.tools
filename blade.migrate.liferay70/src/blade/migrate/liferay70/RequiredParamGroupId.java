@@ -17,7 +17,7 @@ import org.osgi.service.component.annotations.Component;
 			"problem.title=Adding Tags, Categories, Vocabularies API Changes",
 			"problem.summary=The API for adding tags, categories, and vocabularies now requires passing the groupId parameter. Previously, it had to be included in the ServiceContext parameter passed to the method.",
 			"problem.tickets=LPS-54570",
-			"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#added-required-parameter-groupid-for-adding-tags-categories-and-vocabularies"
+			"problem.section=#added-required-parameter-groupid-for-adding-tags-categories-and-vocabularies"
 		},
 		service = FileMigrator.class
 	)

@@ -1,6 +1,8 @@
 package blade.migrate.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import blade.migrate.api.Migration;
 import blade.migrate.api.NullProgressMonitor;
@@ -33,6 +35,40 @@ public class AllProblemsTest {
 		}
 
 		assertEquals(expectedSize, size);
+
+//		List<String> lines = new ArrayList<>();
+//		String contents = new String(IO.read(this.getClass().getResourceAsStream("BREAKING_CHANGES.tags")));
+//		BufferedReader reader = new BufferedReader(IO.reader(contents));
+//
+//		String read = reader.readLine();
+//		while(read != null) {
+//			lines.add(read);
+//			read = reader.readLine();
+//		}
+
+//		Collection<ServiceReference<FileMigrator>> refs = context.getServiceReferences(FileMigrator.class, null);
+
+		for (Problem problem : problems) {
+			if (problem.html != null && problem.html.equals("#legacy")) continue;
+
+//			if (problem.html == null || problem.html.equals("")) {
+//				for (ServiceReference<FileMigrator> ref : refs) {
+//					String section = (String) ref.getProperty("problem.section");
+//					String title = (String) ref.getProperty("problem.title");
+//					if (title.equals(problem.title)) {
+//						for (String line : lines) {
+//							if (section.startsWith(line)) {
+//								fail("line=" + line + ", section=" + section);
+//							}
+//						}
+//					}
+//				}
+//			}
+
+
+			assertNotNull("problem.title=" + problem.title + ", problem.file=" + problem.file, problem.html);
+			assertTrue("problem.title=" + problem.title + ", problem.file=" + problem.file, problem.html.length() > 0);
+		}
 	}
 
 	private final BundleContext context = FrameworkUtil.getBundle(

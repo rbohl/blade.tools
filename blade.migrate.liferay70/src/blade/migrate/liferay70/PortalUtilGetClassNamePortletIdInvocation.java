@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=java,jsp,jspf",
 		"problem.title=Removed the getClassNamePortletId(String) Method from PortalUtil Class",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-the-getclassnameportletidstring-method-from-portalutil-class",
+		"problem.section=#removed-the-getclassnameportletid",
 		"problem.summary=Removed the getClassNamePortletId(String) Method from PortalUtil Class",
 		"problem.tickets=LPS-50604",
 	},

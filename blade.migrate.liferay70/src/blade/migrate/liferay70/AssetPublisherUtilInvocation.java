@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=java,jsp,jspf",
 		"problem.title=Moved the AssetPublisherUtil Class and Removed It from the Public API",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#moved-the-assetpublisherutil-class-and-removed-it-from-the-public-api",
+		"problem.section=#moved-the-assetpublisherutil-class-and-removed-it-from-the-public-api",
 		"problem.summary=Moved the AssetPublisherUtil Class and Removed It from the Public API",
 		"problem.tickets=LPS-52744",
 	},

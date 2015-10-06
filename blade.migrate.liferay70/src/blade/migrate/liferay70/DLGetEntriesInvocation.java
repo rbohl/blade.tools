@@ -16,7 +16,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.summary=The getEntries method was no longer used, and contained hardcoded references to classes that will be moved into OSGi bundles.",
 		"problem.tickets=LPS-56247",
 		"problem.title=Removed Method getEntries from DL, DLImpl, and DLUtil Classes",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-method-getentries-from-dl-dlimpl-and-dlutil-classes"
+		"problem.section=#removed-method-getentries-from-dl-dlimpl-and-dlutil-classes"
 	},
 	service = FileMigrator.class
 )

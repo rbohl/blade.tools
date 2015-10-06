@@ -18,7 +18,7 @@ import org.osgi.service.component.annotations.Component;
 			"A default structure and template named Basic Web Content was " +
 			"added to the global scope, and can be modified or deleted.",
 		"problem.tickets=LPS-45107",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#web-content-articles-now-require-a-structure-and-template"
+		"problem.section=#web-content-articles-now-require-a-structure-and-template"
 	},
 	service = FileMigrator.class
 )

@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=java",
 		"problem.title=Changes in Exceptions Thrown by User Services",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changes-in-exceptions-thrown-by-user-services",
+		"problem.section=#changes-in-exceptions-thrown-by-user-services",
 		"problem.summary=Changes in Exceptions Thrown by User Services",
 		"problem.tickets=LPS-47130",
 	},

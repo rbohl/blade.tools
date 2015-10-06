@@ -9,10 +9,10 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	property = {
 		"file.extensions=properties",
-		"problem.title=Asset Publisher Proerties Removed",
+		"problem.title=Asset Publisher Properties Removed",
 		"problem.summary=Removed the asset.publisher.asset.entry.query.processors Property",
 		"problem.tickets=LPS-52966",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-the-assetpublisherassetentryqueryprocessors-property",
+		"problem.section=#removed-the-asset",
 	},
 	service = FileMigrator.class
 )

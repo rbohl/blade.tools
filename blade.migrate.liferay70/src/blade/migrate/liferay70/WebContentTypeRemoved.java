@@ -20,7 +20,7 @@ import org.osgi.service.component.annotations.Component;
 			"versions of Liferay, and the types from the existing articles are kept " +
 			"as categories of this vocabulary.",
 		"problem.tickets=LPS-50764",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#migration-of-the-field-type-from-the-journal-article-api-into-a-vocabulary"
+		"problem.section=#migration-of-the-field-type-from-the-journal-article-api-into-a-vocabulary"
 	},
 	service = FileMigrator.class
 )

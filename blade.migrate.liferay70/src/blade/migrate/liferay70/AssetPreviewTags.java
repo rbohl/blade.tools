@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=jsp,jspf",
 		"problem.title=Changed the Usage of Asset Preview",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-the-usage-of-asset-preview",
+		"problem.section=#changed-the-usage-of-asset-preview",
 		"problem.summary=Changed the Usage of Asset Preview",
 		"problem.tickets=LPS-53972",
 	},

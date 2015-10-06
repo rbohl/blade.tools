@@ -37,7 +37,6 @@ public class OSGiHtmlReporterTest {
 "    		<tr>\n" +
 "    			<th>Title</th>\n" +
 "    			<th>Summary</th>\n" +
-"    			<th>Url</th>\n" +
 "    			<th>Type</th>\n" +
 "    			<th>Ticket</th>\n" +
 "    			<th>File</th>\n" +
@@ -46,7 +45,6 @@ public class OSGiHtmlReporterTest {
 "	    	<tr>\n" +
 "	    		<td>foo</td>\n" +
 "	    		<td>foo summary</td>\n" +
-"	    		<td>http://liferay.com</td>\n" +
 "	    		<td>java</td>\n" +
 "	    		<td>LPS-5309</td>\n" +
 "	    		<td>Foo.java</td>\n" +
@@ -55,7 +53,6 @@ public class OSGiHtmlReporterTest {
 "	    	<tr>\n" +
 "	    		<td>bar</td>\n" +
 "	    		<td>bar summary</td>\n" +
-"	    		<td>http://liferay.com</td>\n" +
 "	    		<td>jsp</td>\n" +
 "	    		<td>LPS-867</td>\n" +
 "	    		<td>Bar.java</td>\n" +
@@ -89,9 +86,9 @@ public class OSGiHtmlReporterTest {
 
 		reporter.beginReporting(Migration.DETAIL_LONG, baos);
 		reporter.report(new Problem(
-				"foo", "http://liferay.com", "foo summary", "java", "LPS-5309", new File("Foo.java"), 10, 100, 110, null, null));
+				"foo", "foo summary", "java", "LPS-5309", new File("Foo.java"), 10, 100, 110, null, null));
 		reporter.report(new Problem(
-				"bar", "http://liferay.com", "bar summary", "jsp", "LPS-867", new File("Bar.java"), 20, 200, 220, null, null));
+				"bar", "bar summary", "jsp", "LPS-867", new File("Bar.java"), 20, 200, 220, null, null));
 		reporter.endReporting();
 
 		String realString = baos.toString().replace("\r", "");
@@ -160,9 +157,9 @@ public class OSGiHtmlReporterTest {
 
 		reporter.beginReporting(Migration.DETAIL_SHORT, baos);
 		reporter.report(new Problem(
-				"foo", "http://liferay.com", "foo summary", "java", "LPS-867", new File("Foo.java"), 10, 100, 110, null, null));
+				"foo", "foo summary", "java", "LPS-867", new File("Foo.java"), 10, 100, 110, null, null));
 		reporter.report(new Problem(
-				"bar", "http://liferay.com", "bar summary", "jsp", "LPS-5309", new File("Bar.java"), 20, 200, 220, null, null));
+				"bar", "bar summary", "jsp", "LPS-5309", new File("Bar.java"), 20, 200, 220, null, null));
 		reporter.endReporting();
 
 		String realString = baos.toString().replace("\r", "");

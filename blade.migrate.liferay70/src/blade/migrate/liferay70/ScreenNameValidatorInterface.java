@@ -16,7 +16,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.title=Added New Methods in the ScreenNameValidator Interface",
 		"problem.summary=The ScreenNameValidator interface has new methods getDescription(Locale) and getJSValidation().",
 		"problem.tickets=LPS-53409",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#added-new-methods-in-the-screennamevalidator-interface"
+		"problem.section=#added-new-methods-in-the-screennamevalidator-interface"
 	},
 	service = FileMigrator.class
 )

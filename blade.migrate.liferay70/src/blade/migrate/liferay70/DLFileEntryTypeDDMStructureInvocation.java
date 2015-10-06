@@ -15,7 +15,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=java,jsp,jspf",
 		"problem.title=DLFileEntryTypeLocalServiceUtil Api Changes",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-the-dlfileentrytypes_ddmstructures-mapping-table",
+		"problem.section=#removed-the-dlfileentrytypes",
 		"problem.summary=Removed the DLFileEntryTypes_DDMStructures Mapping Table",
 		"problem.tickets=LPS-56660",
 	},

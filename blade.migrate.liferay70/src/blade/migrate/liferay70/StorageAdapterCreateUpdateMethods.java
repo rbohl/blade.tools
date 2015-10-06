@@ -18,7 +18,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.summary=Removed Operations That Used the Fields Class from the StorageAdapter Interface",
 		"problem.tickets=LPS-53021",
 		"problem.type=java",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#removed-operations-that-used-the-fields-class-from-the-storageadapter-interface"
+		"problem.section=#removed-operations-that-used-the-fields-class-from-the-storageadapter-interface"
 	},
 	service = FileMigrator.class
 )

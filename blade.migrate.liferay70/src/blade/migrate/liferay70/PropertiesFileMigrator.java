@@ -18,11 +18,10 @@ public abstract class PropertiesFileMigrator implements FileMigrator {
 
 	private ComponentContext _context;
 	private String _problemTitle;
-	private String _problemUrl;
 	private String _problemSummary;
 	private String _problemType;
 	private String _problemTickets;
-	private String _sectionKey;
+	private String _sectionKey = "";
 	final List<String> _properties = new ArrayList<String>();
 
 	@Activate
@@ -33,11 +32,10 @@ public abstract class PropertiesFileMigrator implements FileMigrator {
 			this._context.getProperties();
 
 		_problemTitle = (String)properties.get("problem.title");
-		_problemUrl = (String)properties.get("problem.url");
 		_problemSummary = (String)properties.get("problem.summary");
 		_problemType = (String)properties.get("file.extensions");
 		_problemTickets = (String)properties.get("problem.tickets");
-		_sectionKey = (String)properties.get("problem.sectionKey");
+		_sectionKey = (String)properties.get("problem.section");
 
 		addPropertiesToSearch(this._properties);
 	}
@@ -59,9 +57,8 @@ public abstract class PropertiesFileMigrator implements FileMigrator {
 				String sectionHtml = MarkdownParser.getSection("BREAKING_CHANGES.markdown", _sectionKey);
 
 				for (SearchResult searchResult : results) {
-					problems.add(new Problem(
-						this._problemTitle, this._problemUrl, this._problemSummary,
-						this._problemType, this._problemTickets, file,
+					problems.add(new Problem( _problemTitle, _problemSummary,
+						_problemType, _problemTickets, file,
 						searchResult.startLine, searchResult.startOffset,
 						searchResult.endOffset, sectionHtml, searchResult.autoCorrectContext));
 				}

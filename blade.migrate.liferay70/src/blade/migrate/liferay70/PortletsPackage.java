@@ -17,7 +17,7 @@ import org.osgi.service.component.annotations.Component;
 		"problem.title=Changed Java Package Names for Portlets Extracted as Modules",
 		"problem.summary=The Java package names changed for portlets that were extracted as OSGi modules in 7.0.",
 		"problem.tickets=LPS-56383",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-java-package-names-for-portlets-extracted-as-modules"
+		"problem.section=#changed-java-package-names-for-portlets-extracted-as-modules"
 	},
 	service = FileMigrator.class
 )

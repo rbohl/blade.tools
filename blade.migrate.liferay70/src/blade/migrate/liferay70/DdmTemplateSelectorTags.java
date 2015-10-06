@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"file.extensions=jsp,jspf",
 		"problem.title=Changed Usage of the liferay-ui:ddm-template-selector Tag",
-		"problem.url=https://github.com/liferay/liferay-portal/blob/master/readme/7.0/BREAKING_CHANGES.markdown#changed-usage-of-the-liferay-uiddm-template-selector-tag",
+		"problem.section=#changed-usage-of-the-liferay-uiddm-template-selector-tag",
 		"problem.summary=The attribute classNameId of the liferay-ui:ddm-template-selector taglib tag has been renamed className",
 		"problem.tickets=LPS-53790",
 	},

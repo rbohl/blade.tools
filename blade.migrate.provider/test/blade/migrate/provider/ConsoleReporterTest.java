@@ -18,16 +18,15 @@ public class ConsoleReporterTest {
 	@Test
 	public void reportLongFormatTest() throws Exception {
 		String expectString =
-				"   ______________________________________________________________________________\n" +
-				"   | Title| Summary| Url             | Type      | Ticket| File            | Line|\n" +
-				"   |=============================================================================|\n" +
-				"1. | test | summary| java/project/url| java      | 100   | file1.java      | 10  |\n" +
-				"2. | test1| summary| java/project/url| properties| 101   | file2.properties| 12  |\n";
+				"   ____________________________________________________________\n" +
+				"   | Title| Summary| Type      | Ticket| File            | Line|\n" +
+				"   |===========================================================|\n" +
+				"1. | test | summary| java      | 100   | file1.java      | 10  |\n" +
+				"2. | test1| summary| properties| 101   | file2.properties| 12  |\n";
 
 		Problem problem = new Problem();
 		problem.title = "test";
 		problem.summary = "summary";
-		problem.url = "java/project/url";
 		problem.ticket = "100";
 		problem.type = "java";
 		problem.file = new File("file1.java");
@@ -36,7 +35,6 @@ public class ConsoleReporterTest {
 		Problem problem1 = new Problem();
 		problem1.title = "test1";
 		problem1.summary = "summary";
-		problem1.url = "java/project/url";
 		problem1.ticket = "101";
 		problem1.type = "properties";
 		problem1.file = new File("file2.properties");
