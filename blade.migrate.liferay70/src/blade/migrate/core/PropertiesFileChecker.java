@@ -284,6 +284,10 @@ public class PropertiesFileChecker {
 	        return keyInfos;
 	}
 
+	public List<KeyInfo> getInfos(String key) {
+		return keyInfos.get(key);
+	}
+
 	public List<SearchResult> findProperties( String key ){
 		List<SearchResult> retval = new ArrayList<>();
 		List<KeyInfo> infos = keyInfos.get(key);
