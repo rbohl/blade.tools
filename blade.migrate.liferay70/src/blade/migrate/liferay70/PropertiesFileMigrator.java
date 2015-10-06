@@ -17,11 +17,11 @@ import org.osgi.service.component.annotations.Activate;
 public abstract class PropertiesFileMigrator implements FileMigrator {
 
 	private ComponentContext _context;
-	private String _problemTitle;
-	private String _problemSummary;
-	private String _problemType;
-	private String _problemTickets;
-	private String _sectionKey = "";
+	String _problemTitle;
+	String _problemSummary;
+	String _problemType;
+	String _problemTickets;
+	String _sectionKey = "";
 	final List<String> _properties = new ArrayList<String>();
 
 	@Activate
