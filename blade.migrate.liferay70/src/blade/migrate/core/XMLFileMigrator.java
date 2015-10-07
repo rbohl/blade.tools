@@ -55,10 +55,10 @@ public abstract class XMLFileMigrator implements FileMigrator {
 	protected abstract List<SearchResult> searchXMLFile(File file);
 
 	private ComponentContext _context;
-	private String _problemSummary;
-	private String _problemTickets;
-	private String _problemTitle;
-	private String _problemType;
-	private String _sectionKey = "";
+	protected String _problemSummary;
+	protected String _problemTickets;
+	protected String _problemTitle;
+	protected String _problemType;
+	protected String _sectionKey = "";
 
 }

@@ -42,7 +42,7 @@ Private-Package: \
 	aQute.lib.io,\
 	aQute.libg.glob,\
 	com.liferay.markdown.converter.*,\
-	org.parboiled.*,\
-	org.pegdown.*,\
+	org.parboiled.*;-split-package:=merge-first,\
+	org.pegdown.*;-split-package:=merge-first,\
 	org.objectweb.asm.*,\
 	org.jsoup.*
