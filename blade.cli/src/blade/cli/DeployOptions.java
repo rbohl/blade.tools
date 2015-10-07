@@ -5,7 +5,6 @@ import aQute.lib.getopt.Description;
 import aQute.lib.getopt.Options;
 
 @Arguments(arg = "jarfile...")
-@Description("Deploy(s) bundle(s) to Liferay 7")
 public interface DeployOptions extends Options {
 
 	@Description("The jmx port to use to connect to Liferay 7")

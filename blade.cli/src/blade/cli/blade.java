@@ -33,16 +33,17 @@ public class blade extends AbstractConsoleApp implements Runnable {
 		new blade().run(args);
 	}
 
-	@Description("Creates a new Liferay module project.")
+	@Description("Creates a new Liferay module project from several available templates.")
 	public void _create(CreateOptions options) throws Exception {
 		new CreateCommand(this, options);
 	}
 
-	@Description("Deploys a bundle to Liferay 7")
+	@Description("Deploys a bundle to Liferay module framework")
 	public void _deploy(DeployOptions options) throws Exception {
 		new DeployCommand(this, options);
 	}
 
+	@Description(value = "Run migration tool on project sources to generate a report of problems that needs to be fixed")
 	public void _migrate(MigrateOptions options) throws Exception {
 		new MigrateCommand(this, options);
 	}

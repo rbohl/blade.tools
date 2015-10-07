@@ -200,9 +200,6 @@ public class ProjectMigrationService implements Migration {
 		try {
 			Files.walkFileTree(dir.toPath(), visitor);
 		} catch (IOException e) {
-
-			// TODO properly log exception
-
 			e.printStackTrace();
 		}
 	}

@@ -24,10 +24,8 @@ public class BladeTemplateLoader implements TemplateLoader {
 
 		if( resource != null ) {
 			// found template
-
-			retval = new BladeTemplate(name, resource);
+			retval = new BladeTemplate(resource);
 		}
-
 
 		return retval;
 	}

@@ -27,7 +27,7 @@ public class CreateCommandTests {
 		String[] args = new String[] {
 			"-t", "create",
 			"-d", "generated/test",
-			"-p", "jspportlet",
+			"jspportlet",
 			"foo",
 		};
 
@@ -78,8 +78,8 @@ public class CreateCommandTests {
 			"-t", "create",
 			"-b", "gradle",
 			"-d", "generated/test",
+			"portlet",
 			"-c", "Foo",
-			"-p", "portlet",
 			"gradle.test",
 		};
 
@@ -120,7 +120,7 @@ public class CreateCommandTests {
 			"-t", "create",
 			"-b", "gradle",
 			"-d", "generated/test",
-			"-p", "service",
+			"service",
 			"servicepreaction",
 			"com.liferay.portal.kernel.events.LifecycleAction"
 		};
@@ -171,7 +171,7 @@ public class CreateCommandTests {
 			"-t", "create",
 			"-b", "gradle",
 			"-d", "generated/test",
-			"-p", "servicewrapper",
+			"servicewrapper",
 			"serviceoverride",
 			"com.liferay.portal.service.UserLocalServiceWrapper"
 		};
@@ -233,7 +233,7 @@ public class CreateCommandTests {
 			"-t", "create",
 			"-b", "bndtools",
 			"-d", "generated/test",
-			"-p", "service",
+			"service",
 			"-c", "ServicePreAction",
 			"service.pre.action",
 			"com.liferay.portal.kernel.events.LifecycleAction"
@@ -276,7 +276,7 @@ public class CreateCommandTests {
 			"-t", "create",
 			"-d", "generated/test",
 			"-b", "maven",
-			"-p", "jspportlet",
+			"jspportlet",
 			"foo",
 		};
 
@@ -328,8 +328,8 @@ public class CreateCommandTests {
 			"-t", "create",
 			"-d", "generated/test",
 			"-b", "maven",
+			"service",
 			"-c", "PackagePathTest",
-			"-p", "service",
 			"blade.package.path.test",
 			"com.liferay.portal.kernel.events.LifecycleAction"
 		};
@@ -364,8 +364,8 @@ public class CreateCommandTests {
 			"-t", "create",
 			"-d", "generated/test",
 			"-b", "maven",
+			"portlet",
 			"foo",
-			"portlet"
 		};
 
 		new blade().run(args);
@@ -410,7 +410,7 @@ public class CreateCommandTests {
 			"-t", "create",
 			"-d", "generated/test",
 			"-b", "maven",
-			"-p", "service",
+			"service",
 			"servicepreaction",
 			"com.liferay.portal.kernel.events.LifecycleAction"
 		};
@@ -445,8 +445,8 @@ public class CreateCommandTests {
 		String[] args = new String[] {
 			"-t", "create",
 			"-d", "generated/test",
+			"service",
 			"-c", "LoginPreAction",
-			"-p", "service",
 			"loginpre",
 			"com.liferay.portal.kernel.events.LifecycleAction"
 		};
@@ -471,7 +471,7 @@ public class CreateCommandTests {
 			"-t", "create",
 			"-d", "generated/test",
 			"-b", "maven",
-			"-p", "servicewrapper",
+			"servicewrapper",
 			"serviceoverride",
 			"com.liferay.portal.service.UserLocalServiceWrapper"
 		};
@@ -509,8 +509,8 @@ public class CreateCommandTests {
 			"-t", "create",
 			"-b", "maven",
 			"-d", "generated/test",
+			"servicewrapper",
 			"-c", "UserLocalServiceOverride",
-			"-p", "servicewrapper",
 			"serviceoverride",
 			"com.liferay.portal.service.UserLocalServiceWrapper"
 		};

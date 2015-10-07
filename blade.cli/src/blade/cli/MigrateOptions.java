@@ -7,7 +7,6 @@ import aQute.lib.getopt.Options;
 import blade.cli.cmds.Format;
 
 @Arguments(arg = {"projectDir", "[reportFile]"})
-@Description("Migrates a plugin project to Liferay 7")
 public interface MigrateOptions extends Options {
 
 	@Description("Determines if the report format will be short or long")

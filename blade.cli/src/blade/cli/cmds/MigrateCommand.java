@@ -4,7 +4,6 @@ import blade.cli.MigrateOptions;
 import blade.cli.blade;
 import blade.cli.util.ConsoleProgressMonitor;
 import blade.migrate.api.Migration;
-import blade.migrate.api.NullProgressMonitor;
 import blade.migrate.api.Problem;
 
 import java.io.File;
@@ -31,7 +30,6 @@ public class MigrateCommand {
 		List<String> args = options._arguments();
 
 		if (args.size() == 0) {
-
 			// Default command
 
 			printHelp();

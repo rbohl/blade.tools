@@ -7,11 +7,9 @@ import java.io.Reader;
 
 public class BladeTemplate {
 
-	private String _name;
 	private InputStream _resource;
 
-	public BladeTemplate(String name, InputStream resource) {
-		_name = name;
+	public BladeTemplate(InputStream resource) {
 		_resource = resource;
 	}
 

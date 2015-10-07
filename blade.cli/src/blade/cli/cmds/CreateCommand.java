@@ -4,6 +4,9 @@ package blade.cli.cmds;
 import aQute.bnd.osgi.Jar;
 import aQute.bnd.osgi.Processor;
 import aQute.bnd.osgi.Resource;
+import aQute.lib.getopt.Arguments;
+import aQute.lib.getopt.Description;
+import aQute.lib.getopt.Options;
 import aQute.lib.io.IO;
 
 import blade.cli.CreateOptions;
@@ -35,21 +38,77 @@ public class CreateCommand {
 		this.blade = blade;
 		this.options = options;
 
-		List<String> args = options._arguments();
+		String help = options._command().subCmd(options, this);
 
-		if (args.size() < 1) {
-			// Default command
-			printHelp();
-		}
-		else {
-			createFromTemplate();
+		if (help != null) {
+			System.out.println(help);
 		}
 	}
 
-	private void createFromTemplate() throws Exception {
-		File base = blade.getBase();
+	@Arguments(arg = {"name"})
+	interface PortletOptions extends Options {
+		@Description("If a class is generated in the project, " +
+				"provide the name of the class to be generated." +
+				" If not provided defaults to Project name.")
+		public String classname();
 
-		String name = options._arguments().get(0);
+	}
+
+	@Description(value = "Use basic portlet template for new project")
+	public void _portlet(PortletOptions opts) throws Exception {
+		List<String> args = opts._arguments();
+		String name = args.get(0);
+		String classname = opts.classname();
+
+		createFromTemplate(Type.portlet, name, classname, "");
+	}
+
+	@Arguments(arg = {"name"})
+	interface JSPPortletOptions extends Options {
+	}
+
+	@Description(value = "Use mvcportlet with jsps template for new project")
+	public void _jspportlet(JSPPortletOptions opts) throws Exception {
+		List<String> args = opts._arguments();
+		String name = args.get(0);
+
+		createFromTemplate(Type.jspportlet, name, null, "");
+	}
+
+	@Arguments(arg = {"name", "[service]"})
+	interface ServiceOptions extends Options {
+		@Description("If a class is generated in the project, " +
+				"provide the name of the class to be generated." +
+				" If not provided defaults to Project name.")
+		public String classname();
+	}
+
+	@Description(value = "Creates a project with a single service component")
+	public void _service(ServiceOptions opts) throws Exception {
+		String classname = opts.classname();
+		List<String> args = opts._arguments();
+		String name =  args.get(0);
+		String service = args.get(1);
+		createFromTemplate(Type.service, name, classname, service);
+	}
+
+	@Arguments(arg = {"name", "[service]"})
+	interface ServiceWrapperOptions extends ServiceOptions {
+
+	}
+
+	@Description(value = "Creates a project with a single service wrapper component")
+	public void _servicewrapper(ServiceWrapperOptions opts) throws Exception {
+		String classname = opts.classname();
+		List<String> args = opts._arguments();
+		String name =  args.get(0);
+		String service = args.get(1);
+
+		createFromTemplate(Type.servicewrapper, name, classname, service);
+	}
+
+	private void createFromTemplate(Type type, String name, String classname, String service) throws Exception {
+		File base = blade.getBase();
 
 		File dir = options.dir();
 
@@ -82,12 +141,6 @@ public class CreateCommand {
 			build = Build.gradle;
 		}
 
-		Type type = options.projectType();
-
-		if(type==null){
-			type = Type.portlet;
-		}
-
 		Pattern glob = Pattern.compile("^" +
 			build.toString() + "/" + type + "/.*|\\...+/.*");
 
@@ -98,15 +151,11 @@ public class CreateCommand {
 		subs.put("_package_path_", name.replaceAll("\\.", "/"));
 		subs.put("_package_", name.toLowerCase().replaceAll("-", "."));
 
-		String classname = options.classname();
-
 		if (classname == null) {
 			classname = WordUtils.capitalize(name);
 		}
 
 		if (Type.service.equals(type)) {
-			String service = options._arguments().get(1);
-
 			if (service.isEmpty()) {
 				blade.error(
 					"if type is service, the fully qualified name of service " +
@@ -120,10 +169,8 @@ public class CreateCommand {
 				"_SERVICE_SHORT_",
 				service.substring(service.lastIndexOf('.') + 1));
 		}
-		
-		if (Type.servicewrapper.equals(type)) {
-			String service = options._arguments().get(1);
 
+		if (Type.servicewrapper.equals(type)) {
 			if (service.isEmpty()) {
 				blade.error(
 					"if type is service, the fully qualified name of service " +
@@ -141,13 +188,13 @@ public class CreateCommand {
 		else if (Type.portlet.equals(type) || Type.jspportlet.equals(type)) {
 
 			if (!classname.contains("Portlet")) {
-				
+
 				classname += "Portlet";
 			}
 		}
-		
+
 		subs.put("_CLASSNAME_", classname);
-		
+
 		String unNormalizedPortletFqn =
 				name.toLowerCase().replaceAll("-", ".") + "_" + classname;
 

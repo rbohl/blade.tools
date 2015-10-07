@@ -69,7 +69,6 @@ public class TextReporter extends ConsoleReporter {
 				_output.close();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
