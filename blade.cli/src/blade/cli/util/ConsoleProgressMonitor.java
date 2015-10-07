@@ -4,6 +4,7 @@ import blade.migrate.api.ProgressMonitor;
 
 import org.osgi.service.component.annotations.Component;
 
+@SuppressWarnings("restriction")
 @Component
 public class ConsoleProgressMonitor implements ProgressMonitor {
 
