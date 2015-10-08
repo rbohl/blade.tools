@@ -26,6 +26,7 @@ public class XMLFileChecker {
 
 		try {
 			_parser = factory.newSAXParser();
+			_parser.getXMLReader().setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 		}
 		catch (ParserConfigurationException | SAXException e) {
 			new IllegalArgumentException(e);
@@ -63,7 +64,7 @@ public class XMLFileChecker {
 
 			String content = new String(ch, start, length);
 
-			if (inState && _value.equals(content)) {
+			if (inState && _value != null && _value.equals(content)) {
 				_results.add(
 					new SearchResult(
 						_file, 0, 0, locator.getLineNumber(),
@@ -100,8 +101,14 @@ public class XMLFileChecker {
 				Attributes attributes)
 			throws SAXException {
 
-			if (_tagName.equals(qName)) {
+			if (_tagName.equals(qName) && _value != null) {
 				inState = true;
+			}
+			else if (_tagName.equals(qName) && _value == null) {
+				_results.add(
+					new SearchResult(
+						_file, 0, 0, locator.getLineNumber(),
+						locator.getLineNumber(), true));
 			}
 		}
 
