@@ -93,8 +93,7 @@ public abstract class ImportStatementMigrator extends JavaFileMigrator implement
 					final String newSource = Util.editedString(source.getSource(), textEdit);
 
 					javaFile.setContents(new ByteArrayInputStream(newSource.getBytes()), IResource.FORCE, null);
-					fileHelper.writeFile(file, newSource);
-				} catch (CoreException | IOException e) {
+				} catch (CoreException e) {
 					throw new AutoMigrateException("Auto correct failed to rewrite imports", e);
 				}
 			}
