@@ -13,9 +13,8 @@ import java.util.Properties;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.osgi.framework.Version;
-import org.osgi.service.component.annotations.Component;
 
-@Component
+//@Component
 public class SDKProjectMigrator implements ProjectMigrator {
 
 	@Override
