@@ -9,9 +9,10 @@ import blade.cli.cmds.Format;
 @Arguments(arg = {"projectDir", "[reportFile]"})
 public interface MigrateOptions extends Options {
 
-	@Description("Determines if the report format will be short or long")
+	@Description("Determines if the report format is short or long.")
 	public boolean detailed();
 
+	@Description("Defines the format of the output file. The following formats are supported, which should immediately follow this parameter: text, html, and xml.")
 	public Format format();
 
 }
